@@ -1,0 +1,193 @@
+@import "compass/css3";
+body {
+    background: #fafafa;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #333;
+}
+
+#app {
+  .pure-menu-list > .pure-menu-item{
+    cursor: pointer;
+  }
+}
+
+#paging-nav{
+  text-align: center;
+}
+
+.cardItem {
+  padding-bottom: 10px;
+  .imgFrame{
+    height: 60px;
+    white-space: nowrap;
+    margin: 1em 0;
+    &:before{
+      content: "";
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+    }
+  }
+  img{
+    width: auto;
+    height: 60px;
+  }
+  > div{
+    margin-top: -2px;
+    text-align: center;
+  }
+}
+
+#CardCollecForm > div{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.senzaiList{
+  text-align: left;
+  &:before{
+    content: "";
+    display: inline-block;
+    background-image: url("http://vignette3.wikia.nocookie.net/nekowiz/images/8/85/%E6%BD%9B%E5%9C%A8%E8%83%BD%E5%8A%9B.png/revision/latest?cb=20150702165104&path-prefix=zh");
+    background-repeat: no-repeat;
+    background-size: 60px;
+    width: 60px;
+    height: 22px;
+    margin: 2px;
+    vertical-align: middle;
+    margin-top: -10px;
+  }
+  img{
+    width: 22px;
+    height: auto;
+  }
+}
+
+.senzaiList.Legend:before{
+  width: 134px;
+  height: 22px;
+  background-size: 128px;
+  background-image: url(http://vignette1.wikia.nocookie.net/nekowiz/images/5/50/%E5%82%B3%E5%A5%87%E5%9E%8B%E6%85%8B%E6%95%88%E6%9E%9C%E7%99%BC%E5%8B%95.png/revision/latest?cb=20160115125440&path-prefix=zh);
+}
+
+.cardDetail{
+  .card_img{
+    text-align: center;
+    img{
+      height: 300px;
+      width: 215px;
+    }
+  }
+  .small_img{
+    text-align: center;
+    img{
+      width: 60px;
+      height: auto;
+    }
+  }
+  ul{
+    li{
+      list-style-type: none;
+    }
+  }
+}
+
+.asData, .ssData{
+  span{
+    float:right;
+    display:block;
+  }
+}
+
+.hide{
+  display: none;
+}
+
+.button-success,
+.button-error,
+.button-warning,
+.button-secondary {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.button-success {
+    background: rgb(28, 184, 65); /* this is a green */
+}
+
+.button-error {
+    background: rgb(202, 60, 60); /* this is a maroon */
+}
+
+.button-warning {
+    background: rgb(223, 117, 20); /* this is an orange */
+}
+
+.button-secondary {
+    background: rgb(66, 184, 221); /* this is a light blue */
+}
+
+$evoColors-list: #f0f8ff #efdecd #f2f3f4 #faebd7 #fae7b5;
+
+.evo_before_node, .evo_branch_node, .evo_after_node{
+  @each $current-color in $evoColors-list {
+    $i: index($evoColors-list, $current-color);
+    &:nth-child(#{$i}) {
+      background-color: $current-color;
+    }
+  }
+  @each $current-color in $evoColors-list {
+    $i: index($evoColors-list, $current-color);
+    > div:nth-child(#{$i}) {
+      background-color: $current-color;
+    }
+  }
+}
+
+.self_card img{
+  border: 5px rgba(0,255,0,1) solid;
+  background: rgba(0,255,0,0.5);
+}
+
+.down-arrow{
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 20px 25px 0 25px;
+  border-color: #8222d1 transparent transparent transparent;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#evoListDisplay > .pure-g > div:last-child .down-arrow{
+  display:none;
+}
+.selectList {
+  @include transparent;
+  @include transition(height, .5s ease-out);
+  @include transition(opacity, .5s ease-out);
+  height: 288px;
+  opacity: 1;
+}
+.toggled {
+  height: 0px;
+  opacity: 0;
+}
+
+.reset_btn {
+  background-color: #C70202;
+  border: none;
+  color: white;
+  padding: 0px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.cardListOptions select{
+  margin-right:1.8em
+}
+
+.footer {
+  text-align: center;
+}

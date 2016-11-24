@@ -1,0 +1,62 @@
+doctype
+html.no-js
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    title nekowizTW-cardCollec
+    meta(name='description', content='')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css")
+    link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css")
+    link(rel="stylesheet", href="stylesheets/side-menu.css")
+    link(rel="stylesheet", href="stylesheets/react-select.css")
+    link(rel="stylesheet", href="stylesheets/rc-tabs.css")
+    link(rel="stylesheet", href="stylesheets/main.css")
+  body
+    <!--[if lt IE 8]>
+    p.browsehappy
+      | You are using an <strong>outdated</strong> browser.
+      | Please <a href="http://browsehappy.com/">upgrade your browser</a>
+      | to improve your experience.
+    <![endif]-->
+
+    #layout
+      a#menuLink.menu-link(href='#menu')
+        // Hamburger icon
+        span
+      #menu
+        .pure-menu
+          a.pure-menu-heading(href='http://nekowiztw.github.io/') NekowizTW
+          ul.pure-menu-list
+            li.pure-menu-item
+              a.pure-menu-link(href='http://zh.nekowiz.wikia.com') 黑貓wikia
+            li.pure-menu-item
+              a.pure-menu-link(href='https://github.com/NekowizTW/eventTimeline') 專案地址
+      #main
+        .header
+          h1 黑貓卡片圖鑑
+        .content
+          #app
+          #debug
+        .footer
+          .legal.pure-g
+            .pure-u-1-2
+              p.legal-license
+                | 本專案使用 CC-BY-SA 對原始碼授權，工具部份維持原來授權方式授權，資料來源遵照wikia授權
+            .pure-u-1-2
+              p.legal-copyright
+                | Project created by OtomeSound & FalseChord
+                
+  
+  script(src='https://nekowiztw.github.io/SkillDamage/js/ui.js')
+  script(src="scripts/app.js")
+  //- Google Analytics: change UA-XXXXX-X to be your site's ID.
+  //-
+    script
+      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+      e.src='//www.google-analytics.com/analytics.js';
+      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+      ga('create','UA-XXXXX-X');ga('send','pageview');
