@@ -92,18 +92,18 @@ class List extends React.Component {
     return <div>
       <div>
         <div className={'pure-form cardListOptions'}>
-        <span className={'pure-u-1-4'}>
+        <span className={'pure-u-1-2 pure-u-md-1-4'}>
           <label>每頁顯示：</label>
-          <select defaultValue={10} onChange={this.changePaging}>
+          <select className={'pure-input-1'} defaultValue={10} onChange={this.changePaging}>
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="100">100</option>
           </select>
         </span>
-        <span className={'pure-u-1-4'}>
+        <span className={'pure-u-1-2 pure-u-md-1-4'}>
           <label>排序：</label>
-          <select onChange={this.changeSorting.bind(this)}>
+          <select className={'pure-input-1'} onChange={this.changeSorting.bind(this)}>
             <option value="id">編號</option>
             <option value="max_atk">攻擊力</option>
             <option value="max_hp">血量</option>
@@ -111,9 +111,9 @@ class List extends React.Component {
             <option value="rank">Rank</option>
           </select>
         </span>
-        <span className={'pure-u-1-3'}>
+        <span className={'pure-input-1'} className={'pure-u-1 pure-u-md-1-2'}>
           <label>排列順序：</label>
-          <select onChange={this.changeOrdering.bind(this)}>
+          <select className={'pure-input-1'} onChange={this.changeOrdering.bind(this)}>
             <option value="desc">降序(由高到低)</option>
             <option value="asc">升序(由低到高)</option>
           </select>
@@ -122,7 +122,7 @@ class List extends React.Component {
       </div>
       <Card CardData={this.state.subset}/>
       <div>
-        <div id={'paging-nav'} className={"pure-menu pure-menu-horizontal"}>
+        <div id={'paging-nav'} className={"pure-menu pure-menu-horizontal pure-menu-scrollable"}>
           <ReactPaginate previousLabel={"上一頁"}
                          nextLabel={"下一頁"}
                          breakLabel={<a href="#" className="pure-menu-link">...</a>}

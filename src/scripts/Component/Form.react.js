@@ -177,9 +177,9 @@ class Form extends React.Component {
         <div className={'pure-u-1-24'} />
         <button
           type='button'
-          className={'reset_btn pure-u-3-24'}
+          className={'button-error pure-button pure-u-3-24 reset_btn'}
           onClick={this.resetFilter.bind(this)}
-        >重置</button>
+        ><i className={'fa fa-ban'} aria-hidden="true"></i><span>重置</span></button>
       </div>
       <Tabs
       activeKey={this.state.tabIndex}
