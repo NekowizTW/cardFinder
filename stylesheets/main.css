@@ -193,14 +193,19 @@ body {
   opacity: 0;
 }
 
-.reset_btn {
-  background-color: #C70202;
-  border: none;
-  color: white;
-  padding: 0px 15px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
+.reset_btn span {
+  font-size: 0px;
+}
+.reset_btn i {
+  font-size: 100%;
+}
+@media screen and (min-width: 960px) {
+  .reset_btn span {
+    font-size: 100%;
+  }
+  .reset_btn i {
+    font-size: 0px;
+  }
 }
 
 .cardListOptions select {
