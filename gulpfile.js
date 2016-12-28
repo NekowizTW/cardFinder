@@ -6,7 +6,9 @@ var gulp        = require('gulp'),
     reload      = browserSync.reload,
     browserify  = require('browserify'),
     del         = require('del'),
-    argv        = require('yargs').argv;
+    argv        = require('yargs').argv,
+    uglify      = require('gulp-uglify'),
+    cleancss    = require('gulp-clean-css');;
 
 gulp.task('browser-sync', function() {
   browserSync({
@@ -25,6 +27,7 @@ gulp.task('compass', function() {
       css: 'dist/stylesheets',
       sass: 'src/stylesheets'
     }))
+    .pipe(cleancss())
     .pipe(gulp.dest('dist/stylesheets'));
 });
 
@@ -75,10 +78,18 @@ gulp.task('templates', function() {
 gulp.task('card_data', function() {
   return gulp.src('json/*.json')
     .pipe($.plumber())
-    .pipe( gulp.dest("./dist/json") )
+    .pipe( gulp.dest('./dist/json') )
+});
+
+gulp.task('js-uglify', ['js'], function() {
+  return gulp.src('./dist/scripts/*.js')
+    .pipe(uglify())
+    .pipe( gulp.dest('./dist/scripts') )
 });
 
 gulp.task('build', ['compass', 'js', 'templates', 'images', 'card_data']);
+
+gulp.task('build-release', ['build', 'js-uglify']);
 
 gulp.task('serve', ['build', 'browser-sync'], function () {
   gulp.watch('src/stylesheets/**/*.{scss,sass}',['compass', reload]);
