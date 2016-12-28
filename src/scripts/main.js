@@ -60,6 +60,12 @@ function cardDataParse(data) {
     else card.ss2Data = res.Special2[0];
     assign(res.card[index], card);
   }
+
+  //Filter card with empty name
+  res.card = res.card.filter((card) => {
+    return !card.name ? false : true;
+  })
+
   return res;
 }
 

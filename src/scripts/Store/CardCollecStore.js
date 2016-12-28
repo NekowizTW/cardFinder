@@ -66,10 +66,6 @@ function genSkillCategoriesFromSource(){
   });*/
 }
 
-function includeString(target, string){ // A little helper function to find senzai string in multiple attributes
-  return typeof target === 'string'? target.includes(string) : false;
-}
-
 // So use findByArray to filter props, breeds and ranks.
 
 function filterChange(formObj, callback) {
@@ -127,24 +123,12 @@ function filterChange(formObj, callback) {
   if(searchObj.zz.length > 0){
     res = res.filter(o => {
       for(let zz of searchObj.zz){
-        if(
-          includeString(o.senzaiL_4, zz)||
-          includeString(o.senzaiL_3, zz)||
-          includeString(o.senzaiL_2, zz)||
-          includeString(o.senzaiL_1, zz)||
-          includeString(o.senzai_10, zz)||
-          includeString(o.senzai_9, zz)||
-          includeString(o.senzai_8, zz)||
-          includeString(o.senzai_7, zz)||
-          includeString(o.senzai_6, zz)||
-          includeString(o.senzai_5, zz)||
-          includeString(o.senzai_4, zz)||
-          includeString(o.senzai_3, zz)||
-          includeString(o.senzai_2, zz)||
-          includeString(o.senzai_1, zz)
-          ){
-          return true;
-        }
+        let senzaiStrings = [
+          o.senzaiL_4, o.senzaiL_3, o.senzaiL_2, o.senzaiL_1,
+          o.senzai_10, o.senzai_9, o.senzai_8, o.senzai_7, o.senzai_6,
+          o.senzai_5, o.senzai_4, o.senzai_3, o.senzai_2, o.senzai_1
+        ];
+        return senzaiStrings.join('').includes(zz);
       }
       return false;
     });
