@@ -82,6 +82,12 @@ function filterChange(formObj, callback) {
     filterText: formObj.filterText
   };
   let res = CardCollecSource;
+  
+  //Filter card with empty name
+  res = res.filter((card) => {
+    return !card.name ? false : true;
+  })
+
   if((searchObj.props.length + searchObj.props2.length + searchObj.breeds.length + searchObj.ranks.length + searchObj.filterText.length + searchObj.as.length + searchObj.ss.length + searchObj.as2.length + searchObj.ss2.length + searchObj.zz.length) == 0){
     CardCollecList = res;
     return callback();
@@ -133,6 +139,7 @@ function filterChange(formObj, callback) {
       return false;
     });
   }
+
   CardCollecList = res;
   return callback();
 }
