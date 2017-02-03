@@ -165,7 +165,7 @@ class CardCollecStore {
     return CardCollecSenzai;
   }
   getSenzaiByName(name) {
-    return _.find(CardCollecSenzai, {'name': name});
+    return _.find(CardCollecSenzai, {'name': name}) || _.find(CardCollecSenzai, {'name': '無'});
   }
   getSkillCategories(){
     return CardSkillCategories;
