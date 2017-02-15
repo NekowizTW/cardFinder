@@ -193,7 +193,7 @@ export const SKILL_SS = [
   { value: '回復/指定屬性', label: '回復/指定屬性'},
   { value: '蘇生', label: '蘇生'},
   { value: '自我犧牲蘇生', label: '自我犠牲蘇生'},
-  { value: '自我犧牲回復異常狀態＆蘇生', label: '自我犧牲回復異常狀態＆蘇生'},
+  { value: '自我犧牲回復異常狀態＆復活', label: '自我犧牲回復異常狀態＆復活'},
   { value: '蘇生＆回復', label: '蘇生＆回復'},
   { value: '起死回生', label: '起死回生'},
   { value: '_連鎖相關', label: '連鎖相關', disabled: true},
@@ -265,12 +265,12 @@ export const SKILL_SS2 = [
   { value: '持續回復', label: '持續回復(徐徐回復)'},
   { value: '回復/額外附加效果', label: '回復/額外附加效果'},
   { value: '回復異常狀態', label: '回復異常狀態'},
-  { value: '回復異常狀態＆蘇生', label: '回復異常狀態＆蘇生'},
+  { value: '回復異常狀態＆復活', label: '回復異常狀態＆復活'},
   { value: '回復/指定屬性', label: '回復/指定屬性'},
   { value: '蘇生', label: '蘇生'},
   { value: '蘇生＆回復', label: '蘇生＆回復'},
   { value: '自我犧牲蘇生', label: '自我犧牲蘇生'},
-  { value: '自我犧牲回復異常狀態＆蘇生', label: '自我犧牲回復異常狀態＆蘇生'},
+  { value: '自我犧牲回復異常狀態＆復活', label: '自我犧牲回復異常狀態＆復活'},
   { value: '起死回生', label: '起死回生'},
   { value: '_連鎖相關', label: '連鎖相關', disabled: true},
   { value: '斬擊大魔術', label: '斬擊大魔術'},
@@ -303,5 +303,6 @@ export const ZZ = [
   { value: '獲得EXP量上升', label: '獲得EXP量上升'},
   { value: '獲得金幣量上升', label: '獲得金幣量上升'},
   { value: '掉寶率上升', label: '掉寶率上升'},
-  { value: '減少難易度', label: '問答難易度微幅下降'}
+  { value: '減少難易度', label: '問答難易度微幅下降'},
+  { value: '更換精靈', label: '更換精靈'}
 ];
