@@ -81,7 +81,8 @@ function queryCard(){
             if(str_s[0] == "{{ Card/Data/{{{data}}}"){
                 for(var key in str_s){
                     while((m = re.exec(str_s[key]))!= null){
-                        group[m[1]] = m[2];
+                        console.log(m[1], m[2])
+                        group[m[1]] = m[2].trim();
                     }
                 }
                 data_deck.card.push(group);
