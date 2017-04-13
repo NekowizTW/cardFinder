@@ -204,6 +204,7 @@ export const SKILL_SS = [
   { value: '回復', label: '回復'},
   { value: '持續回復', label: '持續回復(徐徐回復)'},
   { value: '回復異常狀態', label: '回復異常狀態'},
+  { value: '回復異常狀態＆復活', label: '回復異常狀態＆復活'},
   { value: '回復/指定屬性', label: '回復/指定屬性'},
   { value: '蘇生', label: '蘇生'},
   { value: '自我犧牲蘇生', label: '自我犠牲蘇生'},
@@ -225,7 +226,7 @@ export const SKILL_SS = [
   { value: '_其他', label: '其他', disabled: true},
   { value: '技能複製', label: '技能複製'},
   { value: '刪去回答', label: '刪去回答'},
-  { value: '答題技能時間延長', label: '答題技能時間延長'},
+  { value: '延長AS時間限制', label: '延長AS時間限制'},
   { value: '無', label: '無'},
 ];
 export const SKILL_SS2 = [
@@ -301,7 +302,7 @@ export const SKILL_SS2 = [
   { value: '_其他', label: '其他', disabled: true},
   { value: '技能複製', label: '技能複製'},
   { value: '刪去回答', label: '刪去回答'},
-  { value: '答題技能時間延長', label: '答題技能時間延長'},
+  { value: '延長AS時間限制', label: '延長AS時間限制'},
   { value: '無', label: '無'}
 ];
 export const ZZ = [
