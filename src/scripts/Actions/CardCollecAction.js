@@ -27,6 +27,12 @@ class CardCollecAction {
       data: filter
     });
   }
+  setListing(list) {
+    this.dispatch({
+      actionType: "SetListing",
+      data: list
+    });
+  }
 }
 
 export default new CardCollecAction(CardCollecDispatcher);

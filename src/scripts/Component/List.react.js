@@ -3,6 +3,7 @@ import ReactDOM       from 'react-dom';
 import ReactPaginate  from 'react-paginate';
 import Console        from 'console-browserify';
 
+import CardCollecAction from '../Actions/CardCollecAction';
 import CardCollecStore  from '../Store/CardCollecStore';
 
 import Card from './Card.react';
@@ -10,20 +11,19 @@ import Card from './Card.react';
 class List extends React.Component {
   constructor() {
     super();
-    let paging = 10, page = 1;
+    let listing = CardCollecStore.getListing()
+    let page = 1;
     let list = CardCollecStore.getCardList();
-    let subset = list.slice(paging * (page - 1), paging * page - 1);
-    let maxPage = Math.ceil(list.length / paging);
-    let sorting = 'id';
-    let ordering = 'desc';
+    let subset = list.slice(0, listing['paging']);
+    let maxPage = Math.ceil(list.length / listing['paging']);
     this.state = {
       list: list,
       subset: subset,
-      paging: paging,
+      paging: listing['paging'],
       page: page,
       maxPage: maxPage,
-      sorting: sorting,
-      ordering: ordering
+      sorting: listing['sorting'],
+      ordering: listing['ordering']
     };
     this.changePage = this.changePage.bind(this);
     this.changePaging = this.changePaging.bind(this);
@@ -54,13 +54,16 @@ class List extends React.Component {
     let subset = [];
     let maxPage = Math.ceil(this.state.list.length / paging);
     subset = this.state.list.slice(0, paging);
-    this.setState({page: 1, paging: paging, subset: subset, maxPage: maxPage});
+    this.setState({page: 1, paging: paging, subset: subset, maxPage: maxPage}, () => {
+      CardCollecAction.setListing(['paging', paging]);
+    });
   }
   changeSorting(event) {
     this.setState({sorting: event.target.value}, () => {
       this.state.list = this.sortList(this.state.list);
       let subset = this.state.list.slice(0, this.state.paging);
-      this.setState({page: 1, subset: subset});  
+      this.setState({page: 1, subset: subset});
+      CardCollecAction.setListing(['sorting', event.target.value]);
     });
   }
   changeOrdering(event) {
@@ -68,6 +71,7 @@ class List extends React.Component {
       this.state.list = this.sortList(this.state.list);
       let subset = this.state.list.slice(0, this.state.paging);
       this.setState({page: 1, subset: subset});
+      CardCollecAction.setListing(['ordering', event.target.value]);
     });
   }
   sortList(list){
@@ -75,7 +79,7 @@ class List extends React.Component {
     const ordering = this.state.ordering == 'desc'? -1 : 1;
     return list.sort((a, b) => {
       if(this.state.sorting === 'rank'){
-        var attrA = rank_order.indexOf(a['rank']), 
+        var attrA = rank_order.indexOf(a['rank']),
             attrB = rank_order.indexOf(b['rank']);
       }else{
         var attrA = parseInt(a[this.state.sorting]),
@@ -94,7 +98,7 @@ class List extends React.Component {
         <div className={'pure-form cardListOptions'}>
         <span className={'pure-u-1-2 pure-u-md-1-4'}>
           <label>每頁顯示：</label>
-          <select className={'pure-input-1'} defaultValue={10} onChange={this.changePaging}>
+          <select className={'pure-input-1'} defaultValue={this.state.paging} onChange={this.changePaging}>
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="25">25</option>
@@ -103,7 +107,7 @@ class List extends React.Component {
         </span>
         <span className={'pure-u-1-2 pure-u-md-1-4'}>
           <label>排序：</label>
-          <select className={'pure-input-1'} onChange={this.changeSorting.bind(this)}>
+          <select className={'pure-input-1'} defaultValue={this.state.sorting} onChange={this.changeSorting.bind(this)}>
             <option value="id">編號</option>
             <option value="max_atk">攻擊力</option>
             <option value="max_hp">血量</option>
@@ -113,7 +117,7 @@ class List extends React.Component {
         </span>
         <span className={'pure-input-1'} className={'pure-u-1 pure-u-md-1-2'}>
           <label>排列順序：</label>
-          <select className={'pure-input-1'} onChange={this.changeOrdering.bind(this)}>
+          <select className={'pure-input-1'} defaultValue={this.state.ordering} onChange={this.changeOrdering.bind(this)}>
             <option value="desc">降序(由高到低)</option>
             <option value="asc">升序(由低到高)</option>
           </select>
@@ -134,7 +138,7 @@ class List extends React.Component {
                          containerClassName={"pure-menu-list"}
                          pageClassName={"pure-menu-item"}
                          pageLinkClassName={"pure-menu-link"}
-                         activeClassName={"pure-menu-selected"} 
+                         activeClassName={"pure-menu-selected"}
                          previousClassName={"pure-menu-item"}
                          nextClassName={"pure-menu-item"}
                          previousLinkClassName={"pure-menu-link"}

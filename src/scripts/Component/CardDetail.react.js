@@ -237,7 +237,7 @@ class CardDetail extends React.Component {
               <p>{data.asData.info}</p>
             </div>
             <div className={'pure-u-1 ssData '+(this.state.legend? 'hide':'')}>
-              <p><b>{data.ssData.name}</b> <span>{data.ssData.type}</span></p>
+              <p><b>{data.ssData.name}({data.ssData.turn})</b> <span>{data.ssData.type}</span></p>
               <p>{data.ssData.info}</p>
             </div>
             <div className={'pure-u-1 asData '+(this.state.legend? '':'hide')}>
@@ -245,7 +245,7 @@ class CardDetail extends React.Component {
               <p>{data.as2Data.info}</p>
             </div>
             <div className={'pure-u-1 ssData '+(this.state.legend? '':'hide')}>
-              <p><b>{data.ss2Data.name}</b> <span>{data.ss2Data.type}</span></p>
+              <p><b>{data.ss2Data.name}({data.ss2Data.turn})</b> <span>{data.ss2Data.type}</span></p>
               <p>{data.ss2Data.info}</p>
             </div>
           </div>

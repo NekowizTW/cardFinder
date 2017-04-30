@@ -10,6 +10,11 @@ import *          as constOptions from '../data_options';
 let CardCollecSource = [];
 let CardCollecSenzai = [];
 let CardCollecList = [];
+let listing = {
+  paging: 10,
+  sorting: 'id',
+  ordering: 'desc'
+};
 let CardCollecFilter = {filterText: ""};//need to init "filterText" attribute
 let CardSkillCategories = assign(constOptions);
 
@@ -59,8 +64,8 @@ function genSkillCategoriesFromSource(){
   });
 
   /*CardSkillCategories = assign(CardSkillCategories, {
-    SKILL_AS: _.uniq(CardCollecSource.map(obj => obj.asData.type)).filter(Boolean).map(str => ({'label':str, 'value':str})), 
-    SKILL_SS: _.uniq(CardCollecSource.map(obj => obj.ssData.type)).filter(Boolean).map(str => ({'label':str, 'value':str})), 
+    SKILL_AS: _.uniq(CardCollecSource.map(obj => obj.asData.type)).filter(Boolean).map(str => ({'label':str, 'value':str})),
+    SKILL_SS: _.uniq(CardCollecSource.map(obj => obj.ssData.type)).filter(Boolean).map(str => ({'label':str, 'value':str})),
     SKILL_AS2: _.uniq(CardCollecSource.map(obj => obj.as2Data.type)).filter(Boolean).map(str => ({'label':str, 'value':str})),
     SKILL_SS2: _.uniq(CardCollecSource.map(obj => obj.ss2Data.type)).filter(Boolean).map(str => ({'label':str, 'value':str}))
   });*/
@@ -82,7 +87,7 @@ function filterChange(formObj, callback) {
     filterText: formObj.filterText
   };
   let res = CardCollecSource;
-  
+
   //Filter card with empty name
   res = res.filter((card) => {
     return !card.name ? false : true;
@@ -173,6 +178,9 @@ class CardCollecStore {
   getLastFilter() {
     return CardCollecFilter;
   }
+  getListing() {
+    return listing;
+  }
   emitChange() {
     this.eventEmitter.emit(this.changeEvent);
   }
@@ -192,7 +200,7 @@ class CardCollecStore {
           this.emitChange();
         });
         break;
-      case 'InitSenzaiData': 
+      case 'InitSenzaiData':
         CardCollecSenzai = action.data;
         break;
       case 'FilterChange':
@@ -201,6 +209,9 @@ class CardCollecStore {
           this.emitChange();
         });
         break;
+      case 'SetListing':
+        listing[action.data[0]] = action.data[1];
+        break;
       default:
         break;
     }
@@ -208,4 +219,3 @@ class CardCollecStore {
 }
 
 export default new CardCollecStore(CardCollecDispatcher);
-
