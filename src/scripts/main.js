@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import url      from 'url';
 import location from 'location-href';
 import _        from 'lodash';
-import assign   from "object-assign";
 import { Router, Route, Link, hashHistory } from 'react-router';
 
 import CardBase from './cardBase';
@@ -58,7 +57,7 @@ function cardDataParse(data) {
     else card.as2Data = res.Answer2[0];
     if(dataExist(res.card[index].ss2)) card.ss2Data = _.find(res.Special2, {'name': res.card[index].ss2}) || {'name': res.card[index].ss2, 'info': '尚無技能資料'};
     else card.ss2Data = res.Special2[0];
-    assign(res.card[index], card);
+    res.card[index] = _.cloneDeep(card);
   }
 
   return res;
