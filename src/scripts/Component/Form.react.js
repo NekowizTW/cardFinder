@@ -164,7 +164,7 @@ class Form extends React.Component {
   render() {
     let formObj = this.state;
     let url = generateURL(formObj);
-    return <div id="CardCollecForm">
+    return (<div id="CardCollecForm">
       {/*<div className={'pure-g'}>
         <p className={'pure-u-1-1'}>本頁網址: <a href={url}>{path + url}</a></p>
       </div>*/}
@@ -241,7 +241,7 @@ class Form extends React.Component {
           />
         </TabPane>
         </Tabs>
-    </div>
+    </div>);
   }
 }
 

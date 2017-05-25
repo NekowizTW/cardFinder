@@ -37,7 +37,7 @@ gulp.task('js', function() {
     .pipe($.plumber())
     .pipe(through2.obj(function (file, enc, next) {
       browserify(file.path, { debug: true })
-        .transform(require('babelify'))
+        .transform("babelify", {presets: ["es2015", "react"]})
         .transform(require('debowerify'))
         .bundle(function (err, res) {
           if (err) { return next(err); }

@@ -9,10 +9,12 @@ class CardCollec extends React.Component {
     super(props);
   }
   render() {
-    return <div>
-      <Form filter={this.props.location.query}/>
-      <List />
-    </div>;
+    return (
+      <div>
+        <Form filter={this.props.location.query}/>
+        <List />
+      </div>
+    );
   }
 }
 

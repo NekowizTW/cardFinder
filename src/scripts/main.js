@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import url      from 'url';
 import location from 'location-href';
 import _        from 'lodash';
-import { Router, Route, Link, hashHistory } from 'react-router';
+import assign   from "object-assign";
+import { HashRouter, Route, Link, Switch } from 'react-router-dom';
 
 import CardBase from './cardBase';
 import CardSnap from './cardSnap';
@@ -57,7 +58,7 @@ function cardDataParse(data) {
     else card.as2Data = res.Answer2[0];
     if(dataExist(res.card[index].ss2)) card.ss2Data = _.find(res.Special2, {'name': res.card[index].ss2}) || {'name': res.card[index].ss2, 'info': '尚無技能資料'};
     else card.ss2Data = res.Special2[0];
-    res.card[index] = _.cloneDeep(card);
+    assign(res.card[index], card);
   }
 
   return res;
@@ -88,11 +89,13 @@ function sourceDetect(){
 }
 
 ReactDOM.render((
-  <Router history={hashHistory}>
-    <Route path="/" component={CardCollec} />
-    <Route path="/card/:cardId" component={CardDetail}/>
-    <Route path="*" component={NoMatch} />
-  </Router>
+  <HashRouter>
+    <div>
+      <Route exact path="/" component={CardCollec} />
+      <Route path="/card/:cardId" component={CardDetail}/>
+      <Route path="*" component={NoMatch} />
+    </div>
+  </HashRouter>
 ), document.getElementById('app'));
 
 window.onload = () => {

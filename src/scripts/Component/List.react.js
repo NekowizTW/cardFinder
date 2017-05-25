@@ -77,23 +77,24 @@ class List extends React.Component {
   sortList(list){
     const rank_order = ['C+','B','B+','A','A+','S','S+','SS','SS+','L'];
     const ordering = this.state.ordering == 'desc'? -1 : 1;
+    let self = this;
     return list.sort((a, b) => {
-      if(this.state.sorting === 'rank'){
+      if(self.state.sorting === 'rank'){
         var attrA = rank_order.indexOf(a['rank']),
             attrB = rank_order.indexOf(b['rank']);
       }else{
-        var attrA = parseInt(a[this.state.sorting]),
-            attrB = parseInt(b[this.state.sorting]);
+        var attrA = parseInt(a[self.state.sorting]),
+            attrB = parseInt(b[self.state.sorting]);
       }
       if(attrA < 0 || attrB < 0) {
         return (attrA - attrB) * -1;//(attrA - attrB); //Make minus value stay in the last
       }else{
         return (attrA - attrB) * ordering;
       }
-    }.bind(this));
+    });
   }
   render() {
-    return <div>
+    return (<div>
       <div>
         <div className={'pure-form cardListOptions'}>
         <span className={'pure-u-1-2 pure-u-md-1-4'}>
@@ -131,10 +132,10 @@ class List extends React.Component {
                          nextLabel={"下一頁"}
                          breakLabel={<a href="#" className="pure-menu-link">...</a>}
                          breakClassName={"pure-menu-list"}
-                         pageNum={this.state.maxPage}
+                         pageCount={this.state.maxPage}
                          marginPagesDisplayed={2}
                          pageRangeDisplayed={5}
-                         clickCallback={this.changePage}
+                         onPageChange={this.changePage}
                          containerClassName={"pure-menu-list"}
                          pageClassName={"pure-menu-item"}
                          pageLinkClassName={"pure-menu-link"}
@@ -147,7 +148,7 @@ class List extends React.Component {
                          />
         </div>
       </div>
-    </div>;
+    </div>);
   }
 }
 

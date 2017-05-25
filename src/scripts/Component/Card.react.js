@@ -1,7 +1,7 @@
 import React    from 'react';
 import ReactDOM from 'react-dom';
 import Crypto   from 'crypto';
-import { IndexLink, Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import CardCollecStore  from '../Store/CardCollecStore';
 
@@ -23,7 +23,7 @@ class Card extends React.Component {
     function cardItem(data){
       let small_filename = tw_filenameFix(data.small_filename) || "0000.png";
       let senzaiElements = [];
-      return <div className={'cardItem pure-g'} key={'card-'+data.id+'-base'}>
+      return (<div className={'cardItem pure-g'} key={'card-'+data.id+'-base'}>
         <div className={'pure-u-1-6 imgFrame'} key={'card-'+data.id+'-imgFrame'}>
           <img key={'card-'+data.id+'-img'} src={linkGenerator(small_filename)} />
         </div>
@@ -45,11 +45,11 @@ class Card extends React.Component {
           Cost {data.cost}<br/>
           進化 {data.evo_now+'/'+data.evo_max}
         </div>
-      </div>;
+      </div>);
     }
-    return <div>
+    return (<div>
       {cards.map(cardItem)}
-    </div>;
+    </div>);
   }
 }
 

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Crypto   from 'crypto';
 import jsonp    from 'jsonp-es6';
 import _        from 'lodash';
-import { IndexLink, Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import CardCollecStore  from '../Store/CardCollecStore';
 import Console    from 'console-browserify';
@@ -55,16 +55,18 @@ class EvoCard extends React.Component {
     function generateCard(id, list, self_card = false){
       let data =  _.find(list, {'id': id});
       let small_filename = tw_filenameFix(data.small_filename) || "0000.png";
-      return <div className={'pure-u-1'}>
-        <div className={'pure-g'}>
-          <div className={'pure-u-1 small_img '+(self_card? 'self_card':'')}>
-            <Link to={'/card/'+data.id} key={'card-'+data.id+'-name'}>
-              <img src={linkGenerator(small_filename)} />
-            </Link>
+      return (
+        <div className={'pure-u-1'}>
+          <div className={'pure-g'}>
+            <div className={'pure-u-1 small_img '+(self_card? 'self_card':'')}>
+              <Link to={'/card/'+data.id} key={'card-'+data.id+'-name'}>
+                <img src={linkGenerator(small_filename)} />
+              </Link>
+            </div>
+            <div className={'down-arrow'}></div>
           </div>
-          <div className={'down-arrow'}></div>
         </div>
-      </div>;
+      );
     }
     let id = this.props.id;
     let list = this.props.list;
@@ -72,7 +74,7 @@ class EvoCard extends React.Component {
     let self_card = this.props.self_card || false;
     Console.log('At: '+id);
     if(id === ''){
-      return <div></div>;
+      return (<div></div>);
     }
     let data =  _.find(list, {'id': id});
     let res = [];
@@ -94,11 +96,19 @@ class EvoCard extends React.Component {
     let evo_last = siblingTester(data.id, list, -1, true), evo_last_arrays = _.countBy(evo_last, function(e){return typeof e;}).object || 0;
     res.push(evo_last.reverse().map(function(id){
       if(typeof id === 'object'){
-        return <div className={node_name[0]+' pure-u-1-'+evo_last_arrays}><div className={'pure-g'}>
-        {id.map(function(sub_id){
-          return <div className={'pure-u-1'}>{generateCard(sub_id, list)}</div>;
-        })}
-        </div></div>;
+        return (
+          <div className={node_name[0]+' pure-u-1-'+evo_last_arrays}>
+            <div className={'pure-g'}>
+              {id.map(function(sub_id){
+                return (
+                  <div className={'pure-u-1'}>
+                    {generateCard(sub_id, list)}
+                  </div>
+                 );
+              })}
+            </div>
+          </div>
+        );
       }else{
         return generateCard(id, list);
       }
@@ -111,11 +121,13 @@ class EvoCard extends React.Component {
           {data.evoArr.map(function(evo_item){
             let data =  _.find(list, {'id': evo_item});
             let small_filename = tw_filenameFix(data.small_filename) || "0000.png";
-            return <div className={'pure-u-1-4 small_img'}>
-              <Link to={'/card/'+data.id} key={'card-'+data.id+'-name'}>
-                <img src={linkGenerator(small_filename)} />
-              </Link>
-            </div>
+            return (
+              <div className={'pure-u-1-4 small_img'}>
+                <Link to={'/card/'+data.id} key={'card-'+data.id+'-name'}>
+                  <img src={linkGenerator(small_filename)} />
+                </Link>
+              </div>
+            );
           })}
           <h4 className={'pure-u-1'}>需要金幣：{data.evo_price}</h4>
           <div className={'down-arrow'}></div>
@@ -142,7 +154,7 @@ class EvoCard extends React.Component {
       res.push(<div className={node_name[2]+' pure-u-1'}><div className={'pure-g'}>{sub.map(function(sub_node){ return <div className={'pure-u-1-'+sub.length}>{sub_node}</div>;})}</div></div>);
     }
     Console.log(res);
-    return <div className={'pure-g'}>{res.map(function(sub_node){ return sub_node;})}</div>;
+    return (<div className={'pure-g'}>{res.map(function(sub_node){ return sub_node;})}</div>);
   }
 }
 
@@ -151,7 +163,7 @@ class CardDetail extends React.Component {
     super(props);
     let list = [];
     list = CardCollecStore.getCardSourceList();
-    let cardId = props.params.cardId || '0';
+    let cardId = props.match.params.cardId || '0';
     let card =  _.find(list, {'id': cardId}) || {};
     this.state = {
       cardId: cardId,
@@ -198,9 +210,9 @@ class CardDetail extends React.Component {
     let data = this.state.data;
     let card_filename = tw_filenameFix(data.card_filename) || "0000.png";
     let small_filename = tw_filenameFix(data.small_filename) || "0000.png";
-    if(Object.keys(this.state.data).length === 0 && this.state.data.constructor === Object) return <div>等待卡片資料中...</div>;
-    else if(this.state.data.name.length === 0)  return <div>目前尚未有此卡片的資料，請<Link to={'/'}>點此返回</Link></div>;
-    else return <div className="cardDetail">
+    if(Object.keys(this.state.data).length === 0 && this.state.data.constructor === Object) return (<div>等待卡片資料中...</div>);
+    else if(this.state.data.name.length === 0) return (<div>目前尚未有此卡片的資料，請<Link to={'/'}>點此返回</Link></div>);
+    else return (<div className="cardDetail">
       <div className={'pure-g'}>
         <div className={'pure-u-1 pure-u-md-1-2 card_img'}>
           <img src={linkGenerator(card_filename)} /> <br />
@@ -269,7 +281,7 @@ class CardDetail extends React.Component {
       <Link to={{ pathname: '/', query: { ranks: data.rank } }} className={'pure-button'}>查看{data.rank}級卡片</Link>
       <Link to={'/'} className={'pure-button pure-button-primary'}>←返回搜尋頁面</Link>
 
-    </div>;
+    </div>);
   }
 }
 
