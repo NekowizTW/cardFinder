@@ -179,9 +179,10 @@ class CardDetail extends React.Component {
     CardCollecStore.removeChangeListener(this.changeHandler.bind(this));
   }
   componentWillReceiveProps(props) {
+    Console.log(props);
     let list = [];
     list = CardCollecStore.getCardSourceList();
-    let cardId = props.params.cardId || '0';
+    let cardId = props.match.params.cardId || '0';
     let card =  _.find(list, {'id': cardId}) || {};
     this.setState ({
       cardId: cardId,
