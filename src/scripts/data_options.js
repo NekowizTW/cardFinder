@@ -314,6 +314,7 @@ export const ZZ = [
   { value: '戰鬥結束後HP回復', label: '戰後回復'},
   { value: '九死一生', label: '九死一生'},
   { value: '心眼', label: '心眼'},
+  { value: '心眼‧破', label: '心眼‧破'},
   { value: '答題技能封印失效', label: 'AS技能封印無效'},
   { value: '特殊技能封印失效', label: 'SS封印無效'},
   { value: '使敵方技能的封印失效', label: '封印無效'},
