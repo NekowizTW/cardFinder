@@ -353,9 +353,13 @@ export const ZZ = [
   { value: '毒攻擊失效', label: '毒攻擊無效'},
   { value: '死亡秒針失效', label: '死亡秒針無效'},
   { value: '毒攻擊、屬性弱化、死亡秒針失效', label: '毒、屬性弱化、死秒無效'},
+  { value: '消除技能充填失效', label: '消除技能充填無效'},
+  { value: '回復反轉失效', label: '回復反轉無效'},
   { value: '獲得EXP量上升', label: '獲得EXP量上升'},
   { value: '獲得金幣量上升', label: '獲得金幣量上升'},
   { value: '掉寶率上升', label: '掉寶率上升'},
   { value: '減少難易度', label: '問答難易度微幅下降'},
   { value: '更換精靈', label: '更換精靈'}
+  { value: '提升連鎖', label: '任務開始時賦予連鎖數加1的效果'}
+  { value: '防禦連鎖', label: '於一次任務中，僅限一次保護連鎖數'}
 ];

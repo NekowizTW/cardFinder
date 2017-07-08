@@ -87,9 +87,13 @@ gulp.task('js-uglify', ['js'], function() {
     .pipe( gulp.dest('./dist/scripts') )
 });
 
+gulp.task('set-prod-node-env', function() {
+    return process.env.NODE_ENV = 'production';
+});
+
 gulp.task('build', ['compass', 'js', 'templates', 'images', 'card_data']);
 
-gulp.task('build-release', ['build', 'js-uglify']);
+gulp.task('build-release', ['set-prod-node-env', 'build', 'js-uglify']);
 
 gulp.task('serve', ['build', 'browser-sync'], function () {
   gulp.watch('src/stylesheets/**/*.{scss,sass}',['compass', reload]);
