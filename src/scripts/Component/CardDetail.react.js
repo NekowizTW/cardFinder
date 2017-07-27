@@ -217,7 +217,7 @@ class CardDetail extends React.Component {
       <div className={'pure-g'}>
         <div className={'pure-u-1 pure-u-md-1-2 card_img'}>
           <img src={linkGenerator(card_filename)} /> <br />
-          <button className={'button-warning pure-button ' + (data.rank==='L'? '':'hide')} onClick={this.legendToggle}>{this.state.legend? '傳奇型態':'一般型態'}</button>
+          <button className={'button-warning pure-button ' + (data.rank.indexOf('L')!==-1? '':'hide')} onClick={this.legendToggle}>{this.state.legend? '傳奇型態':'一般型態'}</button>
         </div>
         <div className={'pure-u-1 pure-u-md-1-2'}>
           <div className={'pure-g'}>
