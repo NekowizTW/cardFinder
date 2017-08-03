@@ -139,7 +139,10 @@ function filterChange(formObj, callback) {
           o.senzai_10, o.senzai_9, o.senzai_8, o.senzai_7, o.senzai_6,
           o.senzai_5, o.senzai_4, o.senzai_3, o.senzai_2, o.senzai_1
         ];
-        return senzaiStrings.join('').includes(zz);
+        if(zz.includes('心眼'))
+          return ('|' + senzaiStrings.join('|') + '|').includes('|' + zz + '|');
+        else
+          return senzaiStrings.join('').includes(zz);
       }
       return false;
     });
