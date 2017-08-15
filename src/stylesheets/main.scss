@@ -1,4 +1,5 @@
 @import "compass/css3";
+@import "compass/css3/transition";
 body {
     background: #fafafa;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -17,6 +18,7 @@ body {
 
 .cardItem {
   padding-bottom: 10px;
+  @include transition(background-color .5s .25s, color 1s);
   .imgFrame{
     height: 60px;
     white-space: nowrap;
@@ -27,6 +29,9 @@ body {
       height: 100%;
       vertical-align: middle;
     }
+    img{
+      cursor: pointer;
+    }
   }
   img{
     width: auto;
@@ -35,6 +40,58 @@ body {
   > div{
     margin-top: -2px;
     text-align: center;
+  }
+  &.selected{
+    background-color: rgb(255, 197, 99);
+  }
+}
+
+.teamItem{
+  .imgFrame{
+    position: relative;
+    .teamCardBadge {
+      margin: 0 0.1em;
+      padding: 0.3em 1em;
+      color: #fff;
+      background: #999;
+      font-size: 80%;
+      background: #5aba59;
+      position: absolute;
+      left: 0px;
+      bottom: -25px;
+    }
+    img{
+      cursor: pointer;
+    }
+  }
+  .numberData{
+    position: relative;
+    p{
+      padding-left: 20px;
+      margin: 4px auto;
+      &:before{
+        position: absolute;
+        left: 0;
+        width: 20px;
+        text-align: right;
+        font-size: 12px;
+      }
+    }
+    p:nth-child(1){
+      &:before{
+        content: "HP: ";
+      }
+    }
+    p:nth-child(2){
+      &:before{
+        content: "ATK: ";
+      }
+    }
+    p:nth-child(3){
+      &:before{
+        content: "Cost: ";
+      }
+    }
   }
 }
 
@@ -127,6 +184,22 @@ body {
     background: rgb(66, 184, 221); /* this is a light blue */
 }
 
+.button-xsmall {
+    font-size: 70%;
+}
+
+.button-small {
+    font-size: 85%;
+}
+
+.button-large {
+    font-size: 110%;
+}
+
+.button-xlarge {
+    font-size: 125%;
+}
+
 $evoColors-list: #f0f8ff #efdecd #f2f3f4 #faebd7 #fae7b5;
 
 .evo_before_node, .evo_branch_node, .evo_after_node{
@@ -193,6 +266,18 @@ $evoColors-list: #f0f8ff #efdecd #f2f3f4 #faebd7 #fae7b5;
 
 .cardListOptions select{
   margin-right:1.8em
+}
+
+.teamCardDetail{
+  overflow: hidden;
+  max-height: 0px;
+  border: 1px #CCC solid;
+  background-color: #EEE;
+  @include transition-property(max-height);
+  @include transition-duration(.3s);
+  &.toggle{
+    max-height: 400px;
+  }
 }
 
 .footer {

@@ -11,6 +11,8 @@ import CardSnap from './cardSnap';
 
 import CardCollec from './Component/CardCollec.react';
 import CardDetail from './Component/CardDetail.react';
+import TeamCollec from './Component/TeamCollec.react';
+import TeamForm   from './Component/TeamForm.react';
 import Console    from 'console-browserify';
 
 import CardCollecAction from './Actions/CardCollecAction';
@@ -93,6 +95,9 @@ ReactDOM.render((
     <div>
       <Route exact path="/" component={CardCollec} />
       <Route path="/card/:cardId" component={CardDetail}/>
+      <Route exact path="/team/:teamList/:teamHelper" component={TeamCollec}/>
+      <Route exact path="/team/:teamList" component={TeamCollec}/>
+      <Route exact path="/teamform" component={TeamForm}/>
       <Route path="*" component={NoMatch} />
     </div>
   </HashRouter>

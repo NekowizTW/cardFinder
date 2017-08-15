@@ -17,6 +17,12 @@ let listing = {
 };
 let CardCollecFilter = {filterText: ""};//need to init "filterText" attribute
 let CardSkillCategories = assign(constOptions);
+let CardCollecTeam = {
+  selected: [],
+  team: [],
+  helper: -1,
+  cnt: 0
+};
 
 // This mixin is to find that the card's property is in values(array) or not
 
@@ -184,6 +190,9 @@ class CardCollecStore {
   getListing() {
     return listing;
   }
+  getTeam() {
+    return CardCollecTeam;
+  }
   emitChange() {
     this.eventEmitter.emit(this.changeEvent);
   }
@@ -214,6 +223,9 @@ class CardCollecStore {
         break;
       case 'SetListing':
         listing[action.data[0]] = action.data[1];
+        break;
+      case 'UpdateTeam':
+        CardCollecTeam = action.data;
         break;
       default:
         break;

@@ -33,6 +33,12 @@ class CardCollecAction {
       data: list
     });
   }
+  updateTeam(selectedTeam) {
+    this.dispatch({
+      actionType: "UpdateTeam",
+      data: selectedTeam
+    });
+  }
 }
 
 export default new CardCollecAction(CardCollecDispatcher);
