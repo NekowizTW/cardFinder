@@ -1,0 +1,26 @@
+ $as_list: (
+    ("" "AS_attack" "ASRushAttack" "AS_attribute_critical" "AS_attribute_critical_rush"),
+    ("AS_breed_critical" "AS_attack_all_split" "AS_zentai_power" "ASGamble" "ASAbsorption"),
+    ("AS_combo_power_up" "AS_dying_power_up" "AS_good_health_power_up" "AS_attack_enhance" "AS_anger"),
+    ("AS_quiz_attribute_count" "AS_deck_attribute_power_up" "AS_breed_enhance" "AS_breed_attack_up" "ASRecover"),
+    ("ASRecover" "AS_combo_cure" "AS_guard" "AS_attribute_enhance" "AS_breed_critical")
+);
+.teamAS > div {
+  width: 85px;
+  height: 81px;
+  display: inline-block;
+  &.as2Only {
+    color: red;
+  }
+}
+@each $part in $as_list {
+    $i: index($as_list, $part);
+    @each $as in $part {
+        $j: index($part, $as);
+        @if not ($i == 1 and $j == 1) {
+            .teamAS > .#{ $as } {
+                background: url('./../images/as_list.png') (($j - 1) * -85px) (($i - 1) * -81px);
+            }
+        }
+    }
+}

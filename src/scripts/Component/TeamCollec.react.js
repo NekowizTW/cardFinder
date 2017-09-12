@@ -8,6 +8,8 @@ import Console  from 'console-browserify';
 import CardCollecAction from '../Actions/CardCollecAction';
 import CardCollecStore  from '../Store/CardCollecStore';
 
+import *          as cssTag from '../css_tags';
+
 const textStyle = {
   'fill': '#000000',
   'textAnchor': 'middle'
@@ -143,6 +145,16 @@ function calcSenzai(team, tar) {
     atka.unshift(atk);
   }
   return [hpa, atka, costa, cdf];
+}
+
+function generateASIcon(asStr, as2Str) {
+  let res = as2Str.split('・').map(function(o){
+    return cssTag.ASTAG[o];
+  });
+  if(asStr !== as2Str) res[1] = 'as2Only ' + res[1];
+  return res.map(function(o){
+    return <div className={o} />}
+  );
 }
 
 class TeamCollec extends React.Component {
@@ -287,15 +299,7 @@ class TeamCollec extends React.Component {
         <div className={'pure-u-2-3'} key={'team-'+index+'-cdFrame'}>
           <div className={'pure-g'} key={'team-'+index+'-cdData'}>
             <div className={'pure-u-1-2'}>
-              <div className={'pure-g'}>
-                <div className={'pure-u-1 pure-u-md-1-2'}>
-                  {data.data.asData.type}
-                  <br />
-                  {data.data.as2Data.type}
-                </div>
-                <div className={'pure-u-1 pure-u-md-1-2 pure-hidden-xs pure-hidden-sm'}>
-                </div>
-              </div>
+              <div className={'teamAS'}>{generateASIcon(data.data.asData.type, data.data.as2Data.type)}</div>
             </div>
             <div className={'pure-u-1-2'}>
               <div className={'pure-g'}>
