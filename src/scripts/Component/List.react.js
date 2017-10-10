@@ -135,6 +135,7 @@ class List extends React.Component {
                          marginPagesDisplayed={2}
                          pageRangeDisplayed={5}
                          onPageChange={this.changePage}
+                         forcePage={this.state.page}
                          containerClassName={"pure-menu-list"}
                          pageClassName={"pure-menu-item"}
                          pageLinkClassName={"pure-menu-link"}
@@ -158,6 +159,7 @@ class List extends React.Component {
                          marginPagesDisplayed={2}
                          pageRangeDisplayed={5}
                          onPageChange={this.changePage}
+                         forcePage={this.state.page}
                          containerClassName={"pure-menu-list"}
                          pageClassName={"pure-menu-item"}
                          pageLinkClassName={"pure-menu-link"}
