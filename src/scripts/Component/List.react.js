@@ -125,6 +125,28 @@ class List extends React.Component {
         </span>
         </div>
       </div>
+      <div>
+        <div id={'paging-nav'} className={"pure-menu pure-menu-horizontal pure-menu-scrollable"}>
+          <ReactPaginate previousLabel={"上一頁"}
+                         nextLabel={"下一頁"}
+                         breakLabel={<a href="#" className="pure-menu-link">...</a>}
+                         breakClassName={"pure-menu-list"}
+                         pageCount={this.state.maxPage}
+                         marginPagesDisplayed={2}
+                         pageRangeDisplayed={5}
+                         onPageChange={this.changePage}
+                         containerClassName={"pure-menu-list"}
+                         pageClassName={"pure-menu-item"}
+                         pageLinkClassName={"pure-menu-link"}
+                         activeClassName={"pure-menu-selected"}
+                         previousClassName={"pure-menu-item"}
+                         nextClassName={"pure-menu-item"}
+                         previousLinkClassName={"pure-menu-link"}
+                         nextLinkClassName={"pure-menu-link"}
+                         disabledClassName={"pure-menu-disabled"}
+                         />
+        </div>
+      </div>
       <Card CardData={this.state.subset}/>
       <div>
         <div id={'paging-nav'} className={"pure-menu pure-menu-horizontal pure-menu-scrollable"}>
