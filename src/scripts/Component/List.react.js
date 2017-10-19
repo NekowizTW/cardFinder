@@ -12,7 +12,7 @@ class List extends React.Component {
   constructor() {
     super();
     let listing = CardCollecStore.getListing()
-    let page = 1;
+    let page = 0;
     let list = CardCollecStore.getCardList();
     let subset = list.slice(0, listing['paging']);
     let maxPage = Math.ceil(list.length / listing['paging']);
@@ -40,7 +40,7 @@ class List extends React.Component {
     list = this.sortList(list);
     let subset = list.slice(0, paging);
     let maxPage = Math.ceil(list.length / paging);
-    this.setState({ list: list, subset: subset, page: 1, maxPage: maxPage});
+    this.setState({ list: list, subset: subset, page: 0, maxPage: maxPage});
   }
   changePage(pageSel) {
     let page = pageSel.selected;
@@ -54,7 +54,7 @@ class List extends React.Component {
     let subset = [];
     let maxPage = Math.ceil(this.state.list.length / paging);
     subset = this.state.list.slice(0, paging);
-    this.setState({page: 1, paging: paging, subset: subset, maxPage: maxPage}, () => {
+    this.setState({page: 0, paging: paging, subset: subset, maxPage: maxPage}, () => {
       CardCollecAction.setListing(['paging', paging]);
     });
   }
@@ -62,7 +62,7 @@ class List extends React.Component {
     this.setState({sorting: event.target.value}, () => {
       this.state.list = this.sortList(this.state.list);
       let subset = this.state.list.slice(0, this.state.paging);
-      this.setState({page: 1, subset: subset});
+      this.setState({page: 0, subset: subset});
       CardCollecAction.setListing(['sorting', event.target.value]);
     });
   }
@@ -70,7 +70,7 @@ class List extends React.Component {
     this.setState({ordering: event.target.value}, () => {
       this.state.list = this.sortList(this.state.list);
       let subset = this.state.list.slice(0, this.state.paging);
-      this.setState({page: 1, subset: subset});
+      this.setState({page: 0, subset: subset});
       CardCollecAction.setListing(['ordering', event.target.value]);
     });
   }
