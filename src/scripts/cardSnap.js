@@ -7,15 +7,10 @@ import url      from 'url';
 const cardSnap = {
   init(url, callback) {
     let promises = {
-      Senzai: this.getJSONfile(url+'SenzaiSkill.json'),
-      Answer: this.getJSONfile(url+'AnswerSkill.json'),
-      Special: this.getJSONfile(url+'SpecialSkill.json'),
-      Answer2: this.getJSONfile(url+'Answer2Skill.json'),
-      Special2: this.getJSONfile(url+'Special2Skill.json'),
       card: this.getJSONfile(url+'cardData.json')
     };
     RSVP.hash(promises).then((result) => {
-      return callback(result);
+      return callback(result.card);
     }).catch((error) => {
       Console.log(error);
     });

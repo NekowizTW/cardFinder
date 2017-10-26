@@ -9,62 +9,17 @@ import { HashRouter, Route, Link, Switch } from 'react-router-dom';
 import CardBase from './cardBase';
 import CardSnap from './cardSnap';
 
+
 import CardCollec from './Component/CardCollec.react';
 import CardDetail from './Component/CardDetail.react';
 import TeamCollec from './Component/TeamCollec.react';
 import TeamForm   from './Component/TeamForm.react';
-import Console    from 'console-browserify';
 
 import CardCollecAction from './Actions/CardCollecAction';
 
 let url_parse = url.parse(location(), true);
 let path = url_parse.href.replace(url_parse.hash, '');
 let pageState = url_parse.hash;
-
-function dataExist(data) {
-    return (typeof data !== 'undefined' && data.length != 0);
-}
-
-function cardDataParse(data) {
-  let res = data;
-  for(let index in res.card) {
-    let card = {
-      evoArr: [],
-      senzaiArr: [],
-      senzaiLArr: [],
-      asData: {},
-      ssData: {},
-      as2Data: {},
-      ss2Data: {}
-    };
-    for(let i = 1; i <= 8; i++){
-      if(dataExist(res.card[index]['evo_'+i])){
-        card.evoArr.push(res.card[index]['evo_'+i]);
-      }else break;
-    }
-    for(let i = 1; i <= 10; i++){
-      if(dataExist(res.card[index]['senzai_'+i])){
-        card.senzaiArr.push(res.card[index]['senzai_'+i]);
-      }else break;
-    }
-    for(let i = 1; i <= 4; i++){
-      if(dataExist(res.card[index]['senzaiL_'+i])){
-        card.senzaiLArr.push(res.card[index]['senzaiL_'+i]);
-      }else break;
-    }
-    if(dataExist(res.card[index].as)) card.asData = _.find(res.Answer, {'name': res.card[index].as}) || {'name': res.card[index].as, 'info': '尚無技能資料'};
-    else card.asData = res.Answer[0];
-    if(dataExist(res.card[index].ss)) card.ssData = _.find(res.Special, {'name': res.card[index].ss}) || {'name': res.card[index].ss, 'info': '尚無技能資料'};
-    else card.ssData = res.Special[0];
-    if(dataExist(res.card[index].as2)) card.as2Data = _.find(res.Answer2, {'name': res.card[index].as2}) || {'name': res.card[index].as2, 'info': '尚無技能資料'};
-    else card.as2Data = res.Answer2[0];
-    if(dataExist(res.card[index].ss2)) card.ss2Data = _.find(res.Special2, {'name': res.card[index].ss2}) || {'name': res.card[index].ss2, 'info': '尚無技能資料'};
-    else card.ss2Data = res.Special2[0];
-    assign(res.card[index], card);
-  }
-
-  return res;
-}
 
 function sourceDetect(){
   let pathname = url_parse.pathname;
@@ -77,41 +32,50 @@ function sourceDetect(){
   }
   if(source){
     CardBase.init(() => {
-      let data_parsed = cardDataParse(CardBase.data_deck);
+      let data_parsed = CardBase.data_deck;
       CardCollecAction.parseSenzaiList(data_parsed.Senzai);
       CardCollecAction.parseCardList(data_parsed.card);
+      renderMain();
     });
   }else{
-    CardSnap.init(path+'json/', (data) => {
-      let data_parsed = cardDataParse(data);
+    CardSnap.init( path+'json/', (data_parsed) => {
       CardCollecAction.parseSenzaiList(data_parsed.Senzai);
       CardCollecAction.parseCardList(data_parsed.card);
+      renderMain();
     });
   }
 }
 
-ReactDOM.render((
-  <HashRouter>
-    <div>
-      <Route exact path="/" component={CardCollec} />
-      <Route path="/card/:cardId" component={CardDetail}/>
-      <Route exact path="/team/:teamList/:teamHelper" component={TeamCollec}/>
-      <Route exact path="/team/:teamList" component={TeamCollec}/>
-      <Route exact path="/teamform" component={TeamForm}/>
-      <Route path="*" component={NoMatch} />
-    </div>
-  </HashRouter>
-), document.getElementById('app'));
+function renderMLoading(){
+  ReactDOM.render((React.DOM.div({id: 'loading___'}, "資料載入中 :3 ")), document.getElementById('app'));
+}
+
+function renderMain(){
+  ReactDOM.render((
+    <HashRouter>
+      <div>
+        <Route exact path="/" component={CardCollec} />
+        <Route path="/card/:cardId" component={CardDetail}/>
+        <Route exact path="/team/:teamList/:teamHelper" component={TeamCollec}/>
+        <Route exact path="/team/:teamList" component={TeamCollec}/>
+        <Route exact path="/teamform" component={TeamForm}/>
+        <Route path="*" component={NoMatch} />
+      </div>
+    </HashRouter>
+  ), document.getElementById('app'));
+
+  class NoMatch extends React.Component{
+    constructor(){
+      super();
+    }
+    render(){
+      return;
+    }
+  }
+}
+
+renderMLoading();
 
 window.onload = () => {
   sourceDetect();
 };
-
-class NoMatch extends React.Component{
-  constructor(){
-    super();
-  }
-  render(){
-    return;
-  }
-}

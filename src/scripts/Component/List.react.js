@@ -11,16 +11,16 @@ import Card from './Card.react';
 class List extends React.Component {
   constructor() {
     super();
-    let listing = CardCollecStore.getListing()
-    let page = 0;
-    let list = CardCollecStore.getCardList();
-    let subset = list.slice(0, listing['paging']);
+    let listing = CardCollecStore.getListing();
+    let list = CardCollecStore.getCardList().sort((a,b)=> parseInt(b['id']) - parseInt(a['id']));
+    let position = listing['page'] * listing['paging']
+    let subset = list.slice(position, position + listing['paging']);
     let maxPage = Math.ceil(list.length / listing['paging']);
     this.state = {
       list: list,
       subset: subset,
       paging: listing['paging'],
-      page: page,
+      page: listing['page'],
       maxPage: maxPage,
       sorting: listing['sorting'],
       ordering: listing['ordering']
@@ -38,7 +38,8 @@ class List extends React.Component {
     let paging = this.state.paging, page = this.state.page;
     let list = CardCollecStore.getCardList();
     list = this.sortList(list);
-    let subset = list.slice(0, paging);
+    let position = page * paging
+    let subset = list.slice(position, position + paging);
     let maxPage = Math.ceil(list.length / paging);
     this.setState({ list: list, subset: subset, page: 0, maxPage: maxPage});
   }
@@ -47,7 +48,9 @@ class List extends React.Component {
     let subset = [];
     if(page < 0 || page > this.state.maxPage) return;
     subset = this.state.list.slice(this.state.paging * page, this.state.paging * (page + 1));
-    this.setState({page: page, subset: subset});
+    this.setState({page: page, subset: subset}, () => {
+      CardCollecAction.setListing(['page', page]);
+    });
   }
   changePaging(event) {
     let paging = event.target.value;
@@ -75,7 +78,7 @@ class List extends React.Component {
     });
   }
   sortList(list){
-    const rank_order = ['C+','B','B+','A','A+','S','S+','SS','SS+','L'];
+    const rank_order = ['C+','B','B+','A','A+','S','S+','SS','SS+','L','LtoL'];
     const ordering = this.state.ordering == 'desc'? -1 : 1;
     let self = this;
     return list.sort((a, b) => {

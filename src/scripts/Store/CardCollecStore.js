@@ -7,16 +7,21 @@ import CardCollecDispatcher from '../Dispatcher/CardCollecDispatcher';
 
 import *          as constOptions from '../data_options';
 
+//*** DATA AND STATES ***//
+
+//Source card ata, Should not be changed
 let CardCollecSource = [];
+//Source Senzai data
 let CardCollecSenzai = [];
-let CardCollecList = [];
-let listing = {
-  paging: 10,
-  sorting: 'id',
-  ordering: 'desc'
-};
-let CardCollecFilter = {filterText: ""};//need to init "filterText" attribute
+//Source card skill categories, should not change
 let CardSkillCategories = assign(constOptions);
+//Current list card data
+let CardCollecList = [];
+//Current settings of how to show cards
+let ListingSettings = { paging: 10, sorting: 'id', ordering: 'desc', page: 0 };
+//Current card filter configurations, need to init "filterText" attribute
+let CardCollecFilter = {filterText: ""};
+//Current selected and teamup cards
 let CardCollecTeam = {
   selected: [],
   team: [],
@@ -34,8 +39,7 @@ _.mixin({
   }
 });
 
-//Parse AS, SS Skill from card source
-
+//Parse AS, SS Skill from card source, check if there's any redundent or unknow skill
 function genSkillCategoriesFromSource(){
   let extracted = {};
   let attrsToCheck = [
@@ -78,7 +82,6 @@ function genSkillCategoriesFromSource(){
 }
 
 // So use findByArray to filter props, breeds and ranks.
-
 function filterChange(formObj, callback) {
   let searchObj = {
     props: _.map(formObj.props, 'value'),
@@ -139,13 +142,12 @@ function filterChange(formObj, callback) {
   }
   if(searchObj.zz.length > 0){
     res = res.filter(o => {
-      let senzaiStrings = [
-        o.senzaiL_4, o.senzaiL_3, o.senzaiL_2, o.senzaiL_1,
-        o.senzai_10, o.senzai_9, o.senzai_8, o.senzai_7, o.senzai_6,
-        o.senzai_5, o.senzai_4, o.senzai_3, o.senzai_2, o.senzai_1
-      ];
       function zenzai_matched(zz_regex){
-        return senzaiStrings.some((zz_string) => zz_regex.test(zz_string));
+        return [
+          o.senzaiL_4, o.senzaiL_3, o.senzaiL_2, o.senzaiL_1,
+          o.senzai_10, o.senzai_9, o.senzai_8, o.senzai_7, o.senzai_6,
+          o.senzai_5, o.senzai_4, o.senzai_3, o.senzai_2, o.senzai_1
+        ].some((zz_string) => zz_regex.test(zz_string));
       }
       return searchObj.zz.some(zenzai_matched);
     });
@@ -185,7 +187,7 @@ class CardCollecStore {
     return CardCollecFilter;
   }
   getListing() {
-    return listing;
+    return ListingSettings;
   }
   getTeam() {
     return CardCollecTeam;
@@ -219,7 +221,7 @@ class CardCollecStore {
         });
         break;
       case 'SetListing':
-        listing[action.data[0]] = action.data[1];
+        ListingSettings[action.data[0]] = action.data[1];
         break;
       case 'UpdateTeam':
         CardCollecTeam = action.data;

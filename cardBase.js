@@ -2,6 +2,8 @@
 var _ = require('lodash');
 var JSONP = require('node-jsonp');
 var fs = require('fs');
+var skill_parser = require('./data_scripts/skillparser/cardBase_skillParser.js')
+var skill_mapper = require('./data_scripts/skillmapper.js')
 
 var data_deck = {
   card: [],
@@ -69,11 +71,11 @@ function querySourceS(type){
     });
 }
 function queryCard(){
-    var str = '', str_s, group = {}, m;
     var re = /\|(\w*)=(.*)/gmi;
     for(var ptr in data_source.card){
         for(var key in data_source.card[ptr].query.pages){
             if(key == -1) continue;
+            var str = '', str_s, group = {}, m;
             var id = data_source.card[ptr].query.pages[key].title.split('模板:Card/Data/')[1];
             if(/^(Ex)?\d+(-\d+)?$/.test(id) == false) continue;
             group.id = id;
@@ -96,10 +98,10 @@ function queryCard(){
     }
 }
 function querySkill(type){
-    var str = '', str_s, group = {}, m;
     var re = /\|(\w*)=(.*)/gmi, re_h = /\|(.*)=\{\{/gmi;
     for(var key in data_source[type].query.pages){
       if(key == -1) continue;
+      var str = '', str_s, group = {}, m;
       str = data_source[type].query.pages[key].revisions[0]['*'];
       str_s = str.split('\n');
       var status = false, ptr = 0;
@@ -110,6 +112,7 @@ function querySkill(type){
             group['name'] = m[1];
           }
         }else if(str_s[key].indexOf('}}') != -1 && status){
+          //group['attrs'] = skill_parser.parse(type, group.info);
           status = false;
           ptr = 1;
           data_deck[type].push(group);
@@ -135,8 +138,8 @@ function sourceCHandler(){
       if(id < 0) return (900000-id);
       else return id;
     });
-    writeJSON('cardData', data_deck.card);
     writeJSON('exCard', data_deck.exCard);
+    writeJSON('cardData', skill_mapper(data_deck));
 }
 function sourceSHandler(type){
     querySkill(type);
