@@ -53,7 +53,7 @@ function genSkillCategoriesFromSource(){
       }
       return o[item.path]['type'];
     }));
-    console.log('SKILL_LIST:', item.name, parsedSkillList);
+    //console.log('SKILL_LIST:', item.name, parsedSkillList);
     for(let originslSkillItem of originalSkillList){
       if(parsedSkillList.indexOf(originslSkillItem.value) < 0 && !originslSkillItem.disabled){
         console.error('not used original skill category in', item.name, ':', originslSkillItem.value);
@@ -139,18 +139,15 @@ function filterChange(formObj, callback) {
   }
   if(searchObj.zz.length > 0){
     res = res.filter(o => {
-      for(let zz of searchObj.zz){
-        let senzaiStrings = [
-          o.senzaiL_4, o.senzaiL_3, o.senzaiL_2, o.senzaiL_1,
-          o.senzai_10, o.senzai_9, o.senzai_8, o.senzai_7, o.senzai_6,
-          o.senzai_5, o.senzai_4, o.senzai_3, o.senzai_2, o.senzai_1
-        ];
-        if(zz.includes('心眼'))
-          return ('|' + senzaiStrings.join('|') + '|').includes('|' + zz + '|');
-        else
-          return senzaiStrings.join('').includes(zz);
+      let senzaiStrings = [
+        o.senzaiL_4, o.senzaiL_3, o.senzaiL_2, o.senzaiL_1,
+        o.senzai_10, o.senzai_9, o.senzai_8, o.senzai_7, o.senzai_6,
+        o.senzai_5, o.senzai_4, o.senzai_3, o.senzai_2, o.senzai_1
+      ];
+      function zenzai_matched(zz_regex){
+        return senzaiStrings.some((zz_string) => zz_regex.test(zz_string));
       }
-      return false;
+      return searchObj.zz.some(zenzai_matched);
     });
   }
 

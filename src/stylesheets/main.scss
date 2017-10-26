@@ -14,7 +14,15 @@ body {
 }
 
 #paging-nav{
+  
   text-align: center;
+
+  /*
+    Prevent strange glitch when a button swtich between enable/disable
+    */
+  .pure-menu-disabled {
+    padding: 0;
+  }
 }
 
 .cardItem {

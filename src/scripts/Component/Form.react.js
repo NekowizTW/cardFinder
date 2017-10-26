@@ -1,5 +1,4 @@
 import React      from 'react';
-import ReactDOM   from 'react-dom';
 import Select     from 'react-select';
 import TextFilter from 'react-text-filter';
 import url        from 'url';
@@ -185,7 +184,7 @@ class Form extends React.Component {
       activeKey={this.state.tabIndex}
       onChange={this.tabIndexChange.bind(this)}
       renderTabBar={()=><InkTabBar />}
-      renderTabContent={()=><TabContent />}
+      renderTabContent={()=><TabContent  animated={false}/>}
       >
         <TabPane tab='基本屬性' key='0'>
            <label className='pure-u-1-2'><Select
