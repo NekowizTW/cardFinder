@@ -187,16 +187,16 @@ class Form extends React.Component {
       renderTabContent={()=><TabContent  animated={false}/>}
       >
         <TabPane tab='基本屬性' key='0'>
-           <label className='pure-u-1-2'><Select
-            placeholder="請選擇主屬性" name="form-props-field"
+           <Select
+            placeholder="請選擇主屬性" name="form-props-field" className="pure-u-1-2"
             value={this.state.props} options={this.state.PROPS}
             multi={true} onChange={this.propsChange.bind(this)}
-          /></label>
-          <label className='pure-u-1-2'><Select
-            placeholder="請選擇副屬性" name="form-props-field"
+          />
+          <Select
+            placeholder="請選擇副屬性" name="form-props-field" className="pure-u-1-2"
             value={this.state.props2} options={this.state.PROPS2}
             multi={true} onChange={this.props2Change.bind(this)}
-          /></label>
+          />
           <Select
             placeholder="請選擇種族" name="form-breeds-field" className='pure-u-1-2'
             value={this.state.breeds} options={this.state.BREEDS}

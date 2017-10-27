@@ -9,7 +9,7 @@ import *          as constOptions from '../data_options';
 
 //*** DATA AND STATES ***//
 
-//Source card ata, Should not be changed
+//Source card data, Should not be changed
 let CardCollecSource = [];
 //Source Senzai data
 let CardCollecSenzai = [];

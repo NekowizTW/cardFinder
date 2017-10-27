@@ -48,7 +48,7 @@
     "react-dom": "^15.5.4",
     "react-paginate": "^4.4.2",
     "react-router-dom": "^4.1.1",
-    "react-select": "^1.0.0-rc.5",
+    "react-select": "1.0.0-rc.5",
     "react-text-filter": "^3.0.0",
     "rsvp": "^3.5.0",
     "url": "^0.11.0"

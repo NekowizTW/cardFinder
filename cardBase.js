@@ -112,7 +112,7 @@ function querySkill(type){
             group['name'] = m[1];
           }
         }else if(str_s[key].indexOf('}}') != -1 && status){
-          //group['attrs'] = skill_parser.parse(type, group.info);
+          group['attrs'] = skill_parser.parse(type, group.info);
           status = false;
           ptr = 1;
           data_deck[type].push(group);
