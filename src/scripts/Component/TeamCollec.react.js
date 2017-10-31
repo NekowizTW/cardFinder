@@ -39,7 +39,7 @@ function tw_filenameFix(filename) {
 function linkGenerator(filename) {
   let rand = Math.floor((Math.random() * 4) + 1);
   let md5name = Crypto.createHash('md5').update(filename).digest('hex');
-  return 'http://vignette'+rand+'.wikia.nocookie.net/nekowiz/images/'+md5name.charAt(0)+'/'+md5name.charAt(0)+md5name.charAt(1)+'/'+filename+'/revision/latest?path-prefix=zh';
+  return 'https://vignette'+rand+'.wikia.nocookie.net/nekowiz/images/'+md5name.charAt(0)+'/'+md5name.charAt(0)+md5name.charAt(1)+'/'+filename+'/revision/latest?path-prefix=zh';
 }
 function getACard(id, list) {
   let found = _.find(list, { 'id': id });

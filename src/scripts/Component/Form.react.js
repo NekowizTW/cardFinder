@@ -188,53 +188,53 @@ class Form extends React.Component {
       >
         <TabPane tab='基本屬性' key='0'>
            <Select
-            placeholder="請選擇主屬性" name="form-props-field" className="pure-u-1-2"
+            placeholder="請選擇主屬性" name="form-props-field" className='pure-u-1  pure-u-md-1-2'
             value={this.state.props} options={this.state.PROPS}
             multi={true} onChange={this.propsChange.bind(this)}
           />
           <Select
-            placeholder="請選擇副屬性" name="form-props-field" className="pure-u-1-2"
+            placeholder="請選擇副屬性" name="form-props-field" className='pure-u-1  pure-u-md-1-2'
             value={this.state.props2} options={this.state.PROPS2}
             multi={true} onChange={this.props2Change.bind(this)}
           />
           <Select
-            placeholder="請選擇種族" name="form-breeds-field" className='pure-u-1-2'
+            placeholder="請選擇種族" name="form-breeds-field" className='pure-u-1 pure-u-md-1-2'
             value={this.state.breeds} options={this.state.BREEDS}
             multi={true} onChange={this.breedsChange.bind(this)}
           />
           <Select
-            placeholder="請選擇稀有度" name="form-ranks-field" className='pure-u-1-2'
+            placeholder="請選擇稀有度" name="form-ranks-field" className='pure-u-1 pure-u-md-1-2'
             value={this.state.ranks} options={this.state.RANKS}
             multi={true} onChange={this.ranksChange.bind(this)}
           />
         </TabPane>
         <TabPane tab='答題技能' key='1'>
           <Select
-            placeholder="請選擇答題技能" name="form-as-field" className='pure-u-1-2'
+            placeholder="請選擇答題技能" name="form-as-field" className='pure-u-1 pure-u-md-1-2'
             value={this.state.as} options={this.state.SKILL_AS||[]}
             multi={true} onChange={this.asChange.bind(this)}
           />
           <Select
-            placeholder="請選擇答題技能2" name="form-as2-field" className='pure-u-1-2'
+            placeholder="請選擇答題技能2" name="form-as2-field" className='pure-u-1 pure-u-md-1-2'
             value={this.state.as2} options={this.state.SKILL_AS2||[]}
             multi={true} onChange={this.as2Change.bind(this)}
           />
         </TabPane>
         <TabPane tab='特殊技能' key='2'>
           <Select
-            placeholder="請選擇特殊技能" name="form-ss-field" className='pure-u-1-2'
+            placeholder="請選擇特殊技能" name="form-ss-field" className='pure-u-1 pure-u-md-1-2'
             value={this.state.ss} options={this.state.SKILL_SS||[]}
             multi={true} onChange={this.ssChange.bind(this)}
           />
           <Select
-            placeholder="請選擇特殊技能2" name="form-ss2-field" className='pure-u-1-2'
+            placeholder="請選擇特殊技能2" name="form-ss2-field" className='pure-u-1 pure-u-md-1-2'
             value={this.state.ss2} options={this.state.SKILL_SS2||[]}
             multi={true} onChange={this.ss2Change.bind(this)}
           />
         </TabPane>
         <TabPane tab='潛能/L發動能力' key='3'>
           <Select
-            placeholder="請選擇潛能/L發動效果(只提供特殊潛能查詢)" name="form-zz-field" className='pure-u-1'
+            placeholder="請選擇潛能/L發動效果(只提供特殊潛能查詢)" name="form-zz-field" className='pure-u-1 pure-u-md-1'
             value={this.state.zz} options={this.state.ZZ||[]}
             multi={true} onChange={this.zzChange.bind(this)}
           />

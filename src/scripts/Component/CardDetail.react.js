@@ -15,7 +15,7 @@ function tw_filenameFix(name) {
 function linkGenerator(filename) {
   let rand = Math.floor((Math.random() * 4) + 1);
   let md5name = Crypto.createHash('md5').update(filename).digest('hex');
-  return 'http://vignette'+rand+'.wikia.nocookie.net/nekowiz/images/'+md5name.charAt(0)+'/'+md5name.charAt(0)+md5name.charAt(1)+'/'+filename+'/revision/latest?path-prefix=zh';
+  return 'https://vignette'+rand+'.wikia.nocookie.net/nekowiz/images/'+md5name.charAt(0)+'/'+md5name.charAt(0)+md5name.charAt(1)+'/'+filename+'/revision/latest?path-prefix=zh';
 }
 
 class EvoCard extends React.Component {
