@@ -178,7 +178,7 @@ class Form extends React.Component {
             value={this.props.filter.zz} options={this.props.settings.ZZ||[]}
             multi={true} onChange={this.filterChange.bind(this)('zz')}
           />
-        
+        </TabPane>
         </Tabs>
     </div>);
   }
