@@ -178,24 +178,7 @@ class Form extends React.Component {
             value={this.props.filter.zz} options={this.props.settings.ZZ||[]}
             multi={true} onChange={this.filterChange.bind(this)('zz')}
           />
-        </TabPane>
-        <TabPane tab='進階技能搜尋' key='4'>
-          <div className='pure-u-1 pure-u-md-1'>
-            <label>全部</label><input type='radio' name='ASRadioGroup' value='all' />
-            <label>AS1</label><input type='radio' name='ASRadioGroup' value='as1' />
-            <label>AS2</label><input type='radio' name='ASRadioGroup' value='as2' />
-        </div>
-          <Select
-            placeholder="請選擇答題技能" name="form-as-field" className='pure-u-1 pure-u-md-1-2'
-            value={this.props.filter.as} options={this.props.settings.SKILL_AS||[]}
-            multi={true} onChange={this.filterChange.bind(this)('as')}
-          />
-          <Select
-            placeholder="請選擇答題技能2" name="form-as2-field" className='pure-u-1 pure-u-md-1-2'
-            value={this.props.filter.as2} options={this.props.settings.SKILL_AS2||[]}
-            multi={true} onChange={this.filterChange.bind(this)('as2')}
-          />
-        </TabPane>
+        
         </Tabs>
     </div>);
   }
