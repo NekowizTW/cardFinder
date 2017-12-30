@@ -5,8 +5,8 @@ import Crypto   from 'crypto';
 import { Link } from 'react-router-dom';
 import Console  from 'console-browserify';
 
-import CardCollecAction from '../Actions/CardCollecAction';
-import CardCollecStore  from '../Store/CardCollecStore';
+import CardCollecAction from '../../Actions/CardCollecAction';
+import CardCollecStore  from '../../Store/CardCollecStore';
 
 function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
@@ -25,9 +25,9 @@ function linkGenerator(filename) {
   let md5name = Crypto.createHash('md5').update(filename).digest('hex');
   return 'https://vignette'+rand+'.wikia.nocookie.net/nekowiz/images/'+md5name.charAt(0)+'/'+md5name.charAt(0)+md5name.charAt(1)+'/'+filename+'/revision/latest?path-prefix=zh';
 }
-function getACard(id, list) {
+function getACard(id) {
   Console.log(id);
-  let found = _.find(list, { 'id': id });
+  let found = CardCollecStore.getCardById(id);
   if(typeof found.id == 'undefined') return {};
   let prop = (typeof found.prop2 != 'undefined') ? [found.prop, found.prop2] : [found.prop];
   return {
@@ -39,73 +39,51 @@ function getACard(id, list) {
 class TeamForm extends React.Component {
   constructor(props) {
     super(props);
-    let list = CardCollecStore.getCardSourceList();
-    let team = CardCollecStore.getTeam();
-    let help = (team.helper !== -1);
-    if(list == 0) {
-      this.state = {
-        list: [],
-        team: team,
-        help: help
-      }
-      return;
-    }
     this.state = {
-      list: list,
-      team: team,
-      help: help
+      help: (this.props.team.helper !== -1)
     };
   }
   componentDidMount() {
-    CardCollecStore.addChangeListener(this.changeHandler.bind(this));
   }
   componentWillUnmount() {
-    CardCollecStore.removeChangeListener(this.changeHandler.bind(this));
   }
-  changeHandler() {
-    let list = CardCollecStore.getCardSourceList();
-    let team = CardCollecStore.getTeam();
-    if(this.state.list.length === 0)
-      this.setState({list: list});
-    else
-      this.setState({team: team});
-  }
+
   pushMember(id) {
-    let team = CardCollecStore.getTeam();
+    let team = this.props.team;
     let help = this.state.help;
     if(team.cnt === 6) return;
     team.team.push(id);
     team.cnt = team.team.length;
     help = (team.cnt === 6 || (team.cnt > 2 && help));
     team.helper = help? (team.cnt - 1) : -1;
-    this.setState({team: team, help: help}, function(){
+    this.setState({help: help}, function(){
       CardCollecAction.updateTeam(team);
     });
   }
   deleteByIdx(idx) {
-    let team = CardCollecStore.getTeam();
+    let team = this.props.team;
     let help = this.state.help;
     team.team.splice(idx, 1);
     team.cnt = team.team.length;
     help = (team.cnt === 6 || (team.cnt > 2 && help));
     team.helper = help? (team.cnt - 1) : -1;
-    this.setState({team: team, help: help}, function(){
+    this.setState({help: help}, function(){
       CardCollecAction.updateTeam(team);
     });
   }
   toggleHelper(e) {
-    let team = CardCollecStore.getTeam();
+    let team = this.props.team;
     let help = e.target.checked;
     team.cnt = team.team.length;
     help = (team.cnt === 6 || (team.cnt > 2 && help));
     team.helper = help? (team.cnt - 1) : -1;
-    this.setState({team: team, help: help}, function(){
+    this.setState({help: help}, function(){
       CardCollecAction.updateTeam(team);
     });
   }
   render() {
     let teamForm = this;
-    let url = this.state.team.team.join('&');
+    let url = this.props.team.team.join('&');
     if(this.state.help)
       url = replaceLast(url, '&', '/');
     return (
@@ -126,15 +104,15 @@ class TeamForm extends React.Component {
           <fieldset className={'pure-group'}>
             <label>隊伍內容</label>
             <div className={'pure-g'}>
-              {this.state.team.team.map(function(id, index){
-                let card = getACard(id, teamForm.state.list);
+              {this.props.team.team.map(function(id, index){
+                let card = getACard(id);
                 let small_filename = tw_filenameFix(card.data.small_filename) || "0000.png";
                 return(<div className={'cardItem teamItem pure-u-1 pure-u-md-1-6'} key={'team-'+index+'-base'}>
                   <div className={'imgFrame'} key={'teamForm-'+index+'-imgFrame'}>
                     {index === 0 &&
                       <span className={'teamCardBadge'}>隊長</span>
                     }
-                    {index === teamForm.state.team.helper &&
+                    {index === teamForm.props.team.helper &&
                       <span className={'teamCardBadge'}>援助</span>
                     }
                     <img key={'teamForm-'+index+'-img'} src={linkGenerator(small_filename)} onClick={() => teamForm.deleteByIdx(index)}/>
@@ -146,8 +124,8 @@ class TeamForm extends React.Component {
           <fieldset className={'pure-group'}>
             <label>候選清單</label>
             <div className={'pure-g'}>
-              {this.state.team.selected.map(function(id, index){
-                let card = getACard(id, teamForm.state.list);
+              {this.props.team.selected.map(function(id, index){
+                let card = getACard(id);
                 let small_filename = tw_filenameFix(card.data.small_filename) || "0000.png";
                 return (<div className={'cardItem teamItem pure-u-1-2 pure-u-md-1-6'} key={'team-'+index+'-base'}>
                   <div className={'imgFrame'} key={'team-'+index+'-imgFrame'}>

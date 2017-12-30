@@ -41,8 +41,8 @@ function linkGenerator(filename) {
   let md5name = Crypto.createHash('md5').update(filename).digest('hex');
   return 'https://vignette'+rand+'.wikia.nocookie.net/nekowiz/images/'+md5name.charAt(0)+'/'+md5name.charAt(0)+md5name.charAt(1)+'/'+filename+'/revision/latest?path-prefix=zh';
 }
-function getACard(id, list) {
-  let found = _.find(list, { 'id': id });
+function getACard(id) {
+  let found = CardCollecStore.getCardById(id);
   if(typeof found.id == 'undefined') return {};
   let prop = (typeof found.prop2 != 'undefined') ? [found.prop, found.prop2] : [found.prop];
   return {
@@ -61,11 +61,11 @@ function getACard(id, list) {
     legend: false
   }
 }
-function getTeam(match, list) {
+function getTeam(match) {
   let team = [];
   let teamIds = match.split('&');
   for (let i = teamIds.length - 1; i >= 0; i--) {
-    team.unshift(getACard(teamIds[i], list));
+    team.unshift(getACard(teamIds[i]));
   }
   return team;
 }
@@ -160,27 +160,17 @@ function generateASIcon(asStr, as2Str) {
 class TeamCollec extends React.Component {
   constructor(props) {
     super(props);
-    let list = CardCollecStore.getCardSourceList();
     let params = props.match.params;
-    if(list == 0) {
-      this.state = {
-        params: params,
-        team: [],
-        helper: -1,
-        cnt: 0
-      }
-      return;
-    }
     let team = [];
     let helper = -1;
     let cnt = 0;
     if(typeof props.match.params.teamList != 'undefined'){
-      team = getTeam(props.match.params.teamList, list);
+      team = getTeam(props.match.params.teamList);
       cnt += team.length;
     }
     if(typeof props.match.params.teamHelper != 'undefined'){
       helper = team.length;
-      team.push(getACard(props.match.params.teamHelper, list));
+      team.push(getACard(props.match.params.teamHelper));
       cnt += 1;
     }
     for (var i = team.length - 1; i >= 0; i--) {
@@ -198,23 +188,20 @@ class TeamCollec extends React.Component {
     };
   }
   componentDidMount() {
-    CardCollecStore.addChangeListener(this.changeHandler.bind(this));
   }
   componentWillUnmount() {
-    CardCollecStore.removeChangeListener(this.changeHandler.bind(this));
   }
   changeHandler() {
-    let list = CardCollecStore.getCardSourceList();
     let team = [];
     let helper = {};
     let cnt = 0;
     if(typeof this.state.params.teamList != 'undefined'){
-      team = getTeam(this.state.params.teamList, list);
+      team = getTeam(this.state.params.teamList);
       cnt += team.length;
     }
     if(typeof this.state.params.teamHelper != 'undefined'){
       helper = team.length;
-      team.push(getACard(this.state.params.teamHelper, list));
+      team.push(getACard(this.state.params.teamHelper));
       cnt += 1;
     }
     for (var i = team.length - 1; i >= 0; i--) {

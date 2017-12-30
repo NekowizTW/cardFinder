@@ -17,43 +17,46 @@ function linkGenerator(filename) {
   let md5name = Crypto.createHash('md5').update(filename).digest('hex');
   return 'https://vignette'+rand+'.wikia.nocookie.net/nekowiz/images/'+md5name.charAt(0)+'/'+md5name.charAt(0)+md5name.charAt(1)+'/'+filename+'/revision/latest?path-prefix=zh';
 }
+function getCardById(id){
+  return CardCollecStore.getCardById(id);
+}
 
 class EvoCard extends React.Component {
   constructor(props) {
     super(props);
   }
   render() {
-    function siblingTester(id, list, forward, self_card = false){
+    function siblingTester(id, forward, self_card = false){
       Console.log('Test id: '+id+', forward: '+forward);
       let evoList = [];
       if(id === ''){
         return evoList;
       }else{
-        let data =  _.find(list, {'id': id});
+        let data = getCardById(id);
         if(forward <= 0) {
           if(data.evo_from.indexOf(',') !== -1){
             let evo_from2way = data.evo_from.split(',');
             if(!self_card) evoList.push(data.id);
             evoList.push(
-              siblingTester(evo_from2way[0], list, forward),
-              siblingTester(evo_from2way[1], list, forward)
+              siblingTester(evo_from2way[0], forward),
+              siblingTester(evo_from2way[1], forward)
             );
           }else{
             if(!self_card) evoList.push(data.id);
-            evoList = evoList.concat(siblingTester(data.evo_from, list, forward));
+            evoList = evoList.concat(siblingTester(data.evo_from, forward));
           }
         }
         if(forward >= 0){
           if(!self_card) evoList.push(data.id);
-          evoList = evoList.concat(siblingTester(data.evo_to, list, forward));
+          evoList = evoList.concat(siblingTester(data.evo_to, forward));
         }
       }
       Console.log('Test Complete id: '+id+', forward: '+forward);
       Console.log(evoList);
       return evoList;
     }
-    function generateCard(id, list, self_card = false){
-      let data =  _.find(list, {'id': id});
+    function generateCard(id, self_card = false){
+      let data = getCardById(id);
       let small_filename = tw_filenameFix(data.small_filename) || "0000.png";
       return (
         <div className={'pure-u-1'}>
@@ -69,14 +72,13 @@ class EvoCard extends React.Component {
       );
     }
     let id = this.props.id;
-    let list = this.props.list;
     let forward = this.props.forward || 0;
     let self_card = this.props.self_card || false;
     Console.log('At: '+id);
     if(id === ''){
       return (<div></div>);
     }
-    let data =  _.find(list, {'id': id});
+    let data = getCardById(id);
     let res = [];
     let node = [
       data.evo_chain_before_note,
@@ -89,11 +91,11 @@ class EvoCard extends React.Component {
       let m, sub = [];
       while ((m = re.exec(node[0])) !== null) {
         if(m[1].length === 0) continue;
-        else sub.push(<EvoCard list={list} id={m[1]} />);
+        else sub.push(<EvoCard id={m[1]} />);
       }
       res.push(<div className={node_name[0]+' pure-u-1'}><div className={'pure-g'}>{sub.map(function(sub_node){ return <div className={'pure-u-1-'+sub.length}>{sub_node}</div>;})}</div></div>);
     }
-    let evo_last = siblingTester(data.id, list, -1, true), evo_last_arrays = _.countBy(evo_last, function(e){return typeof e;}).object || 0;
+    let evo_last = siblingTester(data.id, -1, true), evo_last_arrays = _.countBy(evo_last, function(e){return typeof e;}).object || 0;
     res.push(evo_last.reverse().map(function(id){
       if(typeof id === 'object'){
         return (
@@ -102,7 +104,7 @@ class EvoCard extends React.Component {
               {id.map(function(sub_id){
                 return (
                   <div className={'pure-u-1'}>
-                    {generateCard(sub_id, list)}
+                    {generateCard(sub_id)}
                   </div>
                  );
               })}
@@ -110,16 +112,16 @@ class EvoCard extends React.Component {
           </div>
         );
       }else{
-        return generateCard(id, list);
+        return generateCard(id);
       }
     }));
-    res.push(generateCard(id, list, true));
+    res.push(generateCard(id, true));
     if(data.evo_to !== ''){
       res.push(<div className={'pure-u-1'}>
         <div className={'pure-g'}>
           <h4 className={'pure-u-1'}>進化合成需要素材</h4>
           {data.evoArr.map(function(evo_item){
-            let data =  _.find(list, {'id': evo_item});
+            let data = getCardById(evo_item);
             let small_filename = tw_filenameFix(data.small_filename) || "0000.png";
             return (
               <div className={'pure-u-1-4 small_img'}>
@@ -134,14 +136,14 @@ class EvoCard extends React.Component {
         </div>
       </div>);
     }
-    res.push(siblingTester(data.id, list, 1, true).map(function(id){
-        return generateCard(id, list);
+    res.push(siblingTester(data.id, 1, true).map(function(id){
+        return generateCard(id);
     }));
     if((node[1].length) !== 0 && self_card){
       let m, sub = [];
       while ((m = re.exec(node[1])) !== null) {
         if(m[1].length === 0) continue;
-        else sub.push(<EvoCard list={list} id={m[1]} />);
+        else sub.push(<EvoCard id={m[1]} />);
       }
       res.push(<div className={node_name[1]+' pure-u-1'}><div className={'pure-g'}>{sub.map(function(sub_node){ return <div className={'pure-u-1-'+sub.length}>{sub_node}</div>;})}</div></div>);
     }
@@ -149,7 +151,7 @@ class EvoCard extends React.Component {
       let m, sub = [];
       while ((m = re.exec(node[2])) !== null) {
         if(m[1].length === 0) continue;
-        else sub.push(<EvoCard list={list} id={m[1]} />);
+        else sub.push(<EvoCard id={m[1]} />);
       }
       res.push(<div className={node_name[2]+' pure-u-1'}><div className={'pure-g'}>{sub.map(function(sub_node){ return <div className={'pure-u-1-'+sub.length}>{sub_node}</div>;})}</div></div>);
     }
@@ -161,10 +163,8 @@ class EvoCard extends React.Component {
 class CardDetail extends React.Component {
   constructor(props) {
     super(props);
-    let list = [];
-    list = CardCollecStore.getCardSourceList();
     let cardId = props.match.params.cardId || '0';
-    let card =  _.find(list, {'id': cardId}) || {};
+    let card = getCardById(cardId) || {};
     this.state = {
       cardId: cardId,
       data: card,
@@ -173,17 +173,13 @@ class CardDetail extends React.Component {
     this.legendToggle = this.legendToggle.bind(this);
   }
   componentDidMount() {
-    CardCollecStore.addChangeListener(this.changeHandler.bind(this));
   }
   componentWillUnmount() {
-    CardCollecStore.removeChangeListener(this.changeHandler.bind(this));
   }
   componentWillReceiveProps(props) {
     Console.log(props);
-    let list = [];
-    list = CardCollecStore.getCardSourceList();
     let cardId = props.match.params.cardId || '0';
-    let card =  _.find(list, {'id': cardId}) || {};
+    let card =  getCardById(cardId) || {};
     this.setState ({
       cardId: cardId,
       data: card,
@@ -191,10 +187,8 @@ class CardDetail extends React.Component {
     });
   }
   changeHandler(){
-    let list = [];
-    list = CardCollecStore.getCardSourceList();
     let cardId = this.state.cardId;
-    let card =  _.find(list, {'id': cardId}) || {};
+    let card = getCardById(cardId) || {};
     this.setState({data: card});
   }
   legendToggle() {
@@ -207,7 +201,6 @@ class CardDetail extends React.Component {
       let key = senzai.filename.split(".")[0];
       return <li key={'senzai-'+i+'-name-'+key}><img src={linkGenerator(senzai.filename)} key={'senzai-'+i+'-img-'+key} />{senzai.name}: {senzai.info}</li>;
     }
-    let list = CardCollecStore.getCardSourceList();
     let data = this.state.data;
     let card_filename = tw_filenameFix(data.card_filename) || "0000.png";
     let small_filename = tw_filenameFix(data.small_filename) || "0000.png";
@@ -274,10 +267,10 @@ class CardDetail extends React.Component {
       </div>
       <div className={'pure-u-1 pure-u-md-1-2'} id={'evoListDisplay'}>
         <h3>卡片進化途徑</h3>
-        <EvoCard list={list} id={data.id} forward={0} self_card={true} />
+        <EvoCard id={data.id} forward={0} self_card={true} />
       </div>
       <Link to={{ pathname: '/', query: { props: data.prop } }} className={'pure-button'}>查看{data.prop}屬性卡片</Link>
-      <Link to={{ pathname: '/', query: { props2: data.prop2 } }} className={'pure-button'}>查看{data.prop2}屬性卡片</Link>
+      <Link to={{ pathname: '/', query: { props2: data.prop2 } }} className={'pure-button'}>查看{data.prop2}副屬性卡片</Link>
       <Link to={{ pathname: '/', query: { breeds: data.breed } }} className={'pure-button'}>查看{data.breed}卡片</Link>
       <Link to={{ pathname: '/', query: { ranks: data.rank } }} className={'pure-button'}>查看{data.rank}級卡片</Link>
       <Link to={'/'} className={'pure-button pure-button-primary'}>←返回搜尋頁面</Link>

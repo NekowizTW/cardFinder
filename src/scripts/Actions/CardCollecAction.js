@@ -9,13 +9,7 @@ class CardCollecAction {
   dispatch(params) {
     this.dispatcher.dispatch(params);
   }
-  parseSenzaiList(SenzaiData) {
-    this.dispatch({
-      actionType: "InitSenzaiData",
-      data: SenzaiData
-    });
-  }
-	parseCardList(CardData) {
+	initCardData(CardData) {
     this.dispatch({
       actionType: "InitCardData",
       data: CardData
@@ -27,10 +21,10 @@ class CardCollecAction {
       data: filter
     });
   }
-  setListing(list) {
+  setListing(listSettings) {
     this.dispatch({
-      actionType: "SetListing",
-      data: list
+      actionType: "ListingChange",
+      data: listSettings
     });
   }
   updateTeam(selectedTeam) {

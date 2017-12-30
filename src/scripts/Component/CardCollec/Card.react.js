@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import Crypto   from 'crypto';
 import { Link } from 'react-router-dom';
 
-import CardCollecAction from '../Actions/CardCollecAction';
-import CardCollecStore  from '../Store/CardCollecStore';
+import CardCollecAction from '../../Actions/CardCollecAction';
+import CardCollecStore  from '../../Store/CardCollecStore';
 
 function tw_filenameFix(filename) {
   return String(filename).charAt(0).toUpperCase() + String(filename).slice(1);
@@ -18,16 +18,14 @@ function linkGenerator(filename) {
 class Card extends React.Component {
   constructor(props) {
     super(props);
-    let team = CardCollecStore.getTeam();
+    let team = props.team;
     this.state = {
       team: team
     }
   }
   componentDidMount() {
-    CardCollecStore.addChangeListener(this.changeHandler.bind(this));
   }
   componentWillUnmount() {
-    CardCollecStore.removeChangeListener(this.changeHandler.bind(this));
   }
   changeHandler() {
     let team = CardCollecStore.getTeam();

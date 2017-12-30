@@ -104,10 +104,13 @@ body {
   }
 }
 
-#CardCollecForm > div{
-  margin-top: 5px;
-  margin-bottom: 5px;
+#CardCollecForm{
+  > div{
+    margin-top: 5px;
+    margin-bottom: 5px;
+  } 
 }
+
 .senzaiList{
   text-align: left;
   &:before{
@@ -273,8 +276,15 @@ $evoColors-list: #f0f8ff #efdecd #f2f3f4 #faebd7 #fae7b5;
   }
 }
 
-.cardListOptions select{
-  margin-right:1.8em
+.cardListOptions {
+  font-size: smaller;
+  .cardListOptionsTag {
+    text-align: right;
+    vertical-align: sub;
+  }
+  select{
+    margin-right: 1.8em;
+  }
 }
 
 .teamCardDetail{

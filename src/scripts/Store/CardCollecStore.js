@@ -4,33 +4,11 @@ import _              from 'lodash';
 import Console        from 'console-browserify';
 
 import CardCollecDispatcher from '../Dispatcher/CardCollecDispatcher';
+import {ReduceStore} from 'flux/utils';
 
 import *          as constOptions from '../data_options';
 
-//*** DATA AND STATES ***//
-
-//Source card data, Should not be changed
-let CardCollecSource = [];
-//Source Senzai data
-let CardCollecSenzai = [];
-//Source card skill categories, should not change
-let CardSkillCategories = assign(constOptions);
-//Current list card data
-let CardCollecList = [];
-//Current settings of how to show cards
-let ListingSettings = { paging: 10, sorting: 'id', ordering: 'desc', page: 0 };
-//Current card filter configurations, need to init "filterText" attribute
-let CardCollecFilter = {filterText: ""};
-//Current selected and teamup cards
-let CardCollecTeam = {
-  selected: [],
-  team: [],
-  helper: -1,
-  cnt: 0
-};
-
 // This mixin is to find that the card's property is in values(array) or not
-
 _.mixin({
   'findByArray': function(collection, property, values) {
     return _.filter(collection, function(item) {
@@ -40,7 +18,8 @@ _.mixin({
 });
 
 //Parse AS, SS Skill from card source, check if there's any redundent or unknow skill
-function genSkillCategoriesFromSource(){
+//This function can be removed when skill auto-parse is done
+function genSkillCategoriesFromSource(CardCollecSource, CardSkillCategories){
   let extracted = {};
   let attrsToCheck = [
     {name: 'SKILL_AS', path: 'asData'},
@@ -82,34 +61,36 @@ function genSkillCategoriesFromSource(){
 }
 
 // So use findByArray to filter props, breeds and ranks.
-function filterChange(formObj, callback) {
+function filterCards(source, filterObj) {
   let searchObj = {
-    props: _.map(formObj.props, 'value'),
-    props2: _.map(formObj.props2, 'value'),
-    breeds: _.map(formObj.breeds, 'value'),
-    ranks: _.map(formObj.ranks, 'value'),
-    as: _.map(formObj.as, 'value'),
-    ss: _.map(formObj.ss, 'value'),
-    as2: _.map(formObj.as2, 'value'),
-    ss2: _.map(formObj.ss2, 'value'),
-    zz: _.map(formObj.zz, 'value'),
-    filterText: formObj.filterText
+    props: _.map(filterObj.props, 'value'),
+    props2: _.map(filterObj.props2, 'value'),
+    breeds: _.map(filterObj.breeds, 'value'),
+    ranks: _.map(filterObj.ranks, 'value'),
+    as: _.map(filterObj.as, 'value'),
+    ss: _.map(filterObj.ss, 'value'),
+    as2: _.map(filterObj.as2, 'value'),
+    ss2: _.map(filterObj.ss2, 'value'),
+    zz: _.map(filterObj.zz, 'value'),
+    filterTexts: filterObj.filterText || ''
   };
-  let res = CardCollecSource;
+
+  let res = source;
 
   //Filter card with empty name
   res = res.filter((card) => {
     return !card.name ? false : true;
   })
 
-  if((searchObj.props.length + searchObj.props2.length + searchObj.breeds.length + searchObj.ranks.length + searchObj.filterText.length + searchObj.as.length + searchObj.ss.length + searchObj.as2.length + searchObj.ss2.length + searchObj.zz.length) == 0){
-    CardCollecList = res;
-    return callback();
+  if(_.isEmpty(filterObj)){
+    return res;
   }
-  if(searchObj.filterText.length > 0){
-    res = _.filter(res, function(item){
-      let str = item.id + item.name;
-      return str.toLowerCase().indexOf(searchObj.filterText.toLowerCase()) !== -1;
+  if(searchObj.filterTexts.length > 0){
+    res = _.filter(res, function(card){
+      let str = (card.id + card.name).toLowerCase();
+      return searchObj.filterTexts.split(' ').some((filterText) => {
+        return _.includes(str, filterText.toLowerCase())
+      });
     });
   }
   if(searchObj.props.length > 0){
@@ -152,48 +133,119 @@ function filterChange(formObj, callback) {
       return searchObj.zz.some(zenzai_matched);
     });
   }
+  return res;
+}
 
-  CardCollecList = res;
-  return callback();
+function sortCards(list, sortkey, ordering){
+    const rank_order = ['C+','B','B+','A','A+','S','S+','SS','SS+','L','LtoL'];
+    ordering = ordering == 'desc'? -1 : 1;
+    let self = this;
+    return list.sort((a, b) => {
+      if(sortkey === 'rank'){
+        var attrA = rank_order.indexOf(a['rank']),
+            attrB = rank_order.indexOf(b['rank']);
+      }else{
+        var attrA = parseInt(a[sortkey]),
+            attrB = parseInt(b[sortkey]);
+      }
+      if(attrA < 0 || attrB < 0) {
+        return (attrA - attrB) * -1;//(attrA - attrB); //Make minus value stay in the last
+      }else{
+        return (attrA - attrB) * ordering;
+      }
+    });
+  }
+
+function pagingAndSortCards(subset, settings){
+  const position = settings['page'] * settings['paging']
+  const maxPage = Math.ceil(subset.length / settings['paging']);
+  
+  const listCards = sortCards(subset, settings['sorting'], settings['ordering']).slice(position, parseInt(position) + parseInt(settings['paging']));
+
+  return {
+    listCards: listCards,
+    maxPage: maxPage
+  }
+}
+
+function getCardSubset( source, filter, settings){
+  const subset = filterCards(source, filter);
+  const {listCards, maxPage} = pagingAndSortCards(subset, settings);
+  return {
+    ListCards: listCards,
+    ListSettings: Object.assign(settings, {maxPage: maxPage})
+  }
 }
 
 // Object to contact View
-
-class CardCollecStore {
-  constructor(dispatcher) {
-    this.eventEmitter = new EventEmitter();
-    this.dispatcher = dispatcher;
-    this.changeEvent = 'change';
-    this.dispatcher.register((action) => {
-      this.invokeOnDispatch(action);
-    });
+class CardCollecStore extends ReduceStore {
+//class CardCollecStore{
+  getInitialState() {
+    //*** INIT DATA AND STATES ***//
+    return {
+      //Source card data, Should not be changed
+      SourceCards: [],
+      //Source Senzai data
+      SourceSenzai: [],
+      //Source card skill categories, should not change
+      SourceFilterSettings: {},
+      //Current list card data
+      ListCards: [],
+      //Current settings of how to show cards
+      ListSettings: { paging: 10, sorting: 'id', ordering: 'desc', page: 0,  maxPage: 0 },
+      //Current card filter configurations
+      ListFiltter: {},
+      //Current selected and teamup cards
+      TeamCards: {
+        selected: [],
+        team: [],
+        helper: -1,
+        cnt: 0
+      }
+    }
   }
-  getCardList() {
-    return CardCollecList;
+  reduce(state, action) {
+    switch(action.actionType){
+      case 'InitCardData':
+        genSkillCategoriesFromSource(action.data.card, constOptions); //remove this when new skill cate is done
+        return Object.assign(
+          {}, 
+          state, 
+          { SourceCards: action.data.card,
+          SourceSenzai: action.data.senzai,
+          SourceFilterSettings: assign(constOptions)}, 
+          getCardSubset(action.data.card, state.ListFiltter, state.ListSettings)
+        );
+      case 'FilterChange':
+        const new_filter = action.data;
+        return Object.assign({}, state, {ListFiltter: new_filter },
+          getCardSubset(state.SourceCards, new_filter, Object.assign(state.ListSettings, {page: 0}))
+        );
+      case 'ListingChange':
+        const new_listing = Object.assign(state.ListSettings, action.data);
+        return Object.assign({}, state, {
+          ListSettings: new_listing},
+          getCardSubset(state.SourceCards, state.ListFiltter, new_listing)
+        );
+      case 'UpdateTeam':
+        return Object.assign({}, state, {
+          TeamCards: action.data}
+        );
+      default:
+        return state
+    }
   }
-  getCardSourceList() {
-    return CardCollecSource;
+  getCardById(id){
+    return _.find(this.getState().SourceCards, { id: id })
   }
   getSenzaiList() {
-    return CardCollecSenzai;
+    return this.getState().SourceSenzai;
   }
   getSenzaiByName(name) {
-    return _.find(CardCollecSenzai, {'name': name}) || _.find(CardCollecSenzai, {'name': '無'});
-  }
-  getSkillCategories(){
-    return CardSkillCategories;
-  }
-  getLastFilter() {
-    return CardCollecFilter;
-  }
-  getListing() {
-    return ListingSettings;
+    return _.find(this.getState().SourceSenzai, {'name': name}) || _.find(this.getState().SourceSenzai, {'name': '無'});
   }
   getTeam() {
-    return CardCollecTeam;
-  }
-  emitChange() {
-    this.eventEmitter.emit(this.changeEvent);
+    return this.getState().TeamCards;
   }
   addChangeListener(callback) {
     this.eventEmitter.addListener(this.changeEvent, callback);
@@ -201,34 +253,8 @@ class CardCollecStore {
   removeChangeListener(callback) {
     this.eventEmitter.removeAllListeners(this.changeEvent); // dirty code because removelistener cannot remove ...
   }
-  invokeOnDispatch(action) {
-    switch(action.actionType){
-      case 'InitCardData':
-        CardCollecSource = action.data;
-        CardCollecList = CardCollecSource;
-        genSkillCategoriesFromSource();
-        filterChange(CardCollecFilter, () => {
-          this.emitChange();
-        });
-        break;
-      case 'InitSenzaiData':
-        CardCollecSenzai = action.data;
-        break;
-      case 'FilterChange':
-        assign(CardCollecFilter, action.data);
-        filterChange(CardCollecFilter, () => {
-          this.emitChange();
-        });
-        break;
-      case 'SetListing':
-        ListingSettings[action.data[0]] = action.data[1];
-        break;
-      case 'UpdateTeam':
-        CardCollecTeam = action.data;
-        break;
-      default:
-        break;
-    }
+  displayCards(card_all, filter, listing){
+    return card_all;
   }
 }
 

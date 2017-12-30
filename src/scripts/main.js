@@ -4,16 +4,15 @@ import url      from 'url';
 import location from 'location-href';
 import _        from 'lodash';
 import assign   from "object-assign";
-import { HashRouter, Route, Link, Switch } from 'react-router-dom';
+import { HashRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
 
 import CardBase from './cardBase';
 import CardSnap from './cardSnap';
 
-
-import CardCollec from './Component/CardCollec.react';
+import CardCollec from './Component/CardCollec/CardCollec.container';
 import CardDetail from './Component/CardDetail.react';
 import TeamCollec from './Component/TeamCollec.react';
-import TeamForm   from './Component/TeamForm.react';
+import TeamForm   from './Component/TeamForm/TeamForm.container';
 
 import CardCollecAction from './Actions/CardCollecAction';
 
@@ -39,8 +38,10 @@ function sourceDetect(){
     });
   }else{
     CardSnap.init( path+'json/', (data_parsed) => {
-      CardCollecAction.parseSenzaiList(data_parsed.Senzai);
-      CardCollecAction.parseCardList(data_parsed.card);
+      CardCollecAction.initCardData({
+        card: data_parsed.card,
+        senzai: data_parsed.Senzai
+      });
       renderMain();
     });
   }
@@ -69,13 +70,13 @@ function renderMain(){
       super();
     }
     render(){
-      return;
+      return <Redirect to="/"/>
     }
   }
 }
 
-renderMLoading();
-
 window.onload = () => {
   sourceDetect();
 };
+
+renderMLoading();
