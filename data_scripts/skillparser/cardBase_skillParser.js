@@ -165,7 +165,7 @@ function Skill(skill_type, skill_info){
 }
 
 
-const config = config_build(require('./skillParser_configs.js'))
+const config = config_build(require('./skillparser_configs.js'))
 //console.log(config.AS)
 
 module.exports = {
