@@ -14,6 +14,12 @@ _.mixin({
     return _.filter(collection, function(item) {
       return _.includes(values, _.get(item, property));
     });
+  },
+  'findPureProps': function(collection, values) {
+    return _.filter(collection, function(item) {
+      let p2 = item.prop2 || '';
+      return _.includes(values, item.prop) && p2.length === 0;
+    });
   }
 });
 
@@ -97,7 +103,10 @@ function filterCards(source, filterObj) {
     res = _.findByArray(res, "prop", searchObj.props);
   }
   if(searchObj.props2.length > 0){
+    let pure = _.intersection(searchObj.props, searchObj.props2);
+    let resPure = _.findPureProps(res, pure);
     res = _.findByArray(res, "prop2", searchObj.props2);
+    res = res.concat(resPure);
   }
   if(searchObj.breeds.length > 0){
     res = _.findByArray(res, "breed", searchObj.breeds);
