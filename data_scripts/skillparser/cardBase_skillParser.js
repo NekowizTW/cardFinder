@@ -17,6 +17,8 @@ function config_build(config){
 }
 
 function Skill(skill_type, skill_info){
+  // tricky solution for some info contains 效果值
+  skill_info = skill_info.replace(/（效果值：\d+）/, '');
 	this.coefficients = splitCoefficients(skill_info);
 	this.segments = skill_info.replace(this.coefficients, '').trim().split(/[，|；]/);
 	this.coefficients = this.coefficients
