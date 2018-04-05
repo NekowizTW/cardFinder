@@ -78,7 +78,12 @@ function calcSenzai(team, tar) {
       let szData = CardCollecStore.getSenzaiByName(sz[j]);
       switch(szData.type){
         case '攻擊力上升':
-          if(szData.name[0] == '複') {
+          if(szData.name[0] == '純') {
+            if(team[tar].prop[0] == szData.elmts[0]) {
+              if(team[tar].prop[1].length == 0)
+                atk += parseInt(szData.const);
+            }
+          } else if(szData.name[0] == '複') {
             if(team[tar].prop[0] == szData.elmts[0]) {
               if(team[tar].prop[1] == szData.elmts[1])
                 atk += parseInt(szData.const2);
@@ -105,7 +110,12 @@ function calcSenzai(team, tar) {
           }
           break;
         case 'HP上升':
-          if(szData.name[0] == '複') {
+          if(szData.name[0] == '純') {
+            if(team[tar].prop[0] == szData.elmts[0]) {
+              if(team[tar].prop[1].length == 0)
+                hp += parseInt(szData.const);
+            }
+          } else if(szData.name[0] == '複') {
             if(team[tar].prop[0] == szData.elmts[0]) {
               if(team[tar].prop[1] == szData.elmts[1])
                 hp += parseInt(szData.const2);
