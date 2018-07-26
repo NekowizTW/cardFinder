@@ -139,7 +139,7 @@ function filterCards(source, filterObj) {
           o.senzai_5, o.senzai_4, o.senzai_3, o.senzai_2, o.senzai_1
         ].some((zz_string) => zz_regex.test(zz_string));
       }
-      return searchObj.zz.some(zenzai_matched);
+      return searchObj.zz.every(zenzai_matched);
     });
   }
   return res;
