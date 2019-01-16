@@ -43,8 +43,8 @@ function linkGenerator(filename) {
 }
 function getACard(id) {
   let found = CardCollecStore.getCardById(id);
-  if(typeof found.id == 'undefined') return {};
-  let prop = (typeof found.prop2 != 'undefined') ? [found.prop, found.prop2] : [found.prop];
+  if(typeof found.id === 'undefined') return {};
+  let prop = (typeof found.prop2 !== 'undefined') ? [found.prop, found.prop2] : [found.prop];
   return {
     id: found.id,
     prop: prop,
@@ -78,75 +78,80 @@ function calcSenzai(team, tar) {
       let szData = CardCollecStore.getSenzaiByName(sz[j]);
       switch(szData.type){
         case '攻擊力上升':
-          if(szData.name[0] == '純') {
-            if(team[tar].prop[0] == szData.elmts[0]) {
-              if(team[tar].prop[1].length == 0)
+          if(szData.name[0] === '純') {
+            if(team[tar].prop[0] === szData.elmts[0]) {
+              if(team[tar].prop[1].length === 0)
                 atk += parseInt(szData.const);
             }
-          } else if(szData.name[0] == '複') {
-            if(team[tar].prop[0] == szData.elmts[0]) {
-              if(team[tar].prop[1] == szData.elmts[1])
+          } else if(szData.name[0] === '複') {
+            if(typeof szData.elmts === 'undefined') {
+              if(team[tar].prop[1].length !== 0)
+                atk += parseInt(szData.const);
+            } else if(team[tar].prop[0] === szData.elmts[0]) {
+              if(team[tar].prop[1] === szData.elmts[1])
                 atk += parseInt(szData.const2);
               else
                 atk += parseInt(szData.const1);
             }
-          } else if(typeof szData.elmts != 'undefined') {
-            if(szData.elmts.indexOf(team[tar].prop[0]) != -1)
+          } else if(typeof szData.elmts !== 'undefined') {
+            if(szData.elmts.indexOf(team[tar].prop[0]) !== -1)
               atk += parseInt(szData.const);
-          } else if(typeof szData.breed != 'undefined' || typeof szData.breed1 != 'undefined') {
-            if(typeof szData.breed != 'undefined' && szData.breed == team[tar].breed) {
+          } else if(typeof szData.breed !== 'undefined' || typeof szData.breed1 !== 'undefined') {
+            if(typeof szData.breed !== 'undefined' && szData.breed === team[tar].breed) {
               atk += parseInt(szData.const);
             }else{
-              if(typeof szData.breed1 != 'undefined' && szData.breed1 == team[tar].breed)
+              if(typeof szData.breed1 !== 'undefined' && szData.breed1 === team[tar].breed)
                 atk += parseInt(szData.const);
-              if(typeof szData.breed2 != 'undefined' && szData.breed2 == team[tar].breed)
+              if(typeof szData.breed2 !== 'undefined' && szData.breed2 === team[tar].breed)
                 atk += parseInt(szData.const);
-              if(typeof szData.breed3 != 'undefined' && szData.breed3 == team[tar].breed)
+              if(typeof szData.breed3 !== 'undefined' && szData.breed3 === team[tar].breed)
                 atk += parseInt(szData.const);
             }
           } else {
-            if(tar == i)
+            if(tar === i)
               atk += parseInt(szData.const);
           }
           break;
         case 'HP上升':
-          if(szData.name[0] == '純') {
-            if(team[tar].prop[0] == szData.elmts[0]) {
-              if(team[tar].prop[1].length == 0)
+          if(szData.name[0] === '純') {
+            if(team[tar].prop[0] === szData.elmts[0]) {
+              if(team[tar].prop[1].length === 0)
                 hp += parseInt(szData.const);
             }
-          } else if(szData.name[0] == '複') {
-            if(team[tar].prop[0] == szData.elmts[0]) {
-              if(team[tar].prop[1] == szData.elmts[1])
+          } else if(szData.name[0] === '複') {
+            if(typeof szData.elmts === 'undefined') {
+              hp += parseInt(szData.const);
+            } else if(team[tar].prop[0] === szData.elmts[0]) {
+              if(team[tar].prop[1] === szData.elmts[1])
                 hp += parseInt(szData.const2);
               else
                 hp += parseInt(szData.const1);
             }
-          } else if(typeof szData.elmts != 'undefined') {
-            if(szData.elmts.indexOf(team[tar].prop[0]) != -1)
+          } else if(typeof szData.elmts !== 'undefined') {
+            if(szData.elmts.indexOf(team[tar].prop[0]) !== -1)
               hp += parseInt(szData.const);
-          } else if(typeof szData.breed != 'undefined' || typeof szData.breed1 != 'undefined') {
-            if(typeof szData.breed != 'undefined' && szData.breed == team[tar].breed) {
+          } else if(typeof szData.breed !== 'undefined' || typeof szData.breed1 !== 'undefined') {
+            if(typeof szData.breed !== 'undefined' && szData.breed === team[tar].breed) {
               hp += parseInt(szData.const);
             }else{
-              if(typeof szData.breed1 != 'undefined' && szData.breed1 == team[tar].breed)
+              if(typeof szData.breed1 !== 'undefined' && szData.breed1 === team[tar].breed)
                 hp += parseInt(szData.const);
-              if(typeof szData.breed2 != 'undefined' && szData.breed2 == team[tar].breed)
+              if(typeof szData.breed2 !== 'undefined' && szData.breed2 === team[tar].breed)
                 hp += parseInt(szData.const);
-              if(typeof szData.breed3 != 'undefined' && szData.breed3 == team[tar].breed)
+              if(typeof szData.breed3 !== 'undefined' && szData.breed3 === team[tar].breed)
                 hp += parseInt(szData.const);
             }
           } else {
-            if(tar == i)
+            if(tar === i)
               hp += parseInt(szData.const);
           }
           break;
         case '減少COST':
-          if(tar == i)
+          if(tar === i)
             costa -= parseInt(szData.const);
           break;
         case '快速技能':
-          if(tar == i)
+          if(tar === i)
             cdf += parseInt(szData.const);
           break;
       }
@@ -174,11 +179,11 @@ class TeamCollec extends React.Component {
     let team = [];
     let helper = -1;
     let cnt = 0;
-    if(typeof props.match.params.teamList != 'undefined'){
+    if(typeof props.match.params.teamList !== 'undefined'){
       team = getTeam(props.match.params.teamList);
       cnt += team.length;
     }
-    if(typeof props.match.params.teamHelper != 'undefined'){
+    if(typeof props.match.params.teamHelper !== 'undefined'){
       helper = team.length;
       team.push(getACard(props.match.params.teamHelper));
       cnt += 1;
@@ -205,11 +210,11 @@ class TeamCollec extends React.Component {
     let team = [];
     let helper = {};
     let cnt = 0;
-    if(typeof this.state.params.teamList != 'undefined'){
+    if(typeof this.state.params.teamList !== 'undefined'){
       team = getTeam(this.state.params.teamList);
       cnt += team.length;
     }
-    if(typeof this.state.params.teamHelper != 'undefined'){
+    if(typeof this.state.params.teamHelper !== 'undefined'){
       helper = team.length;
       team.push(getACard(this.state.params.teamHelper));
       cnt += 1;
@@ -246,14 +251,14 @@ class TeamCollec extends React.Component {
     // Be aware, this team variable is for editor
     let team = CardCollecStore.getTeam();
     team.team = [];
-    if(typeof this.state.params.teamList != 'undefined'){
+    if(typeof this.state.params.teamList !== 'undefined'){
       let teamIds = this.state.params.teamList.split('&');
       for (let i = teamIds.length - 1; i >= 0; i--) {
         team.team.unshift(teamIds[i]);
       }
       team.cnt = team.team.length;
     }
-    if(typeof this.state.params.teamHelper != 'undefined'){
+    if(typeof this.state.params.teamHelper !== 'undefined'){
       team.helper = team.team.length;
       team.team.push(this.state.params.teamHelper);
       team.cnt += 1;

@@ -123,7 +123,7 @@ class Form extends React.Component {
       onChange={this.tabIndexChange.bind(this)}
         renderTabBar={()=><InkTabBar />}
       renderTabContent={()=><TabContent  animated={false} 
-        style={{ 'border-bottom': '1px solid rgb(140, 140, 140, 0.7)', padding: '0 0 5px 0' }}
+        style={{ borderBottom: '1px solid rgb(140, 140, 140, 0.7)', padding: '0 0 5px 0' }}
       />}
       >
         <TabPane tab='基本屬性' key='0'>
