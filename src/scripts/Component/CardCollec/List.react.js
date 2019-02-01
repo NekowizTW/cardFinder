@@ -54,7 +54,6 @@ class List extends React.Component {
             <option value="max_atk">攻擊力</option>
             <option value="max_hp">血量</option>
             <option value="cost">Cost</option>
-            <option value="rank">Rank</option>
           </select>
         </span>
         <span className={'pure-u-1-2 pure-u-md-1-8 cardListOptionsTag'}>

@@ -146,17 +146,11 @@ function filterCards(source, filterObj) {
 }
 
 function sortCards(list, sortkey, ordering){
-    const rank_order = ['C+','B','B+','A','A+','S','S+','SS','SS+','L','LtoL'];
     ordering = ordering == 'desc'? -1 : 1;
     let self = this;
     return list.sort((a, b) => {
-      if(sortkey === 'rank'){
-        var attrA = rank_order.indexOf(a['rank']),
-            attrB = rank_order.indexOf(b['rank']);
-      }else{
-        var attrA = parseInt(a[sortkey]),
-            attrB = parseInt(b[sortkey]);
-      }
+      var attrA = parseInt(a[sortkey]),
+          attrB = parseInt(b[sortkey]);
       if(attrA < 0 || attrB < 0) {
         return (attrA - attrB) * -1;//(attrA - attrB); //Make minus value stay in the last
       }else{
