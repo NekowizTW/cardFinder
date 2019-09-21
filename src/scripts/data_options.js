@@ -555,7 +555,7 @@ export const ZZ = [
   { value: /^答題相關$/, label: '答題相關', disabled: true},
   { value: /^減少難易度.$/, label: '問答難易度微幅下降'},
   { value: /^答題技能延長.$/, label: '答題技能延長'},
-  { value: /^解題回復/, label: '答錯回復至答題之前'},
+  { value: /^答題重置/, label: '答錯回復至答題之前'},
   { value: /^主題技能$/, label: '主題技能', disabled: true},
   { value: /^天選者之證/, label: '天選者之證（王關低機率全體技能充填至全滿）'},
   { value: /^邊界騎士團的覺悟/, label: '邊界騎士團的覺悟（協力開場全體上升、受到致命傷全體復活）'}
