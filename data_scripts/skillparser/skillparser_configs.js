@@ -373,7 +373,7 @@ const AS_category = {
     },
     '費用-全體犧牲': {
         'type': 'Cost',
-        'text': '使用隊友MAXHP的#percent#',
+        'text': '(使用|消耗)隊友MAXHP的#percent#',
         'parameter': ['percent'],
         'meta':{
             'percent': 'parameter|1',
