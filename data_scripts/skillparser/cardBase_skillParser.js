@@ -102,7 +102,7 @@ function Skill(skill_type, skill_info){
 				let segment_detail = {'name': segment['seg_name'], 'type': segment['seg_type']}
 
 				//檢查全體攻擊的上一個技能語句是否為不分散攻擊，若否則為分散攻擊
-				if(segment['seg_name'] == '效果-全體攻擊' && skill_detail[skill_detail.length-1] && skill_detail[skill_detail.length-1][0]['type'] == '效果-不分散全體攻擊'){
+				if(segment['seg_name'] == '效果-全體攻擊' && skill_detail[skill_detail.length-1] && skill_detail[skill_detail.length-1][0] && skill_detail[skill_detail.length-1][0]['type'] == '效果-不分散全體攻擊'){
 					continue;
 				}
 
