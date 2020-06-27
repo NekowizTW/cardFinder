@@ -126,7 +126,7 @@ function Skill(skill_type, skill_info){
 							){
 								let effectNum = lookUpCurrentSkill(skill_detail);
 								segment_detail[info] = coefficients.splice(0, effectNum*2);
-							}else if(segment['seg_name'] == '效果-吸血' && skill_detail[skill_detail.length-1] && skill_detail[skill_detail.length-1][0]['type'] == '效果-自己提升攻擊'){
+							}else if(segment['seg_name'] == '效果-吸血' && skill_detail[skill_detail.length-1] && skill_detail[skill_detail.length-1][0] && skill_detail[skill_detail.length-1][0]['type'] == '效果-自己提升攻擊'){
 							//檢查吸血效果的上一個技能語句是否為自己提升攻擊，若是則拿係數的最後一個
 								segment_detail[info] = coefficients.splice(-1, attr_source[1]);
 							}else{
