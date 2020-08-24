@@ -22,12 +22,13 @@ var data_source = {
   Special2: {},
   Senzai: {}
 }
-var urlBase = 'http://zh.nekowiz.wikia.com/api.php';
+var urlBase = 'https://nekowiz.fandom.com/zh/api.php';
 var queryParamsGap = {
     format: 'json',
     action: 'query',
     prop: 'revisions',
     rvprop: 'content',
+    rvslots: 'main',
     generator: 'allpages',
     gapprefix: 'Card/Data/',
     gapnamespace: '10',
@@ -38,6 +39,7 @@ var queryParamsP = {
     action: 'query',
     prop: 'revisions',
     rvprop: 'content',
+    rvslots: 'main',
     titles: ''
 };
 function writeJSON(filename, source){
@@ -54,7 +56,7 @@ function querySourceC(start){
     if(start.length > 0) params.gapfrom = start;
     JSONP(urlBase, params, function(data){
       var last = '';
-      if(typeof data['query-continue'] !== 'undefined') last = data['query-continue'].allpages.gapfrom;
+      if(typeof data['continue'] !== 'undefined') last = data['continue'].gapcontinue;
       data_source.card.push(data);
       if(data_source.card.length === data.length) console.log('Source progress: '+data_source.card.length);
       if(last.length <= 0) return sourceCHandler();
@@ -79,7 +81,7 @@ function queryCard(){
             var id = data_source.card[ptr].query.pages[key].title.split('模板:Card/Data/')[1];
             if(/^(Ex)?\d+(-\d+)?$/.test(id) == false) continue;
             group.id = id;
-            str = data_source.card[ptr].query.pages[key].revisions[0]['*'];
+            str = data_source.card[ptr].query.pages[key].revisions[0]['slots']['main']['*'];
             str_s = str.split('\n');
             if(str_s[0] == '{{ Card/Data/{{{data}}}'){
               for(var key in str_s){
@@ -102,7 +104,7 @@ function querySkill(type){
     for(var key in data_source[type].query.pages){
       if(key == -1) continue;
       var str = '', str_s, group = {}, m;
-      str = data_source[type].query.pages[key].revisions[0]['*'];
+      str = data_source[type].query.pages[key].revisions[0]['slots']['main']['*'];
       str_s = str.split('\n');
       var status = false, ptr = 0;
       for(var key in str_s){
