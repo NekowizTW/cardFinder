@@ -78,6 +78,8 @@ function filterCards(source, filterObj) {
     as2: _.map(filterObj.as2, 'value'),
     ss2: _.map(filterObj.ss2, 'value'),
     zz: _.map(filterObj.zz, 'value'),
+    exasCondition: _.map(filterObj.exasCondition, 'value'),
+    exasType: _.map(filterObj.exasType, 'value'),
     filterTexts: filterObj.filterText || ''
   };
 
@@ -141,6 +143,18 @@ function filterCards(source, filterObj) {
       }
       return searchObj.zz.every(zenzai_matched);
     });
+  }
+  if(searchObj.exasCondition.length > 0){
+    res = res.filter(o => {
+      if (typeof o.EXASData === 'undefined') return false;
+      function exasConditionMatched(exasConditionRegex){
+        return exasConditionRegex.test(o.EXASData.condition);
+      }
+      return searchObj.exasCondition.every(exasConditionMatched);
+    });
+  }
+  if(searchObj.exasType.length > 0){
+    res = _.findByArray(res, "EXASData.type", searchObj.exasType);
   }
   return res;
 }

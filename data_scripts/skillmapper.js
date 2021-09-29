@@ -13,7 +13,8 @@ function cardDataParse(data) {
       asData: {},
       ssData: {},
       as2Data: {},
-      ss2Data: {}
+      ss2Data: {},
+      EXASData: {}
     };
     for(let i = 1; i <= 8; i++){
       if(dataExist(res.card[index]['evo_'+i])){
@@ -36,8 +37,13 @@ function cardDataParse(data) {
     else card.ssData = res.Special[0];
     if(dataExist(res.card[index].as2)) card.as2Data = _.find(res.Answer2, {'name': res.card[index].as2}) || {'name': res.card[index].as2, 'info': '尚無技能資料'};
     else card.as2Data = res.Answer2[0];
-    if(dataExist(res.card[index].ss2)) card.ss2Data = _.find(res.Special2, {'name': res.card[index].ss2}) || {'name': res.card[index].ss2, 'info': '尚無技能資料'};
-    else card.ss2Data = res.Special2[0];
+    if(dataExist(res.card[index].ss2)) {
+      card.ss2Data = _.find(res.Special2, {'name': res.card[index].ss2}) || {'name': res.card[index].ss2, 'info': '尚無技能資料'};
+      // exas detect
+      card.EXASData = _.find(res.EXAS, {'name': res.card[index].id}) || {};
+    } else card.ss2Data = res.Special2[0];
+    // decrease unnecessary column
+    if(Object.keys(card.EXASData).length === 0) delete card.EXASData;
     Object.assign(res.card[index], card);
   }
 

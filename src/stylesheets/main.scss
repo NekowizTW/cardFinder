@@ -1,6 +1,9 @@
 @import "compass/css3";
 @import "compass/css3/transition";
 @import "css_tags";
+
+$tabColor: rgba(66, 32, 16, 255);
+
 body {
     background: #fafafa;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -148,9 +151,15 @@ body {
   }
   .small_img{
     text-align: center;
+    .helper {
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+    }
     img{
       width: 60px;
       height: auto;
+      vertical-align: middle;
     }
   }
   ul{
@@ -160,10 +169,117 @@ body {
   }
 }
 
-.asData, .ssData{
-  span{
-    float:right;
-    display:block;
+/* Accordion styles */
+.tabs {
+  border-radius: 8px;
+  overflow: hidden;
+  // box-shadow: 0 4px 4px -2px rgba(0,0,0,0.5);
+}
+.tab {
+  width: 100%;
+  color: white;
+  overflow: hidden;
+  input {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+  }
+  &-label {
+    display: flex;
+    justify-content: space-between;
+    padding: 1em;
+    background: $tabColor;
+    font-weight: bold;
+    cursor: pointer;
+    /* Icon */
+    &:hover {
+      background: darken($tabColor, 10%);
+    }
+    &::after {
+      content: "\276F";
+      width: 1em;
+      height: 1em;
+      text-align: center;
+      transition: all .35s;
+    }
+  }
+  &-content {
+    max-height: 0;
+    padding: 0 1em;
+    color: black;
+    // background: white;
+    transition: all .35s ease-in-out;
+    overflow: hidden;
+  }
+  &-close {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1em;
+    font-size: 0.75em;
+    background: $tabColor;
+    cursor: pointer;
+    &:hover {
+      background: darken($tabColor, 10%);
+    }
+  }
+}
+
+// :checked
+input:checked {
+  + .tab-label {
+    background: darken($tabColor, 10%);
+    &::after {
+      transform: rotate(90deg);
+    }
+  }
+  ~ .tab-content {
+    max-height: 150vh;
+    padding: 1em;
+  }
+}
+
+$asColor: lighten(rgb(82, 0, 0), 25%);
+$ssColor: lighten(rgb(0, 32, 66), 25%);
+$exasColor: lighten(rgb(82, 0, 0), 25%);
+
+.skillData {
+  position: relative;
+  border: 3px black solid;
+  border-radius: 10px;
+  margin-top: 10px;
+  padding: 10px 5px 0px 5px;
+  &::before {
+    position: absolute;
+    color: white;
+    top: 0px;
+    left: 10px;
+    padding: 0px 10px 0px 10px;
+    font-size: small;
+  }
+  &.as {
+    border-color: $asColor;
+    &::before {
+      background-color: $asColor;
+      content: "AS";
+    }
+  }
+  &.ss {
+    border-color: $ssColor;
+    &::before {
+      background-color: $ssColor;
+      content: "SS";
+    }
+  }
+  &.exas {
+    border-color: $exasColor;
+    &::before {
+      background-color: $exasColor;
+      content: "EXAS";
+    }
+  }
+  span {
+    float: right;
+    display: block;
   }
 }
 

@@ -45,6 +45,8 @@ function optionRestore(paramSource, options){
   filter.as2 = _.findByArray(options.SKILL_AS2, 'value', params.as2) || [];
   filter.ss2 = _.findByArray(options.SKILL_SS2, 'value', params.ss2) || [];
   filter.zz = _.findByArray(options.ZZ, 'value', params.zz) || [];
+  filter.exasCondition = _.findByArray(options.exasCondition, 'value', params.exasCondition) || [];
+  filter.exasType = _.findByArray(options.exasType, 'value', params.exasType) || [];
   filter.filterText = params.filterText;
   return filter;
 }
@@ -177,6 +179,18 @@ class Form extends React.Component {
             placeholder="請選擇潛能/L發動效果(只提供特殊潛能查詢)" name="form-zz-field" className='pure-u-1 pure-u-md-1'
             value={this.props.filter.zz} options={this.props.settings.ZZ||[]}
             multi={true} onChange={this.filterChange.bind(this)('zz')}
+          />
+        </TabPane>
+        <TabPane tab='EXAS' key='4'>
+          <Select
+            placeholder="請選擇EXAS觸發條件" name="form-exasCondition-field" className='pure-u-1 pure-u-md-1'
+            value={this.props.filter.exasCondition} options={this.props.settings.exasCondition||[]}
+            multi={true} onChange={this.filterChange.bind(this)('exasCondition')}
+          />
+          <Select
+            placeholder="請選擇EXAS技能類型" name="form-exasType-field" className='pure-u-1 pure-u-md-1'
+            value={this.props.filter.exasType} options={this.props.settings.exasType||[]}
+            multi={true} onChange={this.filterChange.bind(this)('exasType')}
           />
         </TabPane>
         </Tabs>

@@ -168,7 +168,7 @@ class CardDetail extends React.Component {
     this.state = {
       cardId: cardId,
       data: card,
-      legend: false
+      tab: 0
     };
     this.legendToggle = this.legendToggle.bind(this);
   }
@@ -182,8 +182,7 @@ class CardDetail extends React.Component {
     let card =  getCardById(cardId) || {};
     this.setState ({
       cardId: cardId,
-      data: card,
-      legend: false
+      data: card
     });
   }
   changeHandler(){
@@ -196,7 +195,7 @@ class CardDetail extends React.Component {
     this.setState({'legend': !legend});
   }
   render() {
-    function senzaiElems(senzaiName, i){
+    function senzaiDetails(senzaiName, i){
       let senzai = CardCollecStore.getSenzaiByName(senzaiName);
       let key = senzai.filename.split(".")[0];
       return <li key={'senzai-'+i+'-name-'+key}><img src={linkGenerator(senzai.filename)} key={'senzai-'+i+'-img-'+key} />{senzai.name}: {senzai.info}</li>;
@@ -208,67 +207,108 @@ class CardDetail extends React.Component {
     else if(this.state.data.name.length === 0) return (<div>目前尚未有此卡片的資料，請<Link to={'/'}>點此返回</Link></div>);
     else return (<div className="cardDetail">
       <div className={'pure-g'}>
-        <div className={'pure-u-1 pure-u-md-1-2 card_img'}>
-          <img src={linkGenerator(card_filename)} /> <br />
-          <button className={'button-warning pure-button ' + (data.rank.indexOf('L')!==-1? '':'hide')} onClick={this.legendToggle}>{this.state.legend? '傳奇型態':'一般型態'}</button>
-        </div>
-        <div className={'pure-u-1 pure-u-md-1-2'}>
+        <div className={'pure-u-1 pure-u-md-2-5'}>
+          <div className={'card_img'}>
+            <img src={linkGenerator(card_filename)} /> <br />
+          </div>
           <div className={'pure-g'}>
-            <div className={'pure-u-1-3 small_img'}>
+            <div className={'pure-u-1-3 pure-u-lg-1-5 small_img'}>
+              <span className={'helper'}></span>
               <img src={linkGenerator(small_filename)} />
             </div>
-            <div className={'pure-u-2-3'}>
-              <h3>No. {data.id} - {data.name}</h3>
+            <div className={'pure-u-2-3 pure-u-lg-4-5'}>
+              <h3>No. {data.id}<br /><span style={{'fontSize': 'x-large'}}>{data.name}</span></h3>
             </div>
           </div>
-          <div className={'pure-g'}>
-            <div className={'pure-u-1-2'}>
-              <p>HP: {data.max_hp}</p>
-            </div>
-            <div className={'pure-u-1-2'}>
-              <p>ATK: {data.max_atk}</p>
-            </div>
+          <div className={'senzaiList'} key={'card-'+data.id+'-senzaiArr'}>
+            {data.senzaiArr.map(function(senzaiName, i){
+              let senzai = CardCollecStore.getSenzaiByName(senzaiName);
+              return <img src={linkGenerator(senzai.filename)} key={'card-'+data.id+'-senzai-'+i} />;
+            })}
+            {data.senzaiLArr.length !== 0 && <span style={{'width': '64px', 'display': 'inline-block'}}></span>}
+            {data.senzaiLArr.length !== 0 && 
+              data.senzaiLArr.map(function(senzaiName, i){
+                let senzai = CardCollecStore.getSenzaiByName(senzaiName);
+                return <img src={linkGenerator(senzai.filename)} key={'card-'+data.id+'-senzai-'+i} />;
+              })
+            }
           </div>
-          <div className={'pure-g'}>
-            <div className={'pure-u-1-2'}>
-              <p>{data.breed}</p>
+          <table className={'pure-table pure-table-horizontal'} style={{'width': '90%'}}>
+            <tr><th>HP</th><td>{data.max_hp}</td></tr>
+            <tr><th>攻擊</th><td>{data.max_atk}</td></tr>
+            <tr><th>種族</th><td>{data.breed}</td></tr>
+            <tr><th>進化</th><td>{data.evo_now} / {data.evo_max}</td></tr>
+            <tr><th>Cost</th><td>{data.cost}</td></tr>
+          </table>
+        </div>
+        <div className={'pure-u-1 pure-u-md-3-5 detailTab'}>
+          <div className={'tabs'}>
+            <div className={'tab'}>
+              <input type="radio" id="rd1" name="rd" defaultChecked />
+              <label className={'tab-label'} htmlFor="rd1">一般型態</label>
+              <div className={'tab-content'}>
+                <div className={'skillData as'}>
+                  <p><b>{data.asData.name}</b> <span>{data.asData.type}</span></p>
+                  <p>{data.asData.info}</p>
+                </div>
+                <div className={'skillData ss'}>
+                  <p><b>{data.ssData.name}({data.ssData.turn})</b> <span>{data.ssData.type}</span></p>
+                  <p>{data.ssData.info}</p>
+                </div>
+                { data.EXASData && 
+                  <div className={'skillData exas'}>
+                    <p><b>【傳奇型態條件】</b></p>
+                    <p>{data.EXASData.condition}</p>
+                  </div>
+                }
+              </div>
             </div>
-            <div className={'pure-u-1-2'}>
-              <p>Cost {data.cost}</p>
+            <div className={'tab'}>
+              <input type="radio" id="rd2" name="rd" />
+              <label className={'tab-label'} htmlFor="rd2">傳奇型態</label>
+              <div className={'tab-content'}>
+                <div className={'skillData as'}>
+                  <p><b>{data.as2Data.name}</b> <span>{data.as2Data.type}</span></p>
+                  <p>{data.as2Data.info}</p>
+                </div>
+                <div className={'skillData ss'}>
+                  <p><b>{data.ss2Data.name}({data.ss2Data.turn})</b> <span>{data.ss2Data.type}</span></p>
+                  <p>{data.ss2Data.info}</p>
+                </div>
+                { data.EXASData && 
+                  <div className={'skillData exas'}>
+                    <p><b>&nbsp;</b> <span>{data.EXASData.type}</span></p>
+                    <p>{data.EXASData.info}</p>
+                  </div>
+                }
+              </div>
             </div>
-          </div>
-          <div className={'pure-g'}>
-            <div className={'pure-u-1 asData '+(this.state.legend? 'hide':'')}>
-              <p><b>{data.asData.name}</b> <span>{data.asData.type}</span></p>
-              <p>{data.asData.info}</p>
+            <div className={'tab'}>
+              <input type="radio" id="rd3" name="rd" />
+              <label className={'tab-label'} htmlFor="rd3">潛在能力</label>
+              <div className={'tab-content'}>
+                <ul className={'senzaiList'}>
+                  {data.senzaiArr.map(senzaiDetails)}
+                </ul>
+                <hr />
+                <ul className={'senzaiList Legend'}>
+                  {data.senzaiLArr.map(senzaiDetails)}
+                </ul>
+              </div>
             </div>
-            <div className={'pure-u-1 ssData '+(this.state.legend? 'hide':'')}>
-              <p><b>{data.ssData.name}({data.ssData.turn})</b> <span>{data.ssData.type}</span></p>
-              <p>{data.ssData.info}</p>
-            </div>
-            <div className={'pure-u-1 asData '+(this.state.legend? '':'hide')}>
-              <p><b>{data.as2Data.name}</b> <span>{data.as2Data.type}</span></p>
-              <p>{data.as2Data.info}</p>
-            </div>
-            <div className={'pure-u-1 ssData '+(this.state.legend? '':'hide')}>
-              <p><b>{data.ss2Data.name}({data.ss2Data.turn})</b> <span>{data.ss2Data.type}</span></p>
-              <p>{data.ss2Data.info}</p>
+            <div className={'tab'}>
+              <input type="radio" id="rd4" name="rd" />
+              <label className={'tab-label'} htmlFor="rd4">卡片進化途徑</label>
+              <div className={'tab-content'}>
+                <div id={'evoListDisplay'}>
+                  <EvoCard id={data.id} forward={0} self_card={true} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div className={'pure-u-1 pure-u-md-1-2'}>
-        <ul className={'senzaiList '+(this.state.legend? 'hide':'')}>
-          {data.senzaiArr.map(senzaiElems)}
-        </ul>
-        <ul className={'senzaiList Legend '+(this.state.legend? '':'hide')}>
-          {data.senzaiLArr.map(senzaiElems)}
-        </ul>
-      </div>
-      <div className={'pure-u-1 pure-u-md-1-2'} id={'evoListDisplay'}>
-        <h3>卡片進化途徑</h3>
-        <EvoCard id={data.id} forward={0} self_card={true} />
-      </div>
+      <hr />
       <Link to={{ pathname: '/', query: { props: data.prop } }} className={'pure-button'}>查看{data.prop}屬性卡片</Link>
       <Link to={{ pathname: '/', query: { props2: data.prop2 } }} className={'pure-button'}>查看{data.prop2}副屬性卡片</Link>
       <Link to={{ pathname: '/', query: { breeds: data.breed } }} className={'pure-button'}>查看{data.breed}卡片</Link>

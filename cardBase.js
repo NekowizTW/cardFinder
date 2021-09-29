@@ -12,6 +12,7 @@ var data_deck = {
   Answer2: [],
   Special2: [],
   Senzai: [],
+  EXAS: [],
   exCard: []
 };
 var data_source = {
@@ -20,6 +21,7 @@ var data_source = {
   Special: {},
   Answer2: {},
   Special2: {},
+  EXAS: [],
   Senzai: {}
 }
 var urlBase = 'https://nekowiz.fandom.com/zh/api.php';
@@ -153,4 +155,5 @@ querySourceS('Answer');
 querySourceS('Special');
 querySourceS('Answer2');
 querySourceS('Special2');
+querySourceS('EXAS');
 querySourceC();
