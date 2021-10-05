@@ -13,7 +13,8 @@ var data_deck = {
   Special2: [],
   Senzai: [],
   EXAS: [],
-  exCard: []
+  exCard: [],
+  obtainType: []
 };
 var data_source = {
   card: [],
@@ -22,7 +23,8 @@ var data_source = {
   Answer2: {},
   Special2: {},
   EXAS: [],
-  Senzai: {}
+  Senzai: {},
+  obtainType: []
 }
 var urlBase = 'https://nekowiz.fandom.com/zh/api.php';
 var queryParamsGap = {
@@ -32,8 +34,6 @@ var queryParamsGap = {
     rvprop: 'content',
     rvslots: 'main',
     generator: 'allpages',
-    gapprefix: 'Card/Data/',
-    gapnamespace: '10',
     gaplimit: '50'
 };
 var queryParamsP = {
@@ -55,6 +55,7 @@ function querySourceC(start){
     start = start || '';
     var params = queryParamsGap;
     params.gapprefix = 'Card/Data/';
+    params.gapnamespace = '10';
     if(start.length > 0) params.gapfrom = start;
     JSONP(urlBase, params, function(data){
       var last = '';
@@ -72,6 +73,21 @@ function querySourceS(type){
     JSONP(urlBase, params, function(data){
       data_source[type] = data;
       return sourceSHandler(type);
+    });
+}
+function querySourceH(start){
+    start = start || '';
+    var params = queryParamsGap;
+    params.gapprefix = '精靈圖鑑';
+    params.gapnamespace = 0;
+    if(start.length > 0) params.gapfrom = start;
+    JSONP(urlBase, params, function(data){
+      var last = '';
+      if(typeof data['continue'] !== 'undefined') last = data['continue'].gapcontinue;
+      data_source.obtainType.push(data);
+      if(data_source.card.length === data.length) console.log('Handbook progress: '+data_source.card.length);
+      if(last.length <= 0) return sourceHHandler();
+      else return querySourceH(last);
     });
 }
 function queryCard(){
@@ -92,6 +108,9 @@ function queryCard(){
                   group[m[1]] = m[2].trim();
                 }
               }
+              // add obtainType by Handbook
+              var obtainType = _.find(data_deck.obtainType, {id: group.id});
+              if(obtainType !== undefined) group.obtainType = obtainType;
               if(id.indexOf('Ex') !== -1){
                 group.id = group.id.replace('Ex', '');
                 data_deck.exCard.push(group);
@@ -131,6 +150,54 @@ function querySkill(type){
       }
     }
 }
+function queryObtainType(){
+  var re = /(Ex)?\d+/;
+  var specialPageList = [
+    {re: /精靈圖鑑\/(-|(繁中))?\d+/, status: -1}, // 精靈圖鑑區
+    {re: /精靈圖鑑\/進化開放/, status: -1}, // 進化開放區
+    {re: /精靈圖鑑\/尚無資料/, status: -1}, // 望無資料：資料部份缺失頁面
+    {re: /精靈圖鑑\/以/, status: -1}, // 只紀錄清單
+    {re: /精靈圖鑑\/友情轉蛋/, status: 0}, // 保留，用於區分其他轉蛋
+    {re: /精靈圖鑑\/\S+轉蛋/, status: 2}, // 全頁都是轉蛋
+    {re: /精靈圖鑑\/主題限定/, status: 2} // 全頁都是轉蛋
+  ];
+  for(var ptr in data_source.obtainType){
+    for(var key in data_source.obtainType[ptr].query.pages){
+      if(key == -1) continue;
+      var title = data_source.obtainType[ptr].query.pages[key].title;
+      var str = data_source.obtainType[ptr].query.pages[key].revisions[0]['slots']['main']['*'];
+      var status = 0;
+      if(title.indexOf('精靈圖鑑') === -1) continue;
+      // loop check the page is not in the ignoreTitleList
+
+      specialPageList.every(function(item){
+        if(item.re.test(title)) {
+          status = item.status;
+          return false;
+        }else return true;
+      })
+      if(status === -1) continue;
+
+      var str_s = str.split('\n');
+      var rows = [];
+      str_s.forEach(function(line){
+        if(line.indexOf('Card/Data') >= 0){
+          var id = line.match(re);
+          rows.push({
+            id: id[0],
+            title: title.replace('精靈圖鑑/', ''),
+            type: (status >= 1 ? 'gacha' : 'haifu')
+          });
+        }
+        if(status !== 0 && line.indexOf('div') >= 0) status = 0;
+        if(status === 0 && line.indexOf('轉蛋限定') >= 0) status = 1;
+        if(status === 0 && line.indexOf('儲值') >= 0) status = 1;
+        if(status === 0 && line.indexOf('圖鑑成就') >= 0) status = 1;
+      });
+      data_deck.obtainType = data_deck.obtainType.concat(rows);
+    }
+  }
+}
 function sourceCHandler(){
     queryCard();
     data_deck.card = _.sortBy(data_deck.card, function(card){
@@ -149,6 +216,10 @@ function sourceSHandler(type){
     querySkill(type);
     writeJSON(type+'Skill', data_deck[type]);
 }
+function sourceHHandler(){
+  queryObtainType();
+  writeJSON('obtainType', data_deck['obtainType']);
+}
 
 querySourceS('Senzai');
 querySourceS('Answer');
@@ -156,4 +227,5 @@ querySourceS('Special');
 querySourceS('Answer2');
 querySourceS('Special2');
 querySourceS('EXAS');
+querySourceH();
 querySourceC();

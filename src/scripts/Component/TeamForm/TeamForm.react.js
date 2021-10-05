@@ -60,10 +60,33 @@ class TeamForm extends React.Component {
       CardCollecAction.updateTeam(team);
     });
   }
+  pushAll() {
+    let team = this.props.team;
+    let help = this.state.help;
+    if(team.cnt === 6) return;
+    team.team = Object.assign([], team.selected);
+    team.cnt = team.team.length;
+    help = (team.cnt === 6 || (team.cnt > 2 && help));
+    team.helper = help? (team.cnt - 1) : -1;
+    this.setState({help: help}, function(){
+      CardCollecAction.updateTeam(team);
+    });
+  }
   deleteByIdx(idx) {
     let team = this.props.team;
     let help = this.state.help;
     team.team.splice(idx, 1);
+    team.cnt = team.team.length;
+    help = (team.cnt === 6 || (team.cnt > 2 && help));
+    team.helper = help? (team.cnt - 1) : -1;
+    this.setState({help: help}, function(){
+      CardCollecAction.updateTeam(team);
+    });
+  }
+  clearAll() {
+    let team = this.props.team;
+    let help = this.state.help;
+    team.team = [];
     team.cnt = team.team.length;
     help = (team.cnt === 6 || (team.cnt > 2 && help));
     team.helper = help? (team.cnt - 1) : -1;
@@ -97,10 +120,14 @@ class TeamForm extends React.Component {
         </p>
         <div className={'pure-form pure-form-stacked'}>
           <legend>編輯隊伍</legend>
-          <label for="helpTag" class="pure-checkbox">
-              <input id="helpTag" type="checkbox" checked={this.state.help} onClick={this.toggleHelper.bind(this)} />
+          <label htmlFor={'helpTag'} className={'pure-checkbox'}>
+              <input id={'helpTag'} type="checkbox" checked={this.state.help} onClick={this.toggleHelper.bind(this)} />
               此陣容已包含援助者
           </label>
+          <div className="pure-button-group">
+            <button className="pure-button button-success" onClick={this.pushAll.bind(this)}>候選成員直接填入隊伍（最多6張）</button>
+            <button className="pure-button button-error" onClick={this.clearAll.bind(this)}>清除隊伍所有成員（包含支援）</button>
+          </div>
           <fieldset className={'pure-group'}>
             <label>隊伍內容</label>
             <div className={'pure-g'}>

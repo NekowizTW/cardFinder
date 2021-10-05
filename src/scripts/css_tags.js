@@ -26,3 +26,25 @@ export const ASTAG = {
     '種族特效(全體)': 'AS_breed_critical',
     '技能複製': ''
 };
+
+export const EXASTAG = {
+    '無': '',
+    '反擊': 'EXAS_Label_ActionReflection',
+    '攻擊': 'EXAS_Label_Attack',
+    '攻擊強化': 'EXAS_Label_Attack_Enhance',
+    '副屬性攻擊強化': 'EXAS_Label_Attribute_Enhance',
+    '連鎖增加': 'EXAS_Label_ChainPlus',
+    '全體化': 'EXAS_Label_ChangeAttackAll',
+    '連續化': 'EXAS_Label_ChangeRush',
+    '連鎖攻擊': 'EXAS_Label_Combo_Power_Up',
+    '阻隔傷害': 'EXAS_Label_DamageBlock',
+    '瀕死攻擊': 'EXAS_Label_DyingPowerUp',
+    '屬性特效': 'EXAS_Label_Elemens_SAttack',
+    '賭博攻擊': 'EXAS_Label_Gamble_Attack',
+    '防禦': 'EXAS_Label_Guard',
+    '貫穿': 'EXAS_Label_Penetrate',
+    '狀態特效': 'EXAS_Label_PositiveBuffCritical',
+    '追擊': 'EXAS_Label_PursueAttack',
+    '回復': 'EXAS_Label_Recover',
+    '連擊': 'EXAS_Label_Rush_Attack'
+};

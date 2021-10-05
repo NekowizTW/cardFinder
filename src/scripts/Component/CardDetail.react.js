@@ -5,8 +5,9 @@ import jsonp    from 'jsonp-es6';
 import _        from 'lodash';
 import { Link } from 'react-router-dom';
 
-import CardCollecStore  from '../Store/CardCollecStore';
-import Console    from 'console-browserify';
+import CardCollecStore   from '../Store/CardCollecStore';
+import * as constOptions from '../data_options';
+import Console           from 'console-browserify';
 
 function tw_filenameFix(name) {
   let filename = String(name).split(' ').join('_');
@@ -19,6 +20,24 @@ function linkGenerator(filename) {
 }
 function getCardById(id){
   return CardCollecStore.getCardById(id);
+}
+function reverseOptionsGenerator(options, card, property, delimiter = undefined){
+  let keys = _.get(card, property);
+  let res = [];
+  if(keys === undefined) return res;
+
+  if(delimiter !== undefined){
+    keys = keys.split(delimiter);
+    res = options.filter(o => {
+      function regexTestKey(key){
+        return o.value.test(key);
+      }
+      return keys.some(regexTestKey);
+    });
+  }else{
+    res = _.filter(options, { 'value': keys });
+  }
+  return res;
 }
 
 class EvoCard extends React.Component {
@@ -203,6 +222,7 @@ class CardDetail extends React.Component {
     let data = this.state.data;
     let card_filename = tw_filenameFix(data.card_filename) || "0000.png";
     let small_filename = tw_filenameFix(data.small_filename) || "0000.png";
+
     if(Object.keys(this.state.data).length === 0 && this.state.data.constructor === Object) return (<div>等待卡片資料中...</div>);
     else if(this.state.data.name.length === 0) return (<div>目前尚未有此卡片的資料，請<Link to={'/'}>點此返回</Link></div>);
     else return (<div className="cardDetail">
@@ -309,12 +329,33 @@ class CardDetail extends React.Component {
         </div>
       </div>
       <hr />
-      <Link to={{ pathname: '/', query: { props: data.prop } }} className={'pure-button'}>查看{data.prop}屬性卡片</Link>
-      <Link to={{ pathname: '/', query: { props2: data.prop2 } }} className={'pure-button'}>查看{data.prop2}副屬性卡片</Link>
-      <Link to={{ pathname: '/', query: { breeds: data.breed } }} className={'pure-button'}>查看{data.breed}卡片</Link>
-      <Link to={{ pathname: '/', query: { ranks: data.rank } }} className={'pure-button'}>查看{data.rank}級卡片</Link>
-      <Link to={'/'} className={'pure-button pure-button-primary'}>←返回搜尋頁面</Link>
-
+      <div className={'pure-button-group'}>
+        <Link to={'/'} className={'pure-button pure-button-primary'}>←返回搜尋頁面</Link>
+      </div>
+      <h4>基本屬性反查</h4>
+      <div className={'pure-button-group'}>
+        <Link to={{ pathname: '/', query: { props: reverseOptionsGenerator(constOptions.PROPS, data, 'prop') } }} className={'pure-button'}>主屬性：{data.prop}</Link>
+        {data.prop2 !== "" &&
+          <Link to={{ pathname: '/', query: { props: reverseOptionsGenerator(constOptions.PROPS, data, 'prop'), props2: reverseOptionsGenerator(constOptions.PROPS2, data, 'prop2') } }} className={'pure-button'}>雙屬性：{data.prop}{data.prop2}</Link>
+        }
+        <Link to={{ pathname: '/', query: { breeds: reverseOptionsGenerator(constOptions.BREEDS, data, 'breed') } }} className={'pure-button'}>種族：{data.breed}</Link>
+      </div>
+      <h4>AS技能反查</h4>
+      <div className={'pure-button-group'}>
+        <Link to={{ pathname: '/', query: { as: reverseOptionsGenerator(constOptions.SKILL_AS, data, 'asData.type', /[・‧]+/) } }} className={'pure-button button-error'}>AS1: {data.asData.type}</Link>
+        <Link to={{ pathname: '/', query: { as2: reverseOptionsGenerator(constOptions.SKILL_AS2, data, 'as2Data.type', /[・‧]+/) } }} className={'pure-button button-error'}>AS2: {data.as2Data.type}</Link>
+      </div>
+      <h4>SS技能反查</h4>
+      <div className={'pure-button-group'}>
+        <Link to={{ pathname: '/', query: { ss: reverseOptionsGenerator(constOptions.SKILL_SS, data, 'ssData.type') } }} className={'pure-button pure-button-primary'}>SS1: {data.ssData.type}</Link>
+        <Link to={{ pathname: '/', query: { ss2: reverseOptionsGenerator(constOptions.SKILL_SS2, data, 'ss2Data.type') } }} className={'pure-button pure-button-primary'}>SS2: {data.ss2Data.type}</Link>
+      </div>
+      {data.EXASData && <div>
+        <h4>EXAS技能反查</h4>
+        <div className={'pure-button-group'}>
+          <Link to={{ pathname: '/', query: { exasType: reverseOptionsGenerator(constOptions.EXAS_Type, data, 'EXASData.type', /[・‧]+/) } }} className={'pure-button button-warning'}>EXAS: {data.EXASData.type}</Link>
+        </div>
+      </div>}
     </div>);
   }
 }

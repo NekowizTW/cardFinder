@@ -51,6 +51,7 @@ class Card extends React.Component {
     let cards = this.props.CardData;
     let cardHandler = this;
     function cardItem(data){
+      // console.log(`${JSON.stringify(data)}`);
       let small_filename = tw_filenameFix(data.small_filename) || "0000.png";
       let senzaiElements = [];
       let hover = cardHandler.state.team.selected.indexOf(data.id) > -1 ? 'selected' : '';
@@ -58,8 +59,11 @@ class Card extends React.Component {
         <div className={'pure-u-1-6 imgFrame'} key={'card-'+data.id+'-imgFrame'}>
           <img key={'card-'+data.id+'-img'} src={linkGenerator(small_filename)} onClick={() => cardHandler.toggleSelect(data.id)}/>
         </div>
-        <div className={'pure-u-2-3'} key={'card-'+data.id+'-nameFrame'}>
-          <Link to={'/card/'+data.id} key={'card-'+data.id+'-name'}>No. {data.id} - {data.name}</Link>
+        <div className={'pure-u-2-3 infoFrame'} key={'card-'+data.id+'-nameFrame'}>
+          {data.obtainType && <span className={data.obtainType.type === 'haifu' ? 'circleMark' : ''}>
+            {data.obtainType.type === 'haifu' ? '配':''}
+          </span>}
+          <Link to={'/card/'+data.id} key={'card-'+data.id+'-name'}>No. {data.id} <br /> {data.name}</Link>
           <div className={'pure-g'} key={'card-'+data.id+'-hpatk'}>
             <p className={'pure-u-1-2'} key={'card-'+data.id+'-hp'}>HP: {data.max_hp}</p>
             <p className={'pure-u-1-2'} key={'card-'+data.id+'-atk'}>ATK: {data.max_atk}</p>
@@ -69,6 +73,12 @@ class Card extends React.Component {
               let senzai = CardCollecStore.getSenzaiByName(senzaiName);
               return <img src={linkGenerator(senzai.filename)} key={'card-'+data.id+'-senzai-'+i} />;
             })}
+           {data.senzaiLArr.length > 0 && <span className={'legend'}>
+             {data.senzaiLArr.map(function(senzaiLName, i){
+                let senzai = CardCollecStore.getSenzaiByName(senzaiLName);
+                return <img src={linkGenerator(senzai.filename)} key={'card-'+data.id+'-senzaiL-'+i} />;
+              })}
+           </span>} 
           </div>
         </div>
         <div className={'pure-u-1-6'} key={'card-'+data.id+'-other'}>

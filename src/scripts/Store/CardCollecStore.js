@@ -31,17 +31,39 @@ function genSkillCategoriesFromSource(CardCollecSource, CardSkillCategories){
     {name: 'SKILL_AS', path: 'asData'},
     {name: 'SKILL_SS', path: 'ssData'},
     {name: 'SKILL_AS2', path: 'as2Data'},
-    {name: 'SKILL_SS2', path: 'ss2Data'}
+    {name: 'SKILL_SS2', path: 'ss2Data'},
+    {name: 'EXAS_Type', path: 'EXASData'}
   ];
 
   attrsToCheck.map(item => {
     let originalSkillList = CardSkillCategories[item.name];
-    let parsedSkillList = _.uniq(CardCollecSource.map(o => {
+    let parsedSkillList = _.uniq(CardCollecSource.reduce((r, o) => {
+      if(o[item.path] === undefined) return r;
       if(o[item.path]['type'] === undefined){
         console.log(item.name, '技能資料未定義', o.id);
       }
-      return o[item.path]['type'];
-    }));
+      r.push(o[item.path]['type']);
+      return r;
+    }, []));
+
+    if(item.name.indexOf('AS') >= 0){
+      // convert regex to string in CardSkillCategories
+      originalSkillList = originalSkillList.map(function(o){
+        let r = Object.assign({}, o);
+        r.value = r.value.toString().substring(1, r.value.toString().length - 1)
+                    .replaceAll(/[\\\^]/g, '');
+        return r;
+      });
+      // split all parsedSkill in parsedSkillList, and uniq again
+      let parsedSkillListReCollect = [];
+      parsedSkillList.forEach(function(o){
+        if (typeof o === 'undefined') return;
+        let parsedSkillListItemSplit = o.split(/[・‧]+/);
+        parsedSkillListReCollect = [...parsedSkillListReCollect, ...parsedSkillListItemSplit];
+      });
+      parsedSkillList = _.uniq(parsedSkillListReCollect);
+    }
+
     //console.log('SKILL_LIST:', item.name, parsedSkillList);
     for(let originslSkillItem of originalSkillList){
       if(parsedSkillList.indexOf(originslSkillItem.value) < 0 && !originslSkillItem.disabled){
@@ -78,6 +100,7 @@ function filterCards(source, filterObj) {
     as2: _.map(filterObj.as2, 'value'),
     ss2: _.map(filterObj.ss2, 'value'),
     zz: _.map(filterObj.zz, 'value'),
+    onlyHaifu: filterObj.onlyHaifu || false,
     exasCondition: _.map(filterObj.exasCondition, 'value'),
     exasType: _.map(filterObj.exasType, 'value'),
     filterTexts: filterObj.filterText || ''
@@ -113,6 +136,11 @@ function filterCards(source, filterObj) {
   if(searchObj.breeds.length > 0){
     res = _.findByArray(res, "breed", searchObj.breeds);
   }
+  if(searchObj.onlyHaifu){
+    res = _.filter(res, function(o){
+      return o.obtainType !== undefined && o.obtainType.type === 'haifu';
+    });
+  }
   if(searchObj.ranks.length > 0 && searchObj.ranks.indexOf('X') >= 0){
     searchObj.ranks.splice(searchObj.ranks.indexOf('X'),1);
     res = res.filter(o => !(o.evo_to) );
@@ -121,13 +149,27 @@ function filterCards(source, filterObj) {
     res = _.findByArray(res, "rank", searchObj.ranks);
   }
   if(searchObj.as.length > 0){
-    res = _.findByArray(res, "asData.type", searchObj.as);
+    res = res.filter(o => {
+      if (o.asData === undefined || o.asData.type === undefined) return false;
+      function asTypeMatched(asTypeRegex){
+        return o.asData.type.split(/[・‧]+/)
+          .some((asTypeString) => asTypeRegex.test(asTypeString));
+      }
+      return searchObj.as.every(asTypeMatched);
+    });
   }
   if(searchObj.ss.length > 0){
     res = _.findByArray(res, "ssData.type", searchObj.ss);
   }
   if(searchObj.as2.length > 0){
-    res = _.findByArray(res, "as2Data.type", searchObj.as2);
+    res = res.filter(o => {
+      if (o.as2Data === undefined || o.as2Data.type === undefined) return false;
+      function as2TypeMatched(as2TypeRegex){
+        return o.as2Data.type.split(/[・‧]+/)
+          .some((as2TypeString) => as2TypeRegex.test(as2TypeString));
+      }
+      return searchObj.as2.every(as2TypeMatched);
+    });
   }
   if(searchObj.ss2.length > 0){
     res = _.findByArray(res, "ss2Data.type", searchObj.ss2);
@@ -154,7 +196,14 @@ function filterCards(source, filterObj) {
     });
   }
   if(searchObj.exasType.length > 0){
-    res = _.findByArray(res, "EXASData.type", searchObj.exasType);
+    res = res.filter(o => {
+      if (typeof o.EXASData === 'undefined') return false;
+      function exasTypeMatched(exasTypeRegex){
+        return o.EXASData.type.split(/[・‧]+/)
+          .some((exasTypeString) => exasTypeRegex.test(exasTypeString));
+      }
+      return searchObj.exasType.every(exasTypeMatched);
+    });
   }
   return res;
 }

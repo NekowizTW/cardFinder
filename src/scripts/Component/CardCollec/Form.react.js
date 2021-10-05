@@ -36,17 +36,18 @@ function cleanArray(actual) {
 function optionRestore(paramSource, options){
   let params = assign({filterText: ""}, paramSource);
   let filter = {};
-  filter.props = _.findByArray(options.PROPS, 'value', params.props) || [];
-  filter.props2 = _.findByArray(options.PROPS2, 'value', params.props2) || [];
-  filter.breeds = _.findByArray(options.BREEDS, 'value', params.breeds) || [];
-  filter.ranks = _.findByArray(options.RANKS, 'value', params.ranks) || [];
-  filter.as = _.findByArray(options.SKILL_AS, 'value', params.as) || [];
-  filter.ss = _.findByArray(options.SKILL_SS, 'value', params.ss) || [];
-  filter.as2 = _.findByArray(options.SKILL_AS2, 'value', params.as2) || [];
-  filter.ss2 = _.findByArray(options.SKILL_SS2, 'value', params.ss2) || [];
-  filter.zz = _.findByArray(options.ZZ, 'value', params.zz) || [];
-  filter.exasCondition = _.findByArray(options.exasCondition, 'value', params.exasCondition) || [];
-  filter.exasType = _.findByArray(options.exasType, 'value', params.exasType) || [];
+  filter.props = params.props || [];
+  filter.props2 = params.props2 || [];
+  filter.breeds = params.breeds || [];
+  filter.ranks = params.ranks || [];
+  filter.onlyHaifu = params.onlyHaifu || false;
+  filter.as = params.as || [];
+  filter.ss = params.ss || [];
+  filter.as2 = params.as2 || [];
+  filter.ss2 = params.ss2 || [];
+  filter.zz = params.zz || [];
+  filter.exasCondition = params.exasCondition || [];
+  filter.exasType = params.exasType || [];
   filter.filterText = params.filterText;
   return filter;
 }
@@ -90,8 +91,10 @@ class Form extends React.Component {
   }
   filterChange(type) {
     return (obj) => {
-      if(type == 'filterText'){
+      if(type === 'filterText'){
         CardCollecAction.filterChange( Object.assign(this.props.filter, {[type]: obj.target.value}) );
+      }else if(type === 'onlyHaifu'){
+        CardCollecAction.filterChange( Object.assign(this.props.filter, {[type]: obj.target.checked}) );
       }else{
         CardCollecAction.filterChange( Object.assign(this.props.filter, {[type]: obj}) );
       }
@@ -184,16 +187,20 @@ class Form extends React.Component {
         <TabPane tab='EXAS' key='4'>
           <Select
             placeholder="請選擇EXAS觸發條件" name="form-exasCondition-field" className='pure-u-1 pure-u-md-1'
-            value={this.props.filter.exasCondition} options={this.props.settings.exasCondition||[]}
+            value={this.props.filter.exasCondition} options={this.props.settings.EXAS_Condition||[]}
             multi={true} onChange={this.filterChange.bind(this)('exasCondition')}
           />
           <Select
             placeholder="請選擇EXAS技能類型" name="form-exasType-field" className='pure-u-1 pure-u-md-1'
-            value={this.props.filter.exasType} options={this.props.settings.exasType||[]}
+            value={this.props.filter.exasType} options={this.props.settings.EXAS_Type||[]}
             multi={true} onChange={this.filterChange.bind(this)('exasType')}
           />
         </TabPane>
         </Tabs>
+        <label htmlFor={'filter-onlyHaifu'}>
+          <input id={'filter-onlyHaifu'} type="checkbox" value={this.props.onlyHaifu} onChange={this.filterChange.bind(this)('onlyHaifu')} />
+          <span>限定配布卡（列表有紅色標記）</span>
+        </label>
     </div>);
   }
 }

@@ -31,6 +31,7 @@ body {
 .cardItem {
   padding-bottom: 10px;
   @include transition(background-color .5s .25s, color 1s);
+  position: relative;
   .imgFrame{
     height: 60px;
     white-space: nowrap;
@@ -55,6 +56,24 @@ body {
   }
   &.selected{
     background-color: rgb(255, 197, 99);
+  }
+  .infoFrame{
+    position: relative;
+    span.circleMark{
+      position: absolute;
+      color: red;
+      font-weight: 500;
+      border: 1px solid red;
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      left: 0px;
+      top: 0px;
+      font-size: 15px;
+    }
+    @media screen and (min-width: 640px) {
+      br{ display: none; }
+    }
   }
 }
 
@@ -127,6 +146,13 @@ body {
     margin: 2px;
     vertical-align: middle;
     margin-top: -10px;
+  }
+  span.legend{
+    &:before{
+      content: "|";
+      margin: 5px 5px 5px 5px;
+      vertical-align: super;
+    }
   }
   img{
     width: 22px;
