@@ -101,7 +101,7 @@ export const SKILL_AS2 = [
   { value: /防禦/, label: '防禦' },
   { value: /傷害減免/, label: '傷害減免' },
   { value: /_特效/, label: '特效', disabled: true },
-  { value: /屬性特效/, label: '屬性特效' },
+  { value: /屬性特效$/, label: '屬性特效' },
   { value: /種族特效/, label: '種族特效' },
   { value: /屬性特效連擊/, label: '屬性特效連擊' },
   { value: /_連擊/, label: '連擊', disabled: true },

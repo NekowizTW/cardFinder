@@ -41,9 +41,9 @@ function optionRestore(paramSource, options){
   filter.breeds = params.breeds || [];
   filter.ranks = params.ranks || [];
   filter.onlyHaifu = params.onlyHaifu || false;
-  filter.as = params.as || [];
+  filter.as = _.uniqBy(params.as, 'label') || [];
   filter.ss = params.ss || [];
-  filter.as2 = params.as2 || [];
+  filter.as2 = _.uniqBy(params.as2, 'label') || [];
   filter.ss2 = params.ss2 || [];
   filter.zz = params.zz || [];
   filter.exasCondition = params.exasCondition || [];

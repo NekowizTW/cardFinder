@@ -159,7 +159,8 @@ function queryObtainType(){
     {re: /精靈圖鑑\/以/, status: -1}, // 只紀錄清單
     {re: /精靈圖鑑\/友情轉蛋/, status: 0}, // 保留，用於區分其他轉蛋
     {re: /精靈圖鑑\/\S+轉蛋/, status: 2}, // 全頁都是轉蛋
-    {re: /精靈圖鑑\/主題限定/, status: 2} // 全頁都是轉蛋
+    {re: /精靈圖鑑\/主題限定/, status: 2}, // 全頁都是轉蛋
+    {re: /精靈圖鑑\/聖誕節/, status: 2} // 全頁都是轉蛋
   ];
   for(var ptr in data_source.obtainType){
     for(var key in data_source.obtainType[ptr].query.pages){
@@ -189,7 +190,7 @@ function queryObtainType(){
             type: (status >= 1 ? 'gacha' : 'haifu')
           });
         }
-        if(status !== 0 && line.indexOf('div') >= 0) status = 0;
+        if(status === 1 && line.indexOf('div') >= 0) status = 0;
         if(status === 0 && line.indexOf('轉蛋限定') >= 0) status = 1;
         if(status === 0 && line.indexOf('儲值') >= 0) status = 1;
         if(status === 0 && line.indexOf('圖鑑成就') >= 0) status = 1;
