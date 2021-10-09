@@ -1312,7 +1312,7 @@ const param_patterns = {
     'second': { token: '#second#', regex: '([0-2]?[0-9]|30)' } //0~30
 }
 
-module.exports = {
+export default {
   AS: AS_category,
   SS: SS_category,
   RegPatterns: param_patterns

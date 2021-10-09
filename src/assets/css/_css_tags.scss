@@ -1,0 +1,46 @@
+$as_list: (
+    ("" "AS_attack" "ASRushAttack" "AS_attribute_critical" "AS_attribute_critical_rush"),
+    ("AS_breed_critical" "AS_attack_all_split" "AS_zentai_power" "ASGamble" "ASAbsorption"),
+    ("AS_combo_power_up" "AS_dying_power_up" "AS_good_health_power_up" "AS_attack_enhance" "AS_anger"),
+    ("AS_quiz_attribute_count" "AS_deck_attribute_power_up" "AS_breed_enhance" "AS_breed_attack_up" "ASRecover"),
+    ("ASRecover" "AS_combo_cure" "AS_guard" "AS_attribute_enhance" "AS_breed_critical")
+);
+
+$exas_list: (
+    ("" "EXAS_Label_ActionReflection" "EXAS_Label_Attack" "EXAS_Label_Attack_Enhance" "EXAS_Label_Attribute_Enhance"),
+    ("EXAS_Label_ChainPlus" "EXAS_Label_ChangeAttackAll" "EXAS_Label_ChangeRush" "EXAS_Label_Combo_Power_Up" "EXAS_Label_DamageBlock"),
+    ("EXAS_Label_DyingPowerUp" "EXAS_Label_Elemens_SAttack" "EXAS_Label_Gamble_Attack" "EXAS_Label_Guard" "EXAS_Label_Penetrate"),
+    ("EXAS_Label_PositiveBuffCritical" "EXAS_Label_PursueAttack" "EXAS_Label_Recover" "EXAS_Label_Rush_Attack")
+);
+
+.teamAS > div {
+  width: 85px;
+  height: 81px;
+  display: inline-block;
+  &.as2Only {
+    color: red;
+  }
+}
+@each $part in $as_list {
+    $i: index($as_list, $part);
+    @each $as in $part {
+        $j: index($part, $as);
+        @if not ($i == 1 and $j == 1) {
+            .teamAS > .#{ $as } {
+                background: url('../images/as_list.png') (($j - 1) * -85px) (($i - 1) * -81px);
+            }
+        }
+    }
+}
+
+@each $part in $exas_list {
+    $i: index($exas_list, $part);
+    @each $exas in $part {
+        $j: index($part, $exas);
+        @if not ($i == 1 and $j == 1) {
+            .teamAS > .#{ $exas } {
+                background: url('../images/exas_list.png') (($j - 1) * -85px) (($i - 1) * -81px);
+            }
+        }
+    }
+}

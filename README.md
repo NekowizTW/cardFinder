@@ -1,4 +1,4 @@
-NekowizTW cardFinder
+NekowizTW cardFinder (based on Node v14)
 ====
 
 Introduction
@@ -22,9 +22,14 @@ Contribute
 
 若要支援此專案，請在[Wikia論壇](http://zh.nekowiz.wikia.com/d/f)上發表你的意願或是透過此專案的Issue提報來告知。
 
-此專案在資料同步處理部份不限制nodejs版本（備註），但如果要能完整執行此專案，請使用nodejs 7.10.1。
+此專案理想版本為nodejs 14，舊版本請至少支援EcmaScript 6。
 
-備註：資料同步處理部份只需要安裝lodash以及node-jsonp，透過執行``node cardBase.js``即可完成一次資料同步處理。但佈署上需要同時佈署到``master``以及``gh-pages``兩個branch上。
+備註：資料同步處理部份需要安裝以下三個套件，透過執行``node cardBase.js``即可完成一次資料同步處理。但佈署上需要同時佈署到``master``以及``gh-pages``兩個branch上。
+```
+lodash
+node-fetch
+listr2
+```
 
 Thanks
 ----

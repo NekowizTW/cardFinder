@@ -1,33 +1,17 @@
 // module
-var _ = require('lodash');
-var JSONP = require('node-jsonp');
-var fs = require('fs');
-var skill_parser = require('./data_scripts/skillparser/cardBase_skillParser.js')
-var skill_mapper = require('./data_scripts/skillmapper.js')
+import { URL, URLSearchParams } from 'url';
+import fs from 'fs';
 
-var data_deck = {
-  card: [],
-  Answer: [],
-  Special: [],
-  Answer2: [],
-  Special2: [],
-  Senzai: [],
-  EXAS: [],
-  exCard: [],
-  obtainType: []
-};
-var data_source = {
-  card: [],
-  Answer: {},
-  Special: {},
-  Answer2: {},
-  Special2: {},
-  EXAS: [],
-  Senzai: {},
-  obtainType: []
-}
-var urlBase = 'https://nekowiz.fandom.com/zh/api.php';
-var queryParamsGap = {
+import _ from 'lodash';
+import fetch from 'node-fetch';
+import { Listr } from 'listr2';
+
+
+import skill_parser from './data_scripts/skillparser/cardBase_skillParser.js';
+import skill_mapper from './data_scripts/skillmapper.js';
+
+const urlBase = 'https://nekowiz.fandom.com/zh/api.php';
+const queryParamsGap = {
     format: 'json',
     action: 'query',
     prop: 'revisions',
@@ -36,197 +20,285 @@ var queryParamsGap = {
     generator: 'allpages',
     gaplimit: '50'
 };
-var queryParamsP = {
+const queryParamsP = {
     format: 'json',
     action: 'query',
     prop: 'revisions',
     rvprop: 'content',
-    rvslots: 'main',
-    titles: ''
+    rvslots: 'main'
 };
-function writeJSON(filename, source){
-  fs.writeFile('./json/'+filename+'.json', JSON.stringify(source), function(err){
-    if(err){
-      return console.log(err);
-    }
+
+function writeJSON (filename, source) {
+  fs.writeFile(`./json/${filename}.json`, JSON.stringify(source), err => {
+    if (err) log.error(`Failed to write ${filename}.json: ${err}`);
   });
 }
-function querySourceC(start){
-    start = start || '';
-    var params = queryParamsGap;
-    params.gapprefix = 'Card/Data/';
-    params.gapnamespace = '10';
-    if(start.length > 0) params.gapfrom = start;
-    JSONP(urlBase, params, function(data){
-      var last = '';
-      if(typeof data['continue'] !== 'undefined') last = data['continue'].gapcontinue;
-      data_source.card.push(data);
-      if(data_source.card.length === data.length) console.log('Source progress: '+data_source.card.length);
-      if(last.length <= 0) return sourceCHandler();
-      else return querySourceC(last);
-    });
+
+async function querySourceCardPages (gapcontinue, rawPages, task) {
+  // setting up params
+  gapcontinue = gapcontinue || '';
+  const params = Object.assign({
+    'gapprefix': 'Card/Data/',
+    'gapnamespace': '10',
+    'gapfrom': gapcontinue
+  }, queryParamsGap);
+
+  // add param as url search, get data by fetch
+  let url = new URL(urlBase);
+  url.search = new URLSearchParams(params).toString();
+  const response = await fetch(url);
+  const data = await response.json();
+  rawPages.push(data);
+  task.output = `Fetched ${rawPages.length} requests.`;
+
+  // check if we need another query or not
+  if (data['continue'] === undefined) return rawPages;
+  else return querySourceCardPages(data['continue'].gapcontinue, rawPages, task);
 }
-function querySourceS(type){
-    var params = queryParamsP;
-    if(type === 'Senzai') params.titles = '模板:Senzai/Data';
-    else params.titles = '模板:Skill/'+type+'/Data';
-    JSONP(urlBase, params, function(data){
-      data_source[type] = data;
-      return sourceSHandler(type);
-    });
+
+async function querySourceSkillPage (type) {
+  // setting up params
+  const params = Object.assign({
+    'titles': type === 'Senzai' ? `模板:Senzai/Data` : `模板:Skill/${type}/Data`,
+  }, queryParamsP);
+
+  // add param as url search, get data by fetch
+  let url = new URL(urlBase);
+  url.search = new URLSearchParams(params).toString();
+  const response = await fetch(url);
+  const data = await response.json();
+
+  return data;
 }
-function querySourceH(start){
-    start = start || '';
-    var params = queryParamsGap;
-    params.gapprefix = '精靈圖鑑';
-    params.gapnamespace = 0;
-    if(start.length > 0) params.gapfrom = start;
-    JSONP(urlBase, params, function(data){
-      var last = '';
-      if(typeof data['continue'] !== 'undefined') last = data['continue'].gapcontinue;
-      data_source.obtainType.push(data);
-      if(data_source.card.length === data.length) console.log('Handbook progress: '+data_source.card.length);
-      if(last.length <= 0) return sourceHHandler();
-      else return querySourceH(last);
-    });
+
+async function querySourceHandbookPages (gapcontinue, rawPages, task) {
+  // setting up params
+  gapcontinue = gapcontinue || '0';
+  const params = Object.assign({
+    'gapprefix': '精靈圖鑑',
+    'gapnamespace': '0',
+    'gapfrom': gapcontinue
+  }, queryParamsGap);
+
+  // add param as url search, get data by fetch
+  let url = new URL(urlBase);
+  url.search = new URLSearchParams(params).toString();
+  const response = await fetch(url);
+  const data = await response.json();
+  rawPages.push(data);
+  task.output = `Fetched ${rawPages.length} requests.`;
+
+  // check if we need another query or not
+  if (data['continue'] === undefined) return rawPages;
+  else return querySourceHandbookPages(data['continue'].gapcontinue, rawPages, task);
 }
-function queryCard(){
-    var re = /\|(\w*)=(.*)/gmi;
-    for(var ptr in data_source.card){
-        for(var key in data_source.card[ptr].query.pages){
-            if(key == -1) continue;
-            var str = '', str_s, group = {}, m;
-            var id = data_source.card[ptr].query.pages[key].title.split('模板:Card/Data/')[1];
-            if(/^(Ex)?\d+(-\d+)?$/.test(id) == false) continue;
-            group.id = id;
-            str = data_source.card[ptr].query.pages[key].revisions[0]['slots']['main']['*'];
-            str_s = str.split('\n');
-            if(str_s[0] == '{{ Card/Data/{{{data}}}'){
-              for(var key in str_s){
-                while((m = re.exec(str_s[key]))!= null){
-                  //console.log(m[1], m[2])
-                  group[m[1]] = m[2].trim();
-                }
-              }
-              // add obtainType by Handbook
-              var obtainType = _.find(data_deck.obtainType, {id: group.id});
-              if(obtainType !== undefined) group.obtainType = obtainType;
-              if(id.indexOf('Ex') !== -1){
-                group.id = group.id.replace('Ex', '');
-                data_deck.exCard.push(group);
-              }else data_deck.card.push(group);
-            }
-            group = {};
-        };
-    }
-}
-function querySkill(type){
-    var re = /\|(\w*)=(.*)/gmi, re_h = /\|(.*)=\{\{/gmi;
-    for(var key in data_source[type].query.pages){
-      if(key == -1) continue;
-      var str = '', str_s, group = {}, m;
-      str = data_source[type].query.pages[key].revisions[0]['slots']['main']['*'];
-      str_s = str.split('\n');
-      var status = false, ptr = 0;
-      for(var key in str_s){
-        if(str_s[key].indexOf('{{ #switch: {{{data}}}') != -1 && !status){
-          status = true;
-          while((m = re_h.exec(str_s[key]))!= null){
-            group['name'] = m[1];
-          }
-        }else if(str_s[key].indexOf('}}') != -1 && status){
-          group['attrs'] = skill_parser.parse(type, group.info);
-          status = false;
-          ptr = 1;
-          data_deck[type].push(group);
-          group = {};
-        }else if(status){
-          while((m = re.exec(str_s[key]))!= null){
-            group[m[1]] = m[2];
-          }
-        }else{
-          continue;
-        }
+
+// 50 pages/response
+function queryCardsInPages (state, response) {
+  const re = /\|(\w*)=(.*)/gmi;
+
+  // locate page
+  const keys = Object.keys(response.query.pages);
+  keys.forEach(key => {
+    // check card id is valid or not.
+    const id = response.query.pages[key].title.split('模板:Card/Data/')[1];
+    if(/^(Ex)?\d+(-\d+)?$/.test(id) == false) return;
+
+    // prepare essential variables for matching
+    const content = response.query.pages[key].revisions[0].slots.main['*'];
+    const lines = content.split('\n');
+    let card = {}, m;
+    card.id = id;
+
+    // exception: first line is not source card data format
+    if (lines[0] !== '{{ Card/Data/{{{data}}}') return;
+    // use predefined regular expression to scan attributes
+    for (const idx in lines) {
+      while ((m = re.exec(lines[idx])) !== null) {
+        // console.log(`card attribute matching: ${m[1]}, ${m[2]}`);
+        card[m[1]] = m[2].trim();
       }
     }
+
+    // push exCard to another category
+    if (id.indexOf('Ex') !== -1) {
+      card.id = card.id.replace('Ex', '');
+      state.exCards.push(card);
+    } else state.cards.push(card);
+    state.task.output = `Parsed ${state.cards.length + state.exCards.length} cards.`
+  });
+  return state;
 }
-function queryObtainType(){
-  var re = /(Ex)?\d+/;
-  var specialPageList = [
-    {re: /精靈圖鑑\/(-|(繁中))?\d+/, status: -1}, // 精靈圖鑑區
-    {re: /精靈圖鑑\/進化開放/, status: -1}, // 進化開放區
-    {re: /精靈圖鑑\/尚無資料/, status: -1}, // 望無資料：資料部份缺失頁面
-    {re: /精靈圖鑑\/以/, status: -1}, // 只紀錄清單
-    {re: /精靈圖鑑\/友情轉蛋/, status: 0}, // 保留，用於區分其他轉蛋
-    {re: /精靈圖鑑\/\S+轉蛋/, status: 2}, // 全頁都是轉蛋
-    {re: /精靈圖鑑\/主題限定/, status: 2}, // 全頁都是轉蛋
-    {re: /精靈圖鑑\/聖誕節/, status: 2} // 全頁都是轉蛋
-  ];
-  for(var ptr in data_source.obtainType){
-    for(var key in data_source.obtainType[ptr].query.pages){
-      if(key == -1) continue;
-      var title = data_source.obtainType[ptr].query.pages[key].title;
-      var str = data_source.obtainType[ptr].query.pages[key].revisions[0]['slots']['main']['*'];
-      var status = 0;
-      if(title.indexOf('精靈圖鑑') === -1) continue;
-      // loop check the page is not in the ignoreTitleList
 
-      specialPageList.every(function(item){
-        if(item.re.test(title)) {
-          status = item.status;
-          return false;
-        }else return true;
-      })
-      if(status === -1) continue;
+// 1 page/response
+function querySkillsInPage (response, type, task) {
+  const re = /\|(\w*)=(.*)/gmi
+  const re_h = /\|(.*)=\{\{/gmi;
+  let skills = [];
 
-      var str_s = str.split('\n');
-      var rows = [];
-      str_s.forEach(function(line){
-        if(line.indexOf('Card/Data') >= 0){
-          var id = line.match(re);
-          rows.push({
-            id: id[0],
-            title: title.replace('精靈圖鑑/', ''),
-            type: (status >= 1 ? 'gacha' : 'haifu')
-          });
-        }
-        if(status === 1 && line.indexOf('div') >= 0) status = 0;
-        if(status === 0 && line.indexOf('轉蛋限定') >= 0) status = 1;
-        if(status === 0 && line.indexOf('儲值') >= 0) status = 1;
-        if(status === 0 && line.indexOf('圖鑑成就') >= 0) status = 1;
-      });
-      data_deck.obtainType = data_deck.obtainType.concat(rows);
+  // prepare essential variables for matching
+  const key = Object.keys(response.query.pages)[0];
+  const content = response.query.pages[key].revisions[0].slots.main['*'];
+  const lines = content.split('\n');
+  let skill = {}, m;      // data matching
+  let inBracket = false;  // bracket jumping
+
+  // parsing each line
+  for (const idx in lines) {
+    // type 1: When we are not in bracket, we found left bracket.
+    // Action: Get skill name.
+    if (!inBracket && lines[idx].indexOf('{{ #switch: {{{data}}}') !== -1) {
+      inBracket = true;
+      while ((m = re_h.exec(lines[idx])) !== null) {
+        skill.name = m[1];
+      }
     }
+    // type 2: When we are in bracket, we found right bracket.
+    // Action: Parse this skill with skill_parser.
+    else if (inBracket && lines[idx].indexOf('}}') !== -1) {
+      inBracket = false;
+      skill.attrs = skill_parser.parse(type, skill.info);
+      skills.push(skill);
+      task.output = `Parsed ${skills.length} skills.`
+      skill = {};
+    }
+    // type 3: When we are in bracket, we found some attributes.
+    // Action: Parse attributes for this skill.
+    else if (inBracket) {
+      while ((m = re.exec(lines[idx])) !== null) {
+        skill[m[1]] = m[2];
+      }
+    }
+    // type 4: We are not in bracket.
+    // Action: Do nothing.
+    else continue;
   }
-}
-function sourceCHandler(){
-    queryCard();
-    data_deck.card = _.sortBy(data_deck.card, function(card){
-      var id;
-      if(card.id.indexOf('-') !== -1){
-        var tmp = card.id.split('-').map(function(n) { return parseInt(n); });
-        id = tmp[0] + tmp[1] / 100;
-      }else id = parseInt(card.id);
-      if(id < 0) return (900000-id);
-      else return id;
-    });
-    writeJSON('exCard', data_deck.exCard);
-    writeJSON('cardData', skill_mapper(data_deck));
-}
-function sourceSHandler(type){
-    querySkill(type);
-    writeJSON(type+'Skill', data_deck[type]);
-}
-function sourceHHandler(){
-  queryObtainType();
-  writeJSON('obtainType', data_deck['obtainType']);
+
+  return skills;
 }
 
-querySourceS('Senzai');
-querySourceS('Answer');
-querySourceS('Special');
-querySourceS('Answer2');
-querySourceS('Special2');
-querySourceS('EXAS');
-querySourceH();
-querySourceC();
+// 50 pages/response
+function queryObtainType(state, response) {
+  const re = /(Ex)?\d+/;
+  // specialPageList has preceding setting, we should care ordering
+  const specialPageList = [
+    {re: /精靈圖鑑\/(-|(繁中))?\d+/, gachaType: -1}, // 精靈圖鑑區
+    {re: /精靈圖鑑\/進化開放/,        gachaType: -1}, // 進化開放區
+    {re: /精靈圖鑑\/尚無資料/,        gachaType: -1}, // 望無資料：資料部份缺失頁面
+    {re: /精靈圖鑑\/以/,             gachaType: -1}, // 只紀錄清單
+    {re: /精靈圖鑑\/友情轉蛋/,        gachaType: 0}, // 保留，用於區分其他轉蛋
+    {re: /精靈圖鑑\/\S+轉蛋/,        gachaType: 2}, // 全頁都是轉蛋
+    {re: /精靈圖鑑\/主題限定/,        gachaType: 2}, // 全頁都是轉蛋
+    {re: /精靈圖鑑\/聖誕節/,         gachaType: 2} // 全頁都是轉蛋
+  ];
+
+  // locate page
+  const keys = Object.keys(response.query.pages);
+  keys.forEach(key => {
+    // prepare essential variables for matching
+    const title = response.query.pages[key].title;
+    const content = response.query.pages[key].revisions[0].slots.main['*'];
+    const lines = content.split('\n');
+
+    // gachaType: detect seirei type
+    // [-1]: pages can be ignored
+    // [ 0]: pages has haifu only
+    // [ 1]: pages has haifu and gacha, block seperated
+    // [ 2]: pages has gacha only
+    let gachaType = 0;
+
+    // set gachaType. if this page can be ignored, ignore it.
+    if (title.indexOf('精靈圖鑑') === -1) return;
+    specialPageList.every(item => {
+      if (item.re.test(title)) {
+        gachaType = item.gachaType;
+        return false;
+      } else return true;
+    });
+    if (gachaType === -1) return;
+
+    for (const idx in lines) {
+      if (lines[idx].indexOf('Card/Data') >= 0) {
+        const id = lines[idx].match(re);
+        state.data.push({
+          id: id[0],
+          title: title.replace('精靈圖鑑/', ''),
+          type: (gachaType >= 1 ? 'gacha' : 'haifu')
+        });
+      }
+
+      // changing gachaType (first "if" is for auto folding)
+      if(gachaType === 1 && lines[idx].indexOf('div') >= 0) gachaType = 0;
+      if(gachaType === 0 && lines[idx].indexOf('轉蛋限定') >= 0) gachaType = 1;
+      if(gachaType === 0 && lines[idx].indexOf('儲值') >= 0) gachaType = 1;
+      if(gachaType === 0 && lines[idx].indexOf('圖鑑成就') >= 0) gachaType = 1;
+    }
+  });
+  return state;
+}
+
+let data_deck = {};
+
+const tasks = new Listr([
+  {
+    title: 'Fetching cards',
+    task: async (ctx, task) => {
+      data_deck.cards = await querySourceCardPages('', [], task)
+        .then(pages => {
+          let groups = pages.reduce(queryCardsInPages, { cards: [], exCards: [], task: task });
+          // seperate cards and exCards
+          let cards = groups.cards;
+          data_deck.exCards = groups.exCards;
+          // sorting by custom ascending
+          cards = _.sortBy(cards, card => {
+            let id = card.id;             // type: string
+            if (id.indexOf('-') !== -1) {
+              const tmp = id.split('-').map(n => parseInt(n));
+              id = tmp[0] + tmp[1] / 100; // type: integer
+            } else id = parseInt(id);     // type: integer
+
+            return (id < 0 ? (900000 - id) : id);
+          });
+          return cards;
+        });
+    }
+  },
+  {
+    title: 'Fetching Skills',
+    task: () => {
+      const typeOfSkills = ['Senzai', 'Answer', 'Special', 'Answer2', 'Special2', 'EXAS'];
+      return new Listr(typeOfSkills.map(skillType => {
+        return {
+          title: `Fetching ${skillType}`,
+          task: async (ctx, task) => {
+            await querySourceSkillPage(skillType)
+              .then(page => {
+                data_deck.skills = querySkillsInPage(page, skillType, task);
+              });
+          }
+        }
+      }));
+    }
+  },
+  {
+    title: 'Fetching obtainType',
+    task: async (ctx, task) => {
+      data_deck.obtainType = await querySourceHandbookPages('', [], task)
+        .then(pages => {
+          let group = pages.reduce(queryObtainType, { data: [], task: task });
+          let handbookItems = group.data;
+
+          // mapping to cards
+          handbookItems.forEach(handbookItem => {
+            const idx = _.findIndex(data_deck.cards, { 'id': handbookItem.id });
+            data_deck.cards[idx] = Object.assign({ ['obtainType']: handbookItem }, data_deck.cards[idx]);
+          })
+          return handbookItems;
+        });
+    }
+  },
+]);
+
+tasks.run().catch(err => {
+  console.error(err);
+});

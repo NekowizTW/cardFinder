@@ -1,0 +1,444 @@
+@import "mixins";
+@import "css_tags";
+
+$tabColor: rgba(66, 32, 16, 255);
+
+body {
+    background: #fafafa;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #333;
+}
+
+#app {
+  .pure-menu-list > .pure-menu-item{
+    cursor: pointer;
+  }
+}
+
+.rc-tabs .pure-menu-selected {
+  border-bottom: 5px solid rgb(66, 184, 221);
+  .pure-menu-link, .pure-menu-link:visited {
+    color: rgb(66, 184, 221);
+  }
+}
+
+#paging-nav{
+  text-align: center;
+  min-height: 4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .rc-pagination {
+    .rc-pagination-options-quick-jumper > input{
+      width: 4em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: inset 0 1px 3px #ddd;
+      box-sizing: border-box;
+      display: inline-block;
+      padding: .5em .6em;
+      vertical-align: middle;
+    }
+  }
+}
+
+.cardItem {
+  padding-bottom: 10px;
+  @include transition(background-color .5s .25s, color 1s);
+  position: relative;
+  .imgFrame{
+    height: 60px;
+    white-space: nowrap;
+    margin: 1em 0;
+    &:before{
+      content: "";
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+    }
+    img{
+      cursor: pointer;
+    }
+  }
+  img{
+    width: auto;
+    height: 60px;
+  }
+  > div{
+    margin-top: -2px;
+    text-align: center;
+  }
+  &.selected{
+    background-color: rgb(255, 197, 99);
+  }
+  .infoFrame{
+    position: relative;
+    span.circleMark{
+      position: absolute;
+      color: red;
+      font-weight: 500;
+      border: 1px solid red;
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      left: 0px;
+      top: 0px;
+      font-size: 15px;
+    }
+    @media screen and (min-width: 640px) {
+      br{ display: none; }
+    }
+  }
+}
+
+.teamItem{
+  .imgFrame{
+    position: relative;
+    .teamCardBadge {
+      margin: 0 0.1em;
+      padding: 0.3em 1em;
+      color: #fff;
+      background: #999;
+      font-size: 80%;
+      background: #5aba59;
+      position: absolute;
+      left: 0px;
+      bottom: -25px;
+    }
+    img{
+      cursor: pointer;
+    }
+  }
+  .numberData{
+    position: relative;
+    p{
+      padding-left: 20px;
+      margin: 4px auto;
+      &:before{
+        position: absolute;
+        left: 0;
+        width: 20px;
+        text-align: right;
+        font-size: 12px;
+      }
+    }
+    p:nth-child(1){
+      &:before{
+        content: "HP: ";
+      }
+    }
+    p:nth-child(2){
+      &:before{
+        content: "ATK: ";
+      }
+    }
+    p:nth-child(3){
+      &:before{
+        content: "Cost: ";
+      }
+    }
+  }
+}
+
+#CardCollecForm{
+  > div{
+    margin-top: 5px;
+    margin-bottom: 5px;
+  } 
+}
+
+.senzaiList{
+  text-align: left;
+  &:before{
+    content: "";
+    display: inline-block;
+    background-image: url("https://vignette3.wikia.nocookie.net/nekowiz/images/8/85/%E6%BD%9B%E5%9C%A8%E8%83%BD%E5%8A%9B.png/revision/latest?cb=20150702165104&path-prefix=zh");
+    background-repeat: no-repeat;
+    background-size: 60px;
+    width: 60px;
+    height: 22px;
+    margin: 2px;
+    vertical-align: middle;
+    margin-top: -10px;
+  }
+  span.legend{
+    &:before{
+      content: "|";
+      margin: 5px 5px 5px 5px;
+      vertical-align: super;
+    }
+  }
+  img{
+    width: 22px;
+    height: auto;
+  }
+}
+
+.senzaiList.Legend:before{
+  width: 134px;
+  height: 22px;
+  background-size: 128px;
+  background-image: url(https://vignette1.wikia.nocookie.net/nekowiz/images/5/50/%E5%82%B3%E5%A5%87%E5%9E%8B%E6%85%8B%E6%95%88%E6%9E%9C%E7%99%BC%E5%8B%95.png/revision/latest?cb=20160115125440&path-prefix=zh);
+}
+
+.cardDetail{
+  .card_img{
+    text-align: center;
+    img{
+      height: 300px;
+      width: 215px;
+    }
+  }
+  .small_img{
+    text-align: center;
+    .helper {
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+    }
+    img{
+      width: 60px;
+      height: auto;
+      vertical-align: middle;
+    }
+  }
+  ul{
+    li{
+      list-style-type: none;
+    }
+  }
+}
+
+/* Accordion styles */
+.tabs {
+  border-radius: 8px;
+  overflow: hidden;
+  // box-shadow: 0 4px 4px -2px rgba(0,0,0,0.5);
+}
+.tab {
+  width: 100%;
+  color: white;
+  overflow: hidden;
+  input {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+  }
+  &-label {
+    display: flex;
+    justify-content: space-between;
+    padding: 1em;
+    background: $tabColor;
+    font-weight: bold;
+    cursor: pointer;
+    /* Icon */
+    &:hover {
+      background: darken($tabColor, 10%);
+    }
+    &::after {
+      content: "\276F";
+      width: 1em;
+      height: 1em;
+      text-align: center;
+      transition: all .35s;
+    }
+  }
+  &-content {
+    max-height: 0;
+    padding: 0 1em;
+    color: black;
+    // background: white;
+    transition: all .35s ease-in-out;
+    overflow: hidden;
+  }
+  &-close {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1em;
+    font-size: 0.75em;
+    background: $tabColor;
+    cursor: pointer;
+    &:hover {
+      background: darken($tabColor, 10%);
+    }
+  }
+}
+
+// :checked
+input:checked {
+  + .tab-label {
+    background: darken($tabColor, 10%);
+    &::after {
+      transform: rotate(90deg);
+    }
+  }
+  ~ .tab-content {
+    max-height: 150vh;
+    padding: 1em;
+  }
+}
+
+$asColor: lighten(rgb(82, 0, 0), 25%);
+$ssColor: lighten(rgb(0, 32, 66), 25%);
+$exasColor: lighten(rgb(82, 0, 0), 25%);
+
+.skillData {
+  position: relative;
+  border: 3px black solid;
+  border-radius: 10px;
+  margin-top: 10px;
+  padding: 10px 5px 0px 5px;
+  &::before {
+    position: absolute;
+    color: white;
+    top: 0px;
+    left: 10px;
+    padding: 0px 10px 0px 10px;
+    font-size: small;
+  }
+  &.as {
+    border-color: $asColor;
+    &::before {
+      background-color: $asColor;
+      content: "AS";
+    }
+  }
+  &.ss {
+    border-color: $ssColor;
+    &::before {
+      background-color: $ssColor;
+      content: "SS";
+    }
+  }
+  &.exas {
+    border-color: $exasColor;
+    &::before {
+      background-color: $exasColor;
+      content: "EXAS";
+    }
+  }
+  span {
+    float: right;
+    display: block;
+  }
+}
+
+.hide{
+  display: none;
+}
+
+.button-success,
+.button-error,
+.button-warning,
+.button-secondary {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.button-success {
+    background: rgb(28, 184, 65); /* this is a green */
+}
+
+.button-error {
+    background: rgb(202, 60, 60); /* this is a maroon */
+}
+
+.button-warning {
+    background: rgb(223, 117, 20); /* this is an orange */
+}
+
+.button-secondary {
+    background: rgb(66, 184, 221); /* this is a light blue */
+}
+
+.button-xsmall {
+    font-size: 70%;
+}
+
+.button-small {
+    font-size: 85%;
+}
+
+.button-large {
+    font-size: 110%;
+}
+
+.button-xlarge {
+    font-size: 125%;
+}
+
+.self_card img{
+  border: 5px rgba(0,255,0,1) solid;
+  background: rgba(0,255,0,0.5);
+}
+
+.evoSpace{
+  width: 0;
+  height: 0;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: solid;
+  border-width: 20px 25px 0 25px;
+  border-color: transparent transparent transparent transparent;
+  &.down-arrow{
+    border-color: #8222d1 transparent transparent transparent;
+  }
+}
+.evoBak, .evoBnc, .evoFwd div[class^="pure-u-1-"]{
+  background-color: lighten($tabColor, 70%);
+}
+
+.selectList {
+  @include transition(height, .5s ease-out);
+  @include transition(opacity, .5s ease-out);
+  height: 288px;
+  opacity: 1;
+}
+.toggled {
+  height: 0px;
+  opacity: 0;
+}
+
+.reset_btn{
+  span{
+    font-size: 0px;
+  }
+  i{
+    font-size: 100%;
+  }
+  @media screen and (min-width: 960px){
+    span{
+      font-size: 100%;
+    }
+    i{
+      font-size: 0px;
+    }
+  }
+}
+
+.cardListOptions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .cardListOptionsTag {
+    text-align: right;
+    vertical-align: sub;
+  }
+}
+
+.teamCardDetail{
+  overflow: hidden;
+  max-height: 0px;
+  border: 1px #CCC solid;
+  background-color: #EEE;
+  @include transition-property(max-height);
+  @include transition-duration(.3s);
+  &.toggle{
+    max-height: 400px;
+  }
+}
+
+.footer {
+  text-align: center;
+}
