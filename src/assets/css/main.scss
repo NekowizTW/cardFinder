@@ -42,6 +42,13 @@ body {
   }
 }
 
+.center-middle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 .cardItem {
   padding-bottom: 10px;
   @include transition(background-color .5s .25s, color 1s);
@@ -109,6 +116,19 @@ body {
       cursor: pointer;
     }
   }
+  .exSlot{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: baseline;
+    img {
+      padding-right: 2em;
+      vertical-align: middle;
+    }
+    span {
+      font-size: 0.9em;
+    }
+  }
   .numberData{
     position: relative;
     p{
@@ -136,6 +156,76 @@ body {
       &:before{
         content: "Cost: ";
       }
+    }
+    p:nth-child(4){
+      &:before{
+        content: "CD(F): ";
+      }
+    }
+    p:nth-child(5){
+      &:before{
+        content: "CD(S): ";
+      }
+    }
+  }
+  .skillType{
+    p{
+      padding-left: 5em;
+      margin: 4px auto;
+      &:before{
+        left: 0;
+        width: 5em;
+        text-align: right;
+        font-size: 12px;
+      }
+    }
+    p:nth-child(1){
+      &:before{
+        content: "SS: ";
+      }
+    }
+    p:nth-child(2){
+      &:before{
+        content: "SS2: ";
+      }
+    }
+    p:nth-child(3){
+      &:before{
+        content: "EXAS條件: ";
+      }
+    }
+  }
+  .btns{
+    display: flex;
+    justify-content: row;
+    align-items: center;
+  }
+}
+
+.teamCardDetail.toggle .skillType{
+  p::before {
+    position: absolute;
+  }
+}
+
+.leaderEX{
+  text-align: left;
+  p{
+    margin: 4px auto;
+    &:before{
+      left: 0;
+      width: 1em;
+      text-align: right;
+    }
+  }
+  p:nth-child(1){
+    &:before{
+      content: "條件: ";
+    }
+  }
+  p:nth-child(2){
+    &:before{
+      content: "技能: ";
     }
   }
 }

@@ -7,6 +7,10 @@ const Store = createStore(Reducer, {
   SourceCards: [],
   //Source Senzai data
   SourceSenzai: [],
+  //Source ex card data
+  SourceEXCards: [],
+  //Source leader ex card data
+  SourceLeaderEXCards: [],
   //Source card skill categories, should not change
   SourceFilterSettings: {},
   //Current list card data
@@ -18,9 +22,15 @@ const Store = createStore(Reducer, {
   //Current selected and teamup cards
   TeamCards: {
     selected: [],
-    team: [],
-    helper: -1,
-    cnt: 0
+    leaderEX: '',
+    team: [
+      { id: -1, mana: 0, ex: [] },
+      { id: -1, mana: 0, ex: [] },
+      { id: -1, mana: 0, ex: [] },
+      { id: -1, mana: 0, ex: [] },
+      { id: -1, mana: 0, ex: [] }
+    ],
+    helper: { id: -1, mana: 0, ex: [] }
   }
 });
 

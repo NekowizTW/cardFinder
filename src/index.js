@@ -5,6 +5,7 @@ import App from './App.js'
 
 import './assets/css/react-select.scss'
 import './assets/css/rc-pagination.scss'
+import './assets/css/rc-input-number.scss'
 import './assets/css/side-menu.scss'
 
 ReactDOM.render(<App />, document.getElementById('root'))

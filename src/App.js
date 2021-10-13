@@ -1,8 +1,12 @@
-import React    from 'react'
-import url      from 'url'
-import location from 'location-href'
-import _        from 'lodash'
-import { HashRouter, Route, Link, Switch, Redirect } from 'react-router-dom'
+import React         from 'react'
+import url           from 'url'
+import location      from 'location-href'
+import _             from 'lodash'
+import { HashRouter,
+         Switch,
+         Route,
+         Link,
+         Redirect }  from 'react-router-dom'
 
 import Action from './Redux/Action.js'
 import CardSnap from './Helper/CardSnap.js'
@@ -13,18 +17,9 @@ import TeamCollec from './Container/TeamCollec.Container.js'
 
 import './assets/css/main.scss'
 
-const url_parse = url.parse(location(), true);
-const path = url_parse.href.replace(url_parse.hash, '');
-const pageState = url_parse.hash;
-
-class NoMatch extends React.Component{
-  constructor () {
-    super();
-  }
-  render () {
-    return <Redirect to='/' />
-  }
-}
+const url_parse = url.parse(location(), true)
+const path = url_parse.href.replace(url_parse.hash, '')
+const pageState = url_parse.hash
 
 class App extends React.Component {
   constructor(props) {
@@ -34,11 +29,13 @@ class App extends React.Component {
 
   componentDidMount () {
     const _this = this
-    CardSnap(path)
-      .then((data) => {
+    CardSnap(path, ['卡片資料', '結晶', '大結晶'])
+      .then(dataArr => {
         Action.initCardData({
-          card: data.card,
-          senzai: data.Senzai
+          card: dataArr[0].card,
+          senzai: dataArr[0].Senzai,
+          exCard: dataArr[1],
+          leaderEXCards: dataArr[2]
         })
         _this.setState({ isLoading: false })
       })
@@ -50,11 +47,13 @@ class App extends React.Component {
     else
       return (
         <HashRouter>
-          <Route exact path='/' component={CardCollec} />
-          <Route exact path='/card/:cardId' component={CardDetail} />
-          <Route exact path='/team/form' component={TeamCollec}/>
-          <Route exact path='/team/group/:hex' component={TeamCollec}/>
-          <Route path='*' component={NoMatch} />
+          <Switch>
+            <Route exact path='/' component={CardCollec} />
+            <Route path='/card/:cardId' component={CardDetail} />
+            <Route exact path='/team' component={TeamCollec}/>
+            <Route path='/team/:code' component={TeamCollec}/>
+            <Redirect from="*" to="/" />
+          </Switch>
         </HashRouter>
       );
   }

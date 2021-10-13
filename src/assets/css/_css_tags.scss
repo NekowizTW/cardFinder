@@ -21,6 +21,7 @@ $exas_list: (
     color: red;
   }
 }
+
 @each $part in $as_list {
     $i: index($as_list, $part);
     @each $as in $part {
@@ -39,7 +40,7 @@ $exas_list: (
         $j: index($part, $exas);
         @if not ($i == 1 and $j == 1) {
             .teamAS > .#{ $exas } {
-                background: url('../images/exas_list.png') (($j - 1) * -85px) (($i - 1) * -81px);
+                background: url('../images/exas_list.png') (($j - 1) * -85px) (($i - 1) * -88px);
             }
         }
     }

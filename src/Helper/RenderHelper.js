@@ -1,7 +1,15 @@
-import CryptoJS from 'crypto-js';
-import _ 		from 'lodash';
+import CryptoJS from 'crypto-js'
+import _ 		    from 'lodash'
 
-import * as constOptions from '../data_options.js';
+import * as constOptions from './DataOptions.js'
+
+export function findByAttribute (collection, key, value) {
+  return _.find(collection, { [key]: value })
+}
+
+export function filterByObject (collection, obj) {
+  return _.filter(collection, obj)
+}
 
 export function tw_filenameFix (filename) {
   return String(filename).charAt(0).toUpperCase() + String(filename).slice(1)
@@ -9,7 +17,7 @@ export function tw_filenameFix (filename) {
 
 export function linkGenerator (filename) {
   let rand = Math.floor((Math.random() * 4) + 1)
-  let md5name = CryptoJS.MD5(filename).toString(CryptoJS.enc.Hex);
+  let md5name = CryptoJS.MD5(filename).toString(CryptoJS.enc.Hex)
   return `https://vignette${rand}.wikia.nocookie.net/nekowiz/images/`
   			+ `${md5name.charAt(0)}/${md5name.charAt(0)}${md5name.charAt(1)}/`
   			+ `${filename}/revision/latest?path-prefix=zh`
@@ -34,21 +42,25 @@ export function reverseOptionsGenerator (card, property, delimiter = undefined) 
   let options = optionsMap[property]
   if (property.indexOf('type') >= 0)
   	options = options.reduce((collection, item) => {
-      if (Object.keys(item).indexOf('options') >= 0) collection.push(...item.options);
-      else collection.push(item);
-      return collection;
-    }, []);
+      if (Object.keys(item).indexOf('options') >= 0) collection.push(...item.options)
+      else collection.push(item)
+      return collection
+    }, [])
 
   if (delimiter !== undefined) {
-    keys = keys.split(delimiter);
+    keys = keys.split(delimiter)
     res = options.filter(o => {
       const regexTestKey = (key) => {
-        return o.value.test(key);
+        return o.value.test(key)
       }
-      return keys.some(regexTestKey);
-    });
+      return keys.some(regexTestKey)
+    })
   } else {
-    res = _.filter(options, { 'value': keys });
+    res = _.filter(options, { 'value': keys })
   }
-  return res;
+  return res
+}
+
+export function uniqArray (arr) {
+  return _.uniq(arr)
 }

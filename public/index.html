@@ -7,23 +7,37 @@
     <title>nekowizTW-cardCollec</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/2.0.6/pure-min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/2.0.6/grids-responsive.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
 </head>
 
 <body>
-    <!--[if lt IE 8]><p class="browsehappy">You are using an <strong>outdated</strong> browser.
-Please <a href="http://browsehappy.com/">upgrade your browser</a>
-to improve your experience.</p><![endif]-->
+    <!--[if lt IE 8]>
+    <p class="browsehappy">
+        You are using an <strong>outdated</strong> browser.
+        Please <a href="http://browsehappy.com/">upgrade your browser</a>to improve your experience.
+    </p>
+    <![endif]-->
     <div id="layout"><a class="menu-link" id="menuLink" href="#menu">
-            <!-- Hamburger icon--><span></span>
+        <!-- Hamburger icon-->
+        <span></span>
         </a>
         <div id="menu">
             <div class="pure-menu"><a class="pure-menu-heading" href="http://nekowiztw.github.io/">NekowizTW</a>
                 <ul class="pure-menu-list">
-                    <li class="pure-menu-item"><a class="pure-menu-link" href="http://zh.nekowiz.wikia.com">黑貓wikia</a></li>
-                    <li class="pure-menu-item"><a class="pure-menu-link" href="https://github.com/NekowizTW/cardFinder">專案地址</a></li>
+                    <li class="pure-menu-item">
+                        <a class="pure-menu-link" href="#/">卡片搜尋</a>
+                    </li>
+                    <li class="pure-menu-item">
+                        <a class="pure-menu-link" href="#/team/">隊伍生成</a>
+                    </li>
+                    <li class="pure-menu-item">
+                        <a class="pure-menu-link" href="http://zh.nekowiz.wikia.com">黑貓wikia <i class="fas fa-external-link-alt"></i></a>
+                    </li>
+                    <li class="pure-menu-item">
+                        <a class="pure-menu-link" href="https://github.com/NekowizTW/cardFinder">專案地址 <i class="fas fa-external-link-alt"></i></a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -36,6 +50,20 @@ to improve your experience.</p><![endif]-->
             </div>
             <div class="footer">
                 <div class="legal pure-g">
+                    <div class="pure-u-1">
+                        <p id="lastUpdateTime" class="legal-license"></p>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const url = 'https://api.github.com/repos/NekowizTW/cardFinder/branches/master'
+                                fetch(url)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        const lastUpdate = new Date(data.commit.commit.author.date || '').toLocaleDateString('zh-TW')
+                                        document.querySelector('#lastUpdateTime').innerText = `最後更新日期：${lastUpdate}`
+                                    })
+                            });
+                        </script>
+                    </div>
                     <div class="pure-u-1">
                         <p class="legal-license">本專案使用 CC-BY-SA 對原始碼授權，工具部份維持原來授權方式授權，資料來源遵照wikia授權</p>
                     </div>

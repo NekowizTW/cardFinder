@@ -265,6 +265,8 @@ export default function Reducer (state, action) {
         {
           SourceCards: action.payload.card,
           SourceSenzai: action.payload.senzai,
+          SourceEXCards: action.payload.exCard,
+          SourceLeaderEXCards: action.payload.leaderEXCards,
           SourceFilterSettings: assign(constOptions)
         }, 
         getCardSubset(action.payload.card, state.ListFiltter, state.ListSettings)

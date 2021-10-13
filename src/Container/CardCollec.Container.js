@@ -3,29 +3,47 @@ import React from 'react'
 import Store  from '../Redux/Store.js'
 import Action from '../Redux/Action.js'
 
+import Form from './CardCollec/Form.react.js'
+import List from './CardCollec/List.react.js'
+
 class CardCollec extends React.Component {
   constructor (props) {
     super(props);
-    const unsubscribe = Store.subscribe(() => {})
-    this.state = { cnt: 0, unsubscribe: unsubscribe }
+    const _this = this
+    const unsubscribe = Store.subscribe(() => {
+      _this.setState({
+        // Form.react.js
+        filter: Store.getState().ListFiltter,
+        filterSettings: Store.getState().SourceFilterSettings,
+        // List.react.js
+        list: Store.getState().ListCards,
+        settings: Store.getState().ListSettings,
+        team: Store.getState().TeamCards
+      })
+    })
+    this.state = { unsubscribe: unsubscribe }
   }
 
   static getDerivedStateFromProps (props, state) {
     return { 
-      //Form.react.js
+      // Form.react.js
       filter: Store.getState().ListFiltter,
       filterSettings: Store.getState().SourceFilterSettings,
-      //List.react.js
+      // List.react.js
       list: Store.getState().ListCards,
-      settings: Store.getState().ListSettings
+      settings: Store.getState().ListSettings,
+      team: Store.getState().TeamCards
     }
   }
 
   render () {
-    console.log(this.state)
     return <div>
-      <h2>CardCollec</h2>
-      <button onClick={() => {this.setState({ cnt: this.state.cnt + 1 })}}>{this.state.cnt}</button>
+      <Form query={this.props.location.query}
+            filter={this.state.filter}
+            settings={this.state.filterSettings} />
+      <List list={this.state.list}
+            settings={this.state.settings}
+            team={this.state.team} />
     </div>
   }
 }

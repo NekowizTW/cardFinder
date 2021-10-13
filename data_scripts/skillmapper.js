@@ -18,19 +18,19 @@ function cardDataParse (data) {
     };
 
     // card evolution assets to Array
-    for (const i = 1; i <= 8; i++) {
+    for (let i = 1; i <= 8; i++) {
       if (dataExist(res.cards[index]['evo_'+i])) {
         card.evoArr.push(res.cards[index]['evo_'+i]);
       } else break;
     }
     // card senzai to Array
-    for (const i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 10; i++) {
       if (dataExist(res.cards[index]['senzai_'+i])) {
         card.senzaiArr.push(res.cards[index]['senzai_'+i]);
       } else break;
     }
     // card senzai legend to Array
-    for (const i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 4; i++) {
       if (dataExist(res.cards[index]['senzaiL_'+i])) {
         card.senzaiLArr.push(res.cards[index]['senzaiL_'+i]);
       } else break;

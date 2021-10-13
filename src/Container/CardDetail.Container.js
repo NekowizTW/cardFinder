@@ -5,6 +5,8 @@ import Action from '../Redux/Action.js'
 
 import { getCardById } from '../Helper/StoreHelper.js'
 
+import Card from './CardDetail/Card.react.js'
+
 class CardDetail extends React.Component {
   constructor (props) {
     super(props)
@@ -16,7 +18,7 @@ class CardDetail extends React.Component {
 
   static getDerivedStateFromProps (props, state) {
     const cardId = props.match.params.cardId || '0'
-    const card   = getCardById(Store.getState(), cardId)
+    const card   = getCardById(cardId)
     return {
       cardId: cardId,
       card: card
@@ -24,9 +26,8 @@ class CardDetail extends React.Component {
   }
 
   render () {
-    console.log(this.state)
     return <div>
-      CardDetail
+      <Card cardId={this.state.cardId} data={this.state.card} />
     </div>
   }
 }
