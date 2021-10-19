@@ -24,11 +24,11 @@ const Store = createStore(Reducer, {
     selected: [],
     leaderEX: '',
     team: [
-      { id: -1, exas: true, szSlot: 10, mana: 0, ex: [] },
-      { id: -1, exas: true, szSlot: 10, mana: 0, ex: [] },
-      { id: -1, exas: true, szSlot: 10, mana: 0, ex: [] },
-      { id: -1, exas: true, szSlot: 10, mana: 0, ex: [] },
-      { id: -1, exas: true, szSlot: 10, mana: 0, ex: [] }
+      { id: -1, exas: false, szSlot: 10, mana: 0, ex: [] },
+      { id: -1, exas: false, szSlot: 10, mana: 0, ex: [] },
+      { id: -1, exas: false, szSlot: 10, mana: 0, ex: [] },
+      { id: -1, exas: false, szSlot: 10, mana: 0, ex: [] },
+      { id: -1, exas: false, szSlot: 10, mana: 0, ex: [] }
     ],
     helper: { id: -1, szSlot: 10, mana: 0, ex: [] }
   }

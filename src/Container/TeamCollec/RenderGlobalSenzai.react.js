@@ -120,15 +120,15 @@ class RenderGlobalSenzai extends React.Component {
               {noteObj.questionCategoryUp[category].fmt}
             </li>
           })}
-          {flags.questionPropUp['火'] !== 0 && <li key={`questionPropUp_火`}>
+          {flags.questionPropUp !== undefined && flags.questionPropUp['火'] !== 0 && <li key={`questionPropUp_火`}>
             <img src={linkGenerator(noteObj.questionPropUp['火'].image)} style={{ verticalAlign: 'middle' }} />
             {noteObj.questionPropUp['火'].fmt}：{flags.questionPropUp['火']}
           </li>}
-          {flags.questionPropUp['水'] !== 0 && <li key={`questionPropUp_水`}>
+          {flags.questionPropUp !== undefined && flags.questionPropUp['水'] !== 0 && <li key={`questionPropUp_水`}>
             <img src={linkGenerator(noteObj.questionPropUp['水'].image)} style={{ verticalAlign: 'middle' }} />
             {noteObj.questionPropUp['水'].fmt}：{flags.questionPropUp['水']}
           </li>}
-          {flags.questionPropUp['雷'] !== 0 && <li key={`questionPropUp_雷`}>
+          {flags.questionPropUp !== undefined && flags.questionPropUp['雷'] !== 0 && <li key={`questionPropUp_雷`}>
             <img src={linkGenerator(noteObj.questionPropUp['雷'].image)} style={{ verticalAlign: 'middle' }} />
             {noteObj.questionPropUp['雷'].fmt}：{flags.questionPropUp['雷']}
           </li>}
