@@ -1,10 +1,11 @@
-import React      from 'react'
-import _          from 'lodash'
+import React       from 'react'
+import _           from 'lodash'
 import { IndexLink,
-         Link }   from 'react-router'
-import TextFilter from 'react-text-filter'
-import Tabs, { TabPane }   from 'rc-tabs'
-import Select     from 'react-select'
+         Link }    from 'react-router'
+import TextFilter  from 'react-text-filter'
+import Tabs,
+       { TabPane } from 'rc-tabs'
+import Select      from 'react-select'
 
 import Action from '../../Redux/Action.js'
 
@@ -39,14 +40,11 @@ function optionRestore (paramSource, options) {
 
 class Form extends React.Component {
   constructor(props) {
-    super(props);
-    this.state = { tabIndex: '0' };
-  }
-
-  static getDerivedStateFromProps (props, state) {
-    if (!_.isEmpty(props.query))
+    super(props)
+    if (!_.isEmpty(props.query)){
       Action.filterChange( optionRestore(props.query, props.settings) )
-    return {}
+    }
+    this.state = { tabIndex: '0' }
   }
 
   tabIndexChange (e) {
@@ -87,7 +85,7 @@ class Form extends React.Component {
         activeKey={this.state.tabIndex}
         onChange={this.tabIndexChange.bind(this)}
         renderTabBar={(props, DefaultTabBar) => {
-          return <div className={'pure-menu pure-menu-horizontal'}>
+          return <div className={'pure-menu pure-menu-horizontal pure-menu-scrollable'}>
             <ul className={'pure-menu-list'}>
               {
                 props.panes.map(pane => {

@@ -1,5 +1,7 @@
-import React      from 'react'
-import { Link }   from 'react-router-dom'
+import React       from 'react'
+import { Link }    from 'react-router-dom'
+import Tabs,
+       { TabPane } from 'rc-tabs'
 
 import EvoCard from './EvoCard.react.js'
 
@@ -13,15 +15,22 @@ const outerURL = `https://nekowiz.fandom.com/zh/wiki/卡片資料`;
 class Card extends React.Component {
   constructor (props) {
     super(props)
+    this.state = {
+      tabIndex: '0'
+    }
+  }
+
+  tabIndexChange (e) {
+    this.setState({ tabIndex: e })
   }
 
   senzaiDetails (senzaiName, i) {
     const senzai = getSenzaiByName(senzaiName)
     const key    = senzai.filename.split(".")[0]
-    return <li key={`senzai-${i}-name-${key}`}>
-      <img src={linkGenerator(senzai.filename)} key={`senzai-${i}-img-${key}`} />
-      {senzai.name}: {senzai.info}
-    </li>
+    return <tr key={`senzai-${i}-name-${key}`}>
+      <td><img src={linkGenerator(senzai.filename)} key={`senzai-${i}-img-${key}`} /></td>
+      <td><b>{senzai.name}</b><br />{senzai.info}</td>
+    </tr>
   }
 
   render () {
@@ -50,18 +59,19 @@ class Card extends React.Component {
               <h3>No. {data.id}<br /><span style={{'fontSize': 'x-large'}}>{data.name}</span></h3>
             </div>
           </div>
-          <div className={'senzaiList'} key={`card-${data.id}-senzaiArr`}>
-            {data.senzaiArr.map((senzaiName, i) => {
-              const senzai = getSenzaiByName(senzaiName);
-              return <img src={linkGenerator(senzai.filename)} key={`card-${data.id}-senzai-${i}`} />;
-            })}
-            {data.senzaiLArr.length !== 0 && <span style={{'width': '64px', 'display': 'inline-block'}}></span>}
-            {data.senzaiLArr.length !== 0 && 
-              data.senzaiLArr.map((senzaiName, i) => {
+          <div className={'pure-g'}>
+            <div className={'senzaiList'} key={`card-${data.id}-senzaiArr`}>
+              {data.senzaiArr.map((senzaiName, i) => {
                 const senzai = getSenzaiByName(senzaiName);
                 return <img src={linkGenerator(senzai.filename)} key={`card-${data.id}-senzai-${i}`} />;
-              })
-            }
+              })}
+              {data.senzaiLArr.length !== 0 && <span className={'legend'}>
+                {data.senzaiLArr.map((senzaiName, i) => {
+                  const senzai = getSenzaiByName(senzaiName);
+                  return <img src={linkGenerator(senzai.filename)} key={`card-${data.id}-senzai-${i}`} />;
+                })}
+              </span>}
+            </div>
           </div>
           <table className={'pure-table pure-table-horizontal'} style={{'width': '90%'}}>
             <tbody>
@@ -73,69 +83,78 @@ class Card extends React.Component {
             </tbody>
           </table>
         </div>
-        <div className={'pure-u-1 pure-u-md-3-5 detailTab'}>
-          <div className={'tabs'}>
-            <div className={'tab'}>
-              <input type="radio" id="rd1" name="rd" defaultChecked />
-              <label className={'tab-label'} htmlFor="rd1">一般型態</label>
-              <div className={'tab-content'}>
-                <div className={'skillData as'}>
-                  <p><b>{data.asData.name}</b> <span>{data.asData.type}</span></p>
-                  <p>{data.asData.info}</p>
-                </div>
-                <div className={'skillData ss'}>
-                  <p><b>{data.ssData.name}({data.ssData.turn})</b> <span>{data.ssData.type}</span></p>
-                  <p>{data.ssData.info}</p>
-                </div>
-                { data.EXASData && 
-                  <div className={'skillData exas'}>
-                    <p><b>【傳奇型態條件】</b></p>
-                    <p>{data.EXASData.condition}</p>
-                  </div>
-                }
+        <div className={'pure-u-1 pure-u-md-3-5'}>
+          <Tabs
+            activeKey={this.state.tabIndex}
+            onChange={this.tabIndexChange.bind(this)}
+            renderTabBar={(props, DefaultTabBar) => {
+              return <div className={'pure-menu pure-menu-horizontal pure-menu-scrollable'}>
+                <ul className={'pure-menu-list'}>
+                  {
+                    props.panes.map(pane => {
+                      const itemClass = `pure-menu-item ${props.activeKey === pane.key ? 'pure-menu-selected' : ''}`
+                      return <li className={itemClass} key={pane.key}>
+                        <a className={'pure-menu-link'} onClick={(a) => {
+                          this.tabIndexChange(pane.key)
+                        }}>{pane.props.tab}</a>
+                      </li>
+                    })
+                  }
+                </ul>
               </div>
-            </div>
-            <div className={'tab'}>
-              <input type="radio" id="rd2" name="rd" />
-              <label className={'tab-label'} htmlFor="rd2">傳奇型態</label>
-              <div className={'tab-content'}>
-                <div className={'skillData as'}>
-                  <p><b>{data.as2Data.name}</b> <span>{data.as2Data.type}</span></p>
-                  <p>{data.as2Data.info}</p>
-                </div>
-                <div className={'skillData ss'}>
-                  <p><b>{data.ss2Data.name}({data.ss2Data.turn})</b> <span>{data.ss2Data.type}</span></p>
-                  <p>{data.ss2Data.info}</p>
-                </div>
-                { data.EXASData && 
-                  <div className={'skillData exas'}>
-                    <p><b>&nbsp;</b> <span>{data.EXASData.type}</span></p>
-                    <p>{data.EXASData.info}</p>
-                  </div>
-                }
+            }}
+          >
+            <TabPane tab='一般型態' key='0'>
+              <div className={'skillData as'}>
+                <p><b>{data.asData.name}</b> <span>{data.asData.type}</span></p>
+                <p>{data.asData.info}</p>
               </div>
-            </div>
-            <div className={'tab'}>
-              <input type="radio" id="rd3" name="rd" />
-              <label className={'tab-label'} htmlFor="rd3">潛在能力</label>
-              <div className={'tab-content'}>
-                <ul className={'senzaiList'}>
+              <div className={'skillData ss'}>
+                <p><b>{data.ssData.name}({data.ssData.turn})</b> <span>{data.ssData.type}</span></p>
+                <p>{data.ssData.info}</p>
+              </div>
+              { data.EXASData && 
+                <div className={'skillData exas'}>
+                  <p><b>【傳奇型態條件】</b></p>
+                  <p>{data.EXASData.condition}</p>
+                </div>
+              }
+            </TabPane>
+            <TabPane tab='傳奇型態' key='1'>
+              <div className={'skillData as'}>
+                <p><b>{data.as2Data.name}</b> <span>{data.as2Data.type}</span></p>
+                <p>{data.as2Data.info}</p>
+              </div>
+              <div className={'skillData ss'}>
+                <p><b>{data.ss2Data.name}({data.ss2Data.turn})</b> <span>{data.ss2Data.type}</span></p>
+                <p>{data.ss2Data.info}</p>
+              </div>
+              { data.EXASData && 
+                <div className={'skillData exas'}>
+                  <p><b>&nbsp;</b> <span>{data.EXASData.type}</span></p>
+                  <p>{data.EXASData.info}</p>
+                </div>
+              }
+            </TabPane>
+            <TabPane tab='潛在能力' key='2'>
+              <div className={'senzaiList'}></div>
+              <table style={{ border: 'none' }}>
+                <tbody>
                   {data.senzaiArr.map(this.senzaiDetails)}
-                </ul>
-                <hr />
-                <ul className={'senzaiList Legend'}>
+                </tbody>
+              </table>
+              <hr />
+              <div className={'senzaiList Legend'}></div>
+              <table style={{ border: 'none' }}>
+                <tbody>
                   {data.senzaiLArr.map(this.senzaiDetails)}
-                </ul>
-              </div>
-            </div>
-            <div className={'tab'}>
-              <input type="radio" id="rd4" name="rd" />
-              <label className={'tab-label'} htmlFor="rd4">卡片進化途徑</label>
-              <div className={'tab-content'}>
-                <EvoCard id={data.id} forward={0} self_card={true} />
-              </div>
-            </div>
-          </div>
+                </tbody>
+              </table>
+            </TabPane>
+            <TabPane tab='進化階段' key='3'>
+              <EvoCard id={data.id} forward={0} self_card={true} />
+            </TabPane>
+          </Tabs>
         </div>
       </div>
       <hr />

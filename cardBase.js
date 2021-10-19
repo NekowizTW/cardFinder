@@ -87,6 +87,45 @@ async function querySourceHandbookPages (gapcontinue, rawPages, task) {
   else return querySourceHandbookPages(data['continue'].gapcontinue, rawPages, task)
 }
 
+async function querySourceEXCostPages () {
+  // setting up params
+  const params = Object.assign({
+    'titles': `潛在結晶`,
+  }, queryParamsP)
+
+  // add param as url search, get data by fetch
+  let url = new URL(urlBase)
+  url.search = new URLSearchParams(params).toString()
+  const response = await fetch(url)
+  const list = await response.json()
+
+  // collect available page for fetching
+  const key = Object.keys(list.query.pages)[0]
+  const content = list.query.pages[key].revisions[0].slots.main['*']
+  const re = /\[\[潛在結晶\/(\S+)\|(\S+)\]\]/
+  const lines = content.split('\n')
+  let pages = [], m      // pages matching
+
+  // parsing each line
+  for (const idx in lines) {
+    if (!re.test(lines[idx])) continue
+    m = re.exec(lines[idx])
+    pages.push(m[1])
+  }
+
+  // pages to data
+  const data = await Promise.all(pages.map(pageName => {
+    const params = Object.assign({
+      'titles': `潛在結晶/${pageName}`,
+    }, queryParamsP)
+    let url = new URL(urlBase)
+    url.search = new URLSearchParams(params).toString()
+    return fetch(url).then(response => response.json())
+  }))
+
+  return data
+}
+
 async function querySourceLeaderEXPage () {
   // setting up params
   const params = Object.assign({
@@ -184,6 +223,29 @@ function querySkillsInPage (response, type, task) {
   }
 
   return skills
+}
+
+// 1 page/response
+function queryEXCostInPage (response, task) {
+  const re = /\{\{結晶列表\/結晶\|Ex(\d+)\|\+(\d+)\}\}/
+  let list = [], m
+
+  const key = Object.keys(response.query.pages)[0]
+  const content = response.query.pages[key].revisions[0].slots.main['*']
+  const lines = content.split('\n')
+
+  // parsing each line
+  for (const idx in lines) {
+    if (!re.test(lines[idx])) continue
+
+    m = re.exec(lines[idx])
+    if (m.length === 3)
+      list.push({ id: m[1], cost: m[2] })
+    else
+      list.push({ id: m[1], cost: '0' })
+  }
+
+  return list
 }
 
 // 50 pages/response
@@ -347,6 +409,26 @@ const tasks = new Listr([
     }
   },
   {
+    title: 'Fetching EX Costs',
+    task: async (ctx, task) => {
+      const list = await querySourceEXCostPages()
+        .then(pages => {
+          let list = []
+          pages.forEach(page => {
+            list = [...list, ...queryEXCostInPage(page, task)]
+          })
+
+          return list
+        })
+      list.forEach(item => {
+        const idx = data_deck.exCards.findIndex(exCard => item.id === exCard.id)
+        if (idx === -1) return
+
+        data_deck.exCards[idx]['attachCost'] = parseInt(item.cost)
+      })
+    }
+  },
+  {
     title: 'Fetching Skills',
     task: () => {
       const typeOfSkills = ['Senzai', 'Answer', 'Special', 'Answer2', 'Special2', 'EXAS']
@@ -386,6 +468,18 @@ const tasks = new Listr([
       data_deck.leaderEX = await querySourceLeaderEXPage()
         .then(page => {
           let leaderEXs = queryleaderEXsInPage(page, task)
+          // remove template
+          leaderEXs = leaderEXs.filter(leaderEx => leaderEx.name !== '系列名稱')
+          // fix filename if the leaderEx is the only one
+          leaderEXs = leaderEXs.map((leaderEx, idx, arr) => {
+            let cnt = 1
+            if (idx !== 0 && arr[idx - 1].name === leaderEx.name) cnt += 1
+            if (idx !== arr.length - 1 && arr[idx + 1].name === leaderEx.name) cnt += 1
+
+            if (cnt === 1)
+              leaderEx.small_filename = leaderEx.small_filename.replace('S', '')
+            return leaderEx
+          })
           return leaderEXs
         })
     }

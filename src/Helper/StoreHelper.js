@@ -34,9 +34,10 @@ export function getEXCardById (id) {
           { name: '無結晶', id: '', senzai_1: ''}
 }
 // leaderEX relative
-export function getLeaderEXByNameRank (name, rank) {
-  if (name.length === 0 || rank.length === 0)
+export function getLeaderEXByValue (value) {
+  if (value.length === 0)
     return { name: '無結晶', rank: '', condition: '無', skill: '無', small_filename: '0000.png'}
-  return _.find(Store.getState().SourceLeaderEXCards, { name: name, rank: rank }) ||
-          { name: '無結晶', rank: '', condition: '無', skill: '無', small_filename: '0000.png'}
+  return _.find(Store.getState().SourceLeaderEXCards, (o) => {
+    return `${o.name}${o.rank}` === value
+  }) || { name: '無結晶', rank: '', condition: '無', skill: '無', small_filename: '0000.png'}
 }

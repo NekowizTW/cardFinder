@@ -37,7 +37,7 @@ class EditModal extends React.Component {
       const cardOptions = [{ label: '無', value: '-1', small_filename: '0000.png'},
       ...Store.getState().SourceCards.map(card => {
         return {
-          label: `No. ${card.id} - ${card.name}`,
+          label: `${card.name} [${card.evo_now}/${card.evo_max}]`,
           value: card.id,
           small_filename: card.small_filename,
           isHaifu: card.obtainType !== undefined && card.obtainType.type === 'haifu'
@@ -75,7 +75,7 @@ class EditModal extends React.Component {
     const cardOptions = [{ label: '無', value: '-1', small_filename: '0000.png'},
       ...Store.getState().SourceCards.map(card => {
         return {
-          label: `No. ${card.id} - ${card.name}`,
+          label: `${card.name} [${card.evo_now}/${card.evo_max}]`,
           value: card.id,
           small_filename: card.small_filename,
           isHaifu: card.obtainType !== undefined && card.obtainType.type === 'haifu'
@@ -137,6 +137,38 @@ class EditModal extends React.Component {
     return target.mana
   }
 
+  setSzSlot (team, value, idx) {
+    value = Math.max(value, 0)
+    if (idx === -1) return
+    if (idx === 5) team.helper.szSlot = value
+    else team.team[idx].szSlot = value
+    Action.updateTeam(team)
+  }
+
+  getSzSlot (team, idx) {
+    const defaultValue = 10
+    if (idx === -1) return defaultValue
+    const target = idx === 5 ? team.helper : team.team[idx]
+    if (target === undefined) return defaultValue
+    return target.szSlot
+  }
+
+  setExas (team, value, idx) {
+    value = Math.max(value, 0)
+    if (idx === -1) return
+    if (idx === 5) team.helper.exas = value
+    else team.team[idx].exas = value
+    Action.updateTeam(team)
+  }
+
+  getExas (team, idx) {
+    const defaultValue = false
+    if (idx === -1) return defaultValue
+    const target = idx === 5 ? team.helper : team.team[idx]
+    if (target === undefined) return defaultValue
+    return target.exas
+  }
+
   setEx (team, option, idx, pos) {
     const id = option.value
     if (idx === -1) return
@@ -162,7 +194,7 @@ class EditModal extends React.Component {
   }
 
   filterChange (str, type = 'text') {
-    const searchString = type === 'text' ? str : this.state.searchString
+    const searchString = (type === 'text' ? str : this.state.searchString).trim()
     const isHaifu = type === 'checkbox' ? str : this.state.showHaifuOnly
     const isSelected = type === 'selected' ? str : this.state.showSelectedOnly
     this.setState({
@@ -176,7 +208,7 @@ class EditModal extends React.Component {
       if (isHaifu)
         cardOptionsFiltered = filterByObject(cardOptionsFiltered, { isHaifu: isHaifu })
       cardOptionsFiltered = cardOptionsFiltered.filter(option => option.label.indexOf(searchString) >= 0)
-      cardOptionsFiltered = cardOptionsFiltered.slice(0, 20)
+      cardOptionsFiltered = cardOptionsFiltered.reverse().slice(0, 100)
       this.setState({
         cardOptionsFiltered: cardOptionsFiltered
       })
@@ -211,27 +243,47 @@ class EditModal extends React.Component {
           <div className={'pure-u-1 pure-u-md-1-3 imgFrame center-middle'}>
             <img key={`EditModal-${this.props.editIdx}-img`}
                  src={linkGenerator(card.small_filename)} />
-            <div>Mana:
-              <InputNumber min={0} max={400} value={this.getMana(team, editIdx)}
-                           onChange={(val) => this.setMana(team, val, editIdx)}
-                           keyboard stringMode
-                           style={{ width: '100px'}} />
-              <div className={'pure-group'}>
-                <button className={'pure-button button-small'}
-                        onClick={(val) => this.setMana(team, 0, editIdx)}>+0</button>
-                <button className={'pure-button button-small'}
-                        onClick={(val) => this.setMana(team, 200, editIdx)}>+200</button>
-                <button className={'pure-button button-small'}
-                        onClick={(val) => this.setMana(team, 400, editIdx)}>+400</button>
-              </div>
+          </div>
+          <div className={'pure-u-1 pure-u-md-2-3 center-middle'}>
+            <h3>{card.name}</h3>
+          </div>
+          <div className={'pure-u-1 pure-u-md-1-3'}>
+            <legend>潛能</legend>
+            <InputNumber min={0} max={10} value={this.getSzSlot(team, editIdx)}
+                         onChange={(val) => this.setSzSlot(team, val, editIdx)}
+                         keyboard stringMode
+                         style={{ width: '100%'}} />
+          </div>
+          <div className={'pure-u-1 pure-u-md-1-3'}>
+            <legend>Mana</legend>
+            <InputNumber min={0} max={400} value={this.getMana(team, editIdx)}
+                         onChange={(val) => this.setMana(team, val, editIdx)}
+                         keyboard stringMode
+                         style={{ width: '100%', 'height': '30px'}} />
+            <div className={'pure-group'}>
+              <button className={'pure-button button-xsmall'}
+                      onClick={(val) => this.setMana(team, 0, editIdx)}>+0</button>
+              <button className={'pure-button button-xsmall'}
+                      onClick={(val) => this.setMana(team, 200, editIdx)}>+200</button>
+              <button className={'pure-button button-xsmall'}
+                      onClick={(val) => this.setMana(team, 400, editIdx)}>+400</button>
             </div>
           </div>
-          <div className={'pure-u-1 pure-u-md-2-3'}>
-            <h3>{card.name}</h3>
+          {editIdx !== 5 && <div className={'pure-u-1 pure-u-md-1-3 toggleModify'}>
+            <legend>&nbsp;</legend>
+            <input type={'checkbox'} id={'toggleEXAS'} checked={this.getExas(team, editIdx)}
+                   onChange={(e) => this.setExas(team, e.target.checked, editIdx)} />
+            <label htmlFor={'toggleEXAS'}>
+              <span></span>
+            </label>
+          </div>}
+          <div className={'pure-u-1 pure-u-md-1-2'}>
             <Select className={'pure-input-1'}
                     value={ex1}
                     onChange={(obj) => {this.setEx(team, obj, editIdx, 0)}}
                     options={this.state.exOptions} />
+          </div>
+          <div className={'pure-u-1 pure-u-md-1-2'}>
             <Select className={'pure-input-1'}
                     value={ex2}
                     onChange={(obj) => {this.setEx(team, obj, editIdx, 1)}}
@@ -255,12 +307,12 @@ class EditModal extends React.Component {
                        value={this.props.showSelectedOnly} onChange={(e) => this.filterChange(e.target.checked, 'selected')} />
                 <span style={{'paddingLeft': '0.5em'}}>使用搜尋器選擇的卡</span>
               </label>
-              <h4 className={'pure-u-1'} style={{textAlign: 'left'}}>搜尋結果：</h4>
+              <h4 className={'pure-u-1'} style={{textAlign: 'left'}}>搜尋結果（只顯示100個）：</h4>
               <div className={'pure-u-1'}
                    style={{overflowY: 'scroll',
                            boxShadow: 'inset 0 1px 3px #ddd',
                            height: '100%', width: '100%',
-                           height: '200px'}}>
+                           height: '170px'}}>
                 {this.state.cardOptionsFiltered.map((option, idx) => {
                   return <a className={'pure-g cardItem'} key={`options-${idx}-img`}
                             onClick={() => this.setMember(team, option, editIdx)}>

@@ -1,7 +1,6 @@
 @import "mixins";
 @import "css_tags";
-
-$tabColor: rgba(66, 32, 16, 255);
+@import "rwd_table";
 
 body {
     background: #fafafa;
@@ -9,10 +8,8 @@ body {
     color: #333;
 }
 
-#app {
-  .pure-menu-list > .pure-menu-item{
-    cursor: pointer;
-  }
+.menu-link, .pure-menu-item{
+  cursor: pointer;
 }
 
 .rc-tabs .pure-menu-selected {
@@ -99,6 +96,12 @@ body {
 }
 
 .teamItem{
+  border-bottom: 1px solid #aaa;
+  .basicProfile {
+    height: 100%;
+    margin: auto;
+    align-content: center;
+  }
   .imgFrame{
     position: relative;
     .teamCardBadge {
@@ -112,6 +115,17 @@ body {
       left: 0px;
       bottom: -25px;
     }
+    .exasBadge {
+      width: 60px;
+      height: 22px;
+      background-image: url('../images/exasBadge.png');
+      background-size: 45px 16px;
+      background-repeat: no-repeat;
+      background-position: center center;
+      position: absolute;
+      right: 35px;
+      top: -5px;
+    }
     img{
       cursor: pointer;
     }
@@ -122,15 +136,22 @@ body {
     justify-content: flex-start;
     align-items: baseline;
     img {
+      width: 50px;
+      height: auto;
       padding-right: 2em;
       vertical-align: middle;
     }
     span {
+      white-space: pre-line;
       font-size: 0.9em;
     }
   }
   .numberData{
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: baseline;
     p{
       padding-left: 20px;
       margin: 4px auto;
@@ -168,50 +189,16 @@ body {
       }
     }
   }
-  .skillType{
-    p{
-      padding-left: 5em;
-      margin: 4px auto;
-      &:before{
-        left: 0;
-        width: 5em;
-        text-align: right;
-        font-size: 12px;
-      }
-    }
-    p:nth-child(1){
-      &:before{
-        content: "SS: ";
-      }
-    }
-    p:nth-child(2){
-      &:before{
-        content: "SS2: ";
-      }
-    }
-    p:nth-child(3){
-      &:before{
-        content: "EXAS條件: ";
-      }
-    }
-  }
   .btns{
     display: flex;
-    justify-content: row;
-    align-items: center;
-  }
-}
-
-.teamCardDetail.toggle .skillType{
-  p::before {
-    position: absolute;
+    flex-direction: column;
+    justify-content: flex-end;
   }
 }
 
 .leaderEX{
-  text-align: left;
   p{
-    margin: 4px auto;
+    text-align: left;
     &:before{
       left: 0;
       width: 1em;
@@ -238,20 +225,25 @@ body {
 }
 
 .senzaiList{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   text-align: left;
+  flex-wrap: wrap;
   &:before{
-    content: "";
-    display: inline-block;
-    background-image: url("https://vignette3.wikia.nocookie.net/nekowiz/images/8/85/%E6%BD%9B%E5%9C%A8%E8%83%BD%E5%8A%9B.png/revision/latest?cb=20150702165104&path-prefix=zh");
+    content: " ";
+    background-image: url('../images/senzaiPrefix.png');
     background-repeat: no-repeat;
     background-size: 60px;
     width: 60px;
     height: 22px;
     margin: 2px;
-    vertical-align: middle;
-    margin-top: -10px;
+    margin-top: 5px;
   }
   span.legend{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     &:before{
       content: "|";
       margin: 5px 5px 5px 5px;
@@ -268,7 +260,7 @@ body {
   width: 134px;
   height: 22px;
   background-size: 128px;
-  background-image: url(https://vignette1.wikia.nocookie.net/nekowiz/images/5/50/%E5%82%B3%E5%A5%87%E5%9E%8B%E6%85%8B%E6%95%88%E6%9E%9C%E7%99%BC%E5%8B%95.png/revision/latest?cb=20160115125440&path-prefix=zh);
+  background-image: url('../images/senzaiLPrefix.png');
 }
 
 .cardDetail{
@@ -296,75 +288,6 @@ body {
     li{
       list-style-type: none;
     }
-  }
-}
-
-/* Accordion styles */
-.tabs {
-  border-radius: 8px;
-  overflow: hidden;
-  // box-shadow: 0 4px 4px -2px rgba(0,0,0,0.5);
-}
-.tab {
-  width: 100%;
-  color: white;
-  overflow: hidden;
-  input {
-    position: absolute;
-    opacity: 0;
-    z-index: -1;
-  }
-  &-label {
-    display: flex;
-    justify-content: space-between;
-    padding: 1em;
-    background: $tabColor;
-    font-weight: bold;
-    cursor: pointer;
-    /* Icon */
-    &:hover {
-      background: darken($tabColor, 10%);
-    }
-    &::after {
-      content: "\276F";
-      width: 1em;
-      height: 1em;
-      text-align: center;
-      transition: all .35s;
-    }
-  }
-  &-content {
-    max-height: 0;
-    padding: 0 1em;
-    color: black;
-    // background: white;
-    transition: all .35s ease-in-out;
-    overflow: hidden;
-  }
-  &-close {
-    display: flex;
-    justify-content: flex-end;
-    padding: 1em;
-    font-size: 0.75em;
-    background: $tabColor;
-    cursor: pointer;
-    &:hover {
-      background: darken($tabColor, 10%);
-    }
-  }
-}
-
-// :checked
-input:checked {
-  + .tab-label {
-    background: darken($tabColor, 10%);
-    &::after {
-      transform: rotate(90deg);
-    }
-  }
-  ~ .tab-content {
-    max-height: 150vh;
-    padding: 1em;
   }
 }
 
@@ -476,7 +399,7 @@ $exasColor: lighten(rgb(82, 0, 0), 25%);
   }
 }
 .evoBak, .evoBnc, .evoFwd div[class^="pure-u-1-"]{
-  background-color: lighten($tabColor, 70%);
+  background-color: lighten(rgba(66, 32, 16, 255), 70%);
 }
 
 .selectList {
@@ -518,6 +441,7 @@ $exasColor: lighten(rgb(82, 0, 0), 25%);
 }
 
 .teamCardDetail{
+  position: relative;
   overflow: hidden;
   max-height: 0px;
   border: 1px #CCC solid;
@@ -531,4 +455,67 @@ $exasColor: lighten(rgb(82, 0, 0), 25%);
 
 .footer {
   text-align: center;
+}
+
+.toggleModify {
+  [type="checkbox"] {
+    position: absolute;
+    left: -9999px;
+  }
+  label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  span {
+    position: relative;
+    width: 8em;
+    height: 2em;
+    border-radius: 2em;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
+    background: rgb(34, 85, 153);
+    transition: all 0.3s;
+  }
+  span::before, span::after {
+    content: "";
+    position: absolute;
+  }
+  span::before {
+    left: 1px;
+    top: 1px;
+    width: 1.8em;
+    height: 1.8em;
+    background: #fafafa;
+    border-radius: 50%;
+    z-index: 1;
+    transform: translateX(6em);
+    transition: transform 0.3s;
+  }
+  span::after {
+    color: #fafafa;
+    content: "特殊技能";
+    top: 48%;
+    left: 1.2em;
+    width: 4em;
+    height: 1em;
+    transform: translateY(-50%);
+    background-size: 1em 1em;
+    text-shadow: -1px 0 rgb(0, 28, 33), 0 1px rgb(0, 28, 33), 1px 0 rgb(0, 28, 33), 0 -1px rgb(0, 28, 33);
+  }
+  [type="checkbox"]:checked + label span {
+    background: rgb(222, 12, 41);
+  }
+   
+  [type="checkbox"]:checked + label span::before {
+    transform: translateX(0em);
+  }
+   
+  [type="checkbox"]:checked + label span::after {
+    content: "EXAS";
+    width: 4em;
+    height: 1em;
+    left: 2.5em;
+    background-size: 1em 1em;
+    text-shadow: -1px 0 rgb(9, 32, 33), 0 1px rgb(9, 32, 33), 1px 0 rgb(9, 32, 33), 0 -1px rgb(9, 32, 33);
+  }
 }
