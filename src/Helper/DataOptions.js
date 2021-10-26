@@ -88,7 +88,7 @@ export const SKILL_AS = [
   { 
     label: '連擊',
     options: [
-      { value: /連擊/, label: '連擊' },
+      { value: /^連擊/, label: '連擊' },
       { value: /屬性特效連擊/, label: '屬性特效連擊' }
     ]
   },
@@ -895,7 +895,7 @@ export const EXAS_Type = [
       { value: /整合（攻擊）/, label: '整合【攻擊】' },
       { value: /整合（強化攻擊）/, label: '整合【強化攻擊】' },
       { value: /整合（強化複屬性攻擊）/, label: '整合【強化複屬性攻擊】' },
-      { value: /反擊/, label: '反擊' },
+      { value: /^反擊/, label: '反擊' },
       { value: /增加連鎖數/, label: '增加連鎖數' },
       { value: /連鎖數反擊/, label: '連鎖數反擊' },
       { value: /EX強化/, label: 'EX強化' },
