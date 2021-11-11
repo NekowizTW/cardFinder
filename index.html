@@ -3,7 +3,7 @@
         You are using an <strong>outdated</strong> browser.
         Please <a href="http://browsehappy.com/">upgrade your browser</a>to improve your experience.
     </p>
-    <![endif]--><div id="layout"><a class="menu-link" id="menuLink"><span></span></a><div id="menu"><div class="pure-menu"><a class="pure-menu-heading" href="http://nekowiztw.github.io/">NekowizTW</a><ul class="pure-menu-list"><li class="pure-menu-item"><a class="pure-menu-link" href="#/">卡片搜尋</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="#/team/">隊伍生成</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="http://zh.nekowiz.wikia.com">黑貓wikia <i class="fas fa-external-link-alt"></i></a></li><li class="pure-menu-item"><a class="pure-menu-link" href="https://github.com/NekowizTW/cardFinder">專案地址 <i class="fas fa-external-link-alt"></i></a></li></ul></div></div><div id="main"><div class="header"><h1>黑貓卡片搜尋器</h1></div><div class="content"><div id="root"></div></div><div class="footer"><div class="legal pure-g"><div class="pure-u-1"><p id="lastUpdateTime" class="legal-license"></p><script>document.addEventListener("DOMContentLoaded", () => {
+    <![endif]--><div id="layout"><a class="menu-link" id="menuLink"><span></span></a><div id="menu"><div class="pure-menu"><a class="pure-menu-heading" href="http://nekowiztw.github.io/">NekowizTW</a><ul class="pure-menu-list"><li class="pure-menu-item menu-item-divided pure-menu-selected"><a class="pure-menu-link" href="#/">卡片搜尋</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="#/ex/">結晶搜尋</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="#/team/">隊伍生成</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="http://zh.nekowiz.wikia.com">黑貓wikia <i class="fas fa-external-link-alt"></i></a></li><li class="pure-menu-item"><a class="pure-menu-link" href="https://github.com/NekowizTW/cardFinder">專案地址 <i class="fas fa-external-link-alt"></i></a></li></ul></div></div><div id="main"><div class="header"><h1>黑貓<span id="page-title">卡片搜尋</span>器</h1></div><div class="content"><div id="root"></div></div><div class="footer"><div class="legal pure-g"><div class="pure-u-1"><p id="lastUpdateTime" class="legal-license"></p><script>document.addEventListener("DOMContentLoaded", () => {
                                 const url = 'https://api.github.com/repos/NekowizTW/cardFinder/branches/master'
                                 fetch(url)
                                     .then(response => response.json())
@@ -62,5 +62,33 @@
             }
             
             document.addEventListener('click', handleEvent);
+
+            const pageTitle = document.querySelector('#page-title');
+            const meunItems = document.getElementById('menu')
+                                      .querySelectorAll('.pure-menu-item');
+            const internalLinks = document.getElementById('menu')
+                                          .querySelectorAll('.pure-menu-link');
+
+            function setActivePage (el) {
+                meunItems.forEach((el) => {
+                    el.classList.remove('menu-item-divided');
+                    el.classList.remove('pure-menu-selected');
+                });
+                el.parentElement.classList.add('menu-item-divided');
+                el.parentElement.classList.add('pure-menu-selected');
+                el.blur();
+                pageTitle.innerHTML = el.innerHTML;
+            }
+
+            internalLinks.forEach((el) => {
+                if (el.href.indexOf('#') === -1) return;
+
+                if (el.href === location.href)
+                    setActivePage(el);
+
+                el.addEventListener('click', (e) => {
+                    setActivePage(e.target);
+                });
+            })
 
         }(this, this.document));</script></body></html>
