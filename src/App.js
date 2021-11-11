@@ -14,6 +14,7 @@ import CardSnap from './Helper/CardSnap.js'
 import CardCollec from './Container/CardCollec.Container.js'
 import CardDetail from './Container/CardDetail.Container.js'
 import TeamCollec from './Container/TeamCollec.Container.js'
+import EXCollec   from './Container/EXCollec.Container.js'
 
 import './assets/css/main.scss'
 
@@ -52,6 +53,7 @@ class App extends React.Component {
             <Route path='/card/:cardId' component={CardDetail} />
             <Route exact path='/team' component={TeamCollec}/>
             <Route path='/team/:code' component={TeamCollec}/>
+            <Route exact path='/ex' component={EXCollec} />
             <Redirect from="*" to="/" />
           </Switch>
         </HashRouter>

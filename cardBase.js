@@ -28,6 +28,23 @@ const queryParamsP = {
     rvslots: 'main'
 }
 
+// https://www.bayanbennett.com/posts/retrying-and-exponential-backoff-with-promises/
+const delay = retryCount =>
+  new Promise(resolve => setTimeout(resolve, 10 ** retryCount));
+
+async function fetchRetry (url, retryCnt = 0, lastError = null) {
+  if (retryCnt === 5) throw new Error(lastError);
+
+  try {
+    const response = await fetch(url)
+    const data = await response.json()
+    return data;
+  } catch (e) {
+    await delay(retryCnt);
+    return fetchRetry(url, retryCnt + 1, e);
+  }
+}
+
 async function querySourceCardPages (gapcontinue, rawPages, task) {
   // setting up params
   gapcontinue = gapcontinue || ''
@@ -40,8 +57,7 @@ async function querySourceCardPages (gapcontinue, rawPages, task) {
   // add param as url search, get data by fetch
   let url = new URL(urlBase)
   url.search = new URLSearchParams(params).toString()
-  const response = await fetch(url)
-  const data = await response.json()
+  const data = await fetchRetry(url)
   rawPages.push(data)
   task.output = `Fetched ${rawPages.length} requests.`
 
@@ -59,8 +75,7 @@ async function querySourceSkillPage (type) {
   // add param as url search, get data by fetch
   let url = new URL(urlBase)
   url.search = new URLSearchParams(params).toString()
-  const response = await fetch(url)
-  const data = await response.json()
+  const data = await fetchRetry(url)
 
   return data
 }
@@ -77,8 +92,7 @@ async function querySourceHandbookPages (gapcontinue, rawPages, task) {
   // add param as url search, get data by fetch
   let url = new URL(urlBase)
   url.search = new URLSearchParams(params).toString()
-  const response = await fetch(url)
-  const data = await response.json()
+  const data = await fetchRetry(url)
   rawPages.push(data)
   task.output = `Fetched ${rawPages.length} requests.`
 
@@ -96,8 +110,7 @@ async function querySourceEXCostPages () {
   // add param as url search, get data by fetch
   let url = new URL(urlBase)
   url.search = new URLSearchParams(params).toString()
-  const response = await fetch(url)
-  const list = await response.json()
+  const list = await fetchRetry(url)
 
   // collect available page for fetching
   const key = Object.keys(list.query.pages)[0]
@@ -120,7 +133,7 @@ async function querySourceEXCostPages () {
     }, queryParamsP)
     let url = new URL(urlBase)
     url.search = new URLSearchParams(params).toString()
-    return fetch(url).then(response => response.json())
+    return fetchRetry(url)
   }))
 
   return data
@@ -135,8 +148,7 @@ async function querySourceLeaderEXPage () {
   // add param as url search, get data by fetch
   let url = new URL(urlBase)
   url.search = new URLSearchParams(params).toString()
-  const response = await fetch(url)
-  const data = await response.json()
+  const data = await fetchRetry(url)
 
   return data
 }

@@ -44,7 +44,7 @@ class Card extends React.Component {
           <img key={`card-${data.id}-img`} src={linkGenerator(small_filename)}
                onClick={() => cardHandler.toggleSelect(data.id)} />
         </div>
-        <div key={`card-${data.id}-nameFrame`} className={'pure-u-2-3 infoFrame'}>
+        <div key={`card-${data.id}-nameFrame`} className={'pure-u-2-3 profileFrame'}>
           {data.obtainType &&
             <span className={data.obtainType.type === 'haifu' ? 'circleMark' : ''}>
               {data.obtainType.type === 'haifu' ? '配':''}
@@ -54,9 +54,10 @@ class Card extends React.Component {
             No. {data.id} <br />
             {data.name}
           </Link>
-          <div key={`card-${data.id}-hpatk`} className={'pure-g'}>
-            <p key={`card-${data.id}-hp`} className={'pure-u-1-2'}>HP: {data.max_hp}</p>
-            <p key={`card-${data.id}-atk`} className={'pure-u-1-2'}>ATK: {data.max_atk}</p>
+          <div key={`card-${data.id}-profile`} className={'pure-g'}>
+            <p key={`card-${data.id}-breed`} className={'pure-u-1-3'}>{data.breed}</p>
+            <p key={`card-${data.id}-evo`} className={'pure-u-1-3'}>{data.evo_now+'/'+data.evo_max}</p>
+            <p key={`card-${data.id}-cost`} className={'pure-u-1-3'}>{data.cost}</p>
           </div>
           <div key={`card-${data.id}-senzaiArr`} className={'senzaiList'}>
             {data.senzaiArr.map((senzaiName, i) => {
@@ -73,10 +74,10 @@ class Card extends React.Component {
             } 
           </div>
         </div>
-        <p key={`card-${data.id}-other`} className={'pure-u-1-6'}>
-          {data.breed}<br/>
-          Cost {data.cost}<br/>
-          進化 {data.evo_now+'/'+data.evo_max}
+        <p key={`card-${data.id}-hpatk`} className={'pure-u-1-6 numberFrame'}>
+          <span>{data.max_hp}</span><br/>
+          <span>{data.max_atk}</span><br/>
+          {data.ssData.turn && <span>{data.ssData.cdf}({data.ssData.cds})</span>}
         </p>
       </div>);
     }

@@ -1,5 +1,7 @@
 import _ from 'lodash';
 
+const sscd = "ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ"
+
 function dataExist (data) {
     return (typeof data !== 'undefined' && data.length != 0);
 }
@@ -17,6 +19,8 @@ function cardDataParse (data) {
       EXASData: {}
     };
 
+    let cdf = 0, cds = 0;
+
     // card evolution assets to Array
     for (let i = 1; i <= 8; i++) {
       if (dataExist(res.cards[index]['evo_'+i])) {
@@ -27,6 +31,11 @@ function cardDataParse (data) {
     for (let i = 1; i <= 10; i++) {
       if (dataExist(res.cards[index]['senzai_'+i])) {
         card.senzaiArr.push(res.cards[index]['senzai_'+i]);
+        if (res.cards[index]['senzai_'+i].indexOf('第二回快速技能') !== -1) {
+          cds += sscd.indexOf((res.cards[index]['senzai_'+i][7])) + 1;
+        } else if (res.cards[index]['senzai_'+i].indexOf('快速技能') !== -1) {
+          cdf += sscd.indexOf((res.cards[index]['senzai_'+i][4])) + 1;
+        }
       } else break;
     }
     // card senzai legend to Array
@@ -42,6 +51,8 @@ function cardDataParse (data) {
     // Mapping SS
     if(dataExist(res.cards[index].ss)) card.ssData = _.find(res.Special, {'name': res.cards[index].ss}) || {'name': res.cards[index].ss, 'info': '尚無技能資料'};
     else card.ssData = res.Special[0];
+    card.ssData.cdf = Math.max((parseInt(card.ssData.turn) || 99) - cdf, 0);
+    card.ssData.cds = Math.max((parseInt(card.ssData.turn) || 99) - cds, 0);
     // Mapping AS2
     if(dataExist(res.cards[index].as2)) card.as2Data = _.find(res.Answer2, {'name': res.cards[index].as2}) || {'name': res.cards[index].as2, 'info': '尚無技能資料'};
     else card.as2Data = res.Answer2[0];

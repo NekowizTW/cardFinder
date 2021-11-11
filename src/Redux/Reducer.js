@@ -120,7 +120,7 @@ function filterCards (source, filterObj) {
   if (searchObj.filterTexts.length > 0) {
     res = _.filter(res, card => {
       let str = (card.id + card.name).toLowerCase();
-      return searchObj.filterTexts.split(' ').some(filterText => {
+      return searchObj.filterTexts.split(' ').every(filterText => {
         return _.includes(str, filterText.toLowerCase())
       });
     });
@@ -217,6 +217,9 @@ function sortCards (list, sortkey, ordering) {
     if (sortkey === 'rank') {
       attrA = rank_order.indexOf(a['rank']);
       attrB = rank_order.indexOf(b['rank']);
+    } else if (sortkey === 'cdf' || sortkey === 'cds') {
+      attrA = a.ssData[sortkey] !== null ? parseInt(a.ssData[sortkey]) : 99;
+      attrB = b.ssData[sortkey] !== null ? parseInt(b.ssData[sortkey]) : 99;
     } else {
       attrA = parseInt(a[sortkey]);
       attrB = parseInt(b[sortkey]);

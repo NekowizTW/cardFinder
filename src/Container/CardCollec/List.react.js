@@ -19,7 +19,9 @@ const sortOptions = [
   { value: 'max_atk', label: '攻擊力' },
   { value: 'max_hp',  label: '血量' },
   { value: 'cost',    label: 'Cost' },
-  { value: 'rank',    label: 'Rank' }
+  { value: 'rank',    label: 'Rank' },
+  { value: 'cdf',     label: '首回CD' },
+  { value: 'cds',     label: '次回CD' }
 ]
 
 const orderOptions = [

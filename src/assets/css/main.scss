@@ -1,6 +1,7 @@
 @import "mixins";
 @import "css_tags";
 @import "rwd_table";
+@import "card_layout";
 
 body {
     background: #fafafa;
@@ -10,6 +11,16 @@ body {
 
 .menu-link, .pure-menu-item{
   cursor: pointer;
+}
+
+#page-title{
+  white-space: pre;
+}
+
+#page-title:before { content: '\A'; }
+
+@media screen and (min-width: 640px) {
+  #page-title:before { content: ''; }
 }
 
 .rc-tabs .pure-menu-selected {
@@ -51,7 +62,6 @@ body {
   @include transition(background-color .5s .25s, color 1s);
   position: relative;
   .imgFrame{
-    height: 60px;
     white-space: nowrap;
     margin: 1em 0;
     &:before{
@@ -65,8 +75,9 @@ body {
     }
   }
   img{
-    width: auto;
-    height: 60px;
+    width: 100%;
+    max-width: 60px;
+    max-height: 60px;
   }
   > div{
     margin-top: -2px;
@@ -75,7 +86,7 @@ body {
   &.selected{
     background-color: rgb(255, 197, 99);
   }
-  .infoFrame{
+  .profileFrame{
     position: relative;
     span.circleMark{
       position: absolute;
@@ -93,6 +104,25 @@ body {
       br{ display: none; }
     }
   }
+  .numberFrame{
+    vertical-align: middle;
+    span{
+      text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+    }
+    span:nth-child(1){
+      color: rgb(17, 136, 0);
+    }
+    span:nth-child(3){
+      color: rgb(255, 0, 0);
+    }
+    span:nth-child(5){
+      color: rgb(0, 34, 119);
+    }
+  }
+}
+
+span.highlight {
+  color: red;
 }
 
 .teamItem{
@@ -217,7 +247,7 @@ body {
   }
 }
 
-#CardCollecForm{
+#CardCollecForm, #EXCardsForm{
   > div{
     margin-top: 5px;
     margin-bottom: 5px;

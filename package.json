@@ -23,6 +23,7 @@
   },
   "homepage": "https://nekowiztw.github.io/cardFinder/#/",
   "dependencies": {
+    "@adobe/node-fetch-retry": "^2.0.0",
     "crypto-js": "^4.1.1",
     "enquirer": "^2.3.6",
     "gh-pages": "^3.2.3",
