@@ -247,7 +247,7 @@ export function groupGlobal (globalFlags, effect) {
   }
   if (effect.exp !== undefined) {
     globalFlags.exp = globalFlags.exp || 0
-    globalFlags.exp += effects.exp
+    globalFlags.exp += effect.exp
   }
   if (effect.questionCategoryUp !== undefined) {
     globalFlags.questionCategoryUp = globalFlags.questionCategoryUp || []
