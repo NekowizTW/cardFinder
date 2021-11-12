@@ -291,7 +291,7 @@ class EditModal extends React.Component {
                     onClick={(e) => {
                       e.target.classList.add('hide')
                       e.target.nextElementSibling.classList.remove('hide')
-                    }}>啟用第三潛能</button>
+                    }}>啟用第三結晶</button>
             <Select className={`pure-input-1 ${ex3.value.length === 0 ? 'hide' : ''}`}
                     value={ex3}
                     onChange={(obj) => {this.setEx(team, obj, editIdx, 2)}}
