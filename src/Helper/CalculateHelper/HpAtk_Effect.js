@@ -3,7 +3,7 @@ import { initEffect,
 import atkUp from './AtkUp.js'
 import hpUp  from './HpUp.js'
 
-export default function hpatk_Effect (szData, team, tar) {
+export default function hpatk_Effect (szData, team, tar, debug = false) {
   let effectArr = []
   // case: hp up, atk down
   if (/HP上升\d+點，並減少\d+點攻擊力/.test(szData.info)) {
@@ -71,5 +71,7 @@ export default function hpatk_Effect (szData, team, tar) {
     szData2.const = cnt * 100
     effectArr = [...effectArr, ...atkUp(szData1, team, tar), ...hpUp(szData2, team, tar)]
   }
+  if (debug)
+    console.log({ szData: szData, effects: effectArr });
   return effectArr
 }

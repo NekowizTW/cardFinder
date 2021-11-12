@@ -13,6 +13,7 @@ import { conditionFlag,
 
 export function calcSenzai (team) {
   // console.log(team)
+  const debug = false;
   let hpa   = Array(team.length).fill(0),
       atka  = Array(team.length).fill(0),
       costa = Array(team.length).fill(0),
@@ -30,17 +31,17 @@ export function calcSenzai (team) {
       switch(szData.type){
         case '攻擊力上升':
         case '複屬性攻擊力上升':
-          effectArr = [...effectArr, ...atkUp(szData, team, tar)]
+          effectArr = [...effectArr, ...atkUp(szData, team, tar, debug)]
           break
         case 'HP上升':
         case '複屬性HP上升':
-          effectArr = [...effectArr, ...hpUp(szData, team, tar)]
+          effectArr = [...effectArr, ...hpUp(szData, team, tar, debug)]
           break
         case '減少COST':
-          effectArr = [...effectArr, ...costDown(szData, team, tar)]
+          effectArr = [...effectArr, ...costDown(szData, team, tar, debug)]
           break
         case '快速技能':
-          effectArr = [...effectArr, ...cdDown(szData, team, tar)]
+          effectArr = [...effectArr, ...cdDown(szData, team, tar, debug)]
           break
         case 'HP上升＆攻擊力下降':
         case '提升傷害＆HP上升':
@@ -51,7 +52,7 @@ export function calcSenzai (team) {
         case '種族攻擊力和HP上升':
         case '複屬性攻擊力和HP上升':
         case '複屬性攻擊力與HP上升':
-          effectArr = [...effectArr, ...hpatk_Effect(szData, team, tar)]
+          effectArr = [...effectArr, ...hpatk_Effect(szData, team, tar, debug)]
           break
         case 'EXP0':
         case 'EXP上升':
@@ -66,24 +67,24 @@ export function calcSenzai (team) {
         case '問題類型提昇':
         case '防禦連鎖':
         case '提升連鎖':
-          effectArr = [...effectArr, ...globalFlag(szData, team, tar)]
+          effectArr = [...effectArr, ...globalFlag(szData, team, tar, debug)]
           break
         case '心眼':
-          effectArr = [...effectArr, ...mindRelative(szData, team)]
+          effectArr = [...effectArr, ...mindRelative(szData, team, debug)]
           break
         case '戰鬥結束後HP回復':
-          effectArr = [...effectArr, ...recoverRelative(szData, team)]
+          effectArr = [...effectArr, ...recoverRelative(szData, team, debug)]
           break
         case 'HP‧攻擊力反轉':
         case '九死一生':
         case '更換精靈':
         case '減輕屬性傷害':
         case '減輕種族傷害':
-          effectArr = [...effectArr, ...conditionFlag(szData, team, tar)]
+          effectArr = [...effectArr, ...conditionFlag(szData, team, tar, debug)]
           break
         case '答題技能強化':
         case '特殊技能強化':
-          effectArr = [...effectArr, ...skillRelative(szData, team, tar)]
+          effectArr = [...effectArr, ...skillRelative(szData, team, tar, debug)]
           break
         default:
           break
@@ -116,7 +117,7 @@ export function calcSenzai (team) {
           costa[idx] += effect.cost
         if (keys.indexOf('cdf')  >= 0)
           cdfa[idx]  += effect.cdf
-        if (keys.indexOf('cda')  >= 0)
+        if (keys.indexOf('cds')  >= 0)
           cdsa[idx]  += effect.cds
       }
     }

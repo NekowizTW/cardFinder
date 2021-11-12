@@ -1,6 +1,6 @@
 import { initEffect } from './Utils.js'
 
-export default function atkUp (szData, team, tar) {
+export default function atkUp (szData, team, tar, debug = false) {
   let effectArr = []
   // case: affect cost after atk up
   if (szData.info.indexOf('COST') >= 0) {
@@ -89,5 +89,7 @@ export default function atkUp (szData, team, tar) {
     })
   })
   effectArr.push(effect)
+  if (debug)
+    console.log({ szData: szData, effects: effectArr });
   return effectArr
 }

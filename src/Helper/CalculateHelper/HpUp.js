@@ -1,6 +1,6 @@
 import { initEffect } from './Utils.js'
 
-export default function hpUp (szData, team, tar) {
+export default function hpUp (szData, team, tar, debug = false) {
   let effectArr = []
   // case: self hp up
   if (/^HP上升\d+點/.test(szData.info)) {
@@ -82,5 +82,7 @@ export default function hpUp (szData, team, tar) {
     })
   })
   effectArr.push(effect)
+  if (debug)
+    console.log({ szData: szData, effects: effectArr });
   return effectArr
 }

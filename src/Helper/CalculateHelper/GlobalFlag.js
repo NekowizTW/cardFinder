@@ -2,7 +2,7 @@ import { initFlag,
          fetchValFromInfo,
          fullWidthNumber2Integer } from './Utils.js'
 
-export function globalFlag (szData, team, tar) {
+export function globalFlag (szData, team, tar, debug = false) {
   let flagArr = []
   // case: effect on statistics screen
   if (/獲得經驗值為0/.test(szData.info) && tar !== 5) {
@@ -109,10 +109,12 @@ export function globalFlag (szData, team, tar) {
     flag.chainBoost = parseInt(fetchValFromInfo(szData.info, /連鎖數加(\d+)/))
     flagArr.push(flag)
   }
+  if (debug)
+    console.log({ szData: szData, effects: flagArr });
   return flagArr
 }
 
-export function recoverRelative (szData, team) {
+export function recoverRelative (szData, team, debug = false) {
   let flagArr = []
   // case: recover all
   if (/戰鬥結束後回復全體隊友\d+%HP/.test(szData.info)) {
@@ -135,10 +137,12 @@ export function recoverRelative (szData, team) {
     }
     flagArr.push(flag)
   }
+  if (debug)
+    console.log({ szData: szData, effects: flagArr });
   return flagArr
 }
 
-export function mindRelative (szData, team) {
+export function mindRelative (szData, team, debug = false) {
   let flagArr = []
   if (/看穿肉眼無從得見的真實/.test(szData.info)) {
     let flag1 = initFlag(team.length, 'answerRatio')
@@ -184,6 +188,8 @@ export function mindRelative (szData, team) {
     flag.enermyHP = true
     flagArr.push(flag)
   }
+  if (debug)
+    console.log({ szData: szData, effects: flagArr });
   return flagArr
 }
 

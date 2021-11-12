@@ -1,7 +1,7 @@
 import { initEffect,
          fetchValFromInfo } from './Utils.js'
 
-export default function costDown (szData, team, tar) {
+export default function costDown (szData, team, tar, debug = false) {
   let effectArr = []
   // case: self cost down
   if (/(隊伍)?COST-\d+/.test(szData.info)) {
@@ -24,5 +24,7 @@ export default function costDown (szData, team, tar) {
     effect.hp += parseInt(fetchValFromInfo(szData.info, /^HP上升\d+點/))
     effectArr.push(effect)
   }
+  if (debug)
+    console.log({ szData: szData, effects: effectArr });
   return effectArr
 }

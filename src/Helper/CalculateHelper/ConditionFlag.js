@@ -1,7 +1,7 @@
 import { initFlag,
          fetchValFromInfo } from './Utils.js'
 
-export function conditionFlag (szData, team, tar) {
+export function conditionFlag (szData, team, tar, debug = false) {
   let flagArr = []
   // case: death escape
   if (/剩餘HP在\d+%以上時，即使遭受致命傷害，也有\d+%的機率存活/.test(szData.info)) {
@@ -69,11 +69,13 @@ export function conditionFlag (szData, team, tar) {
     }
     flagArr.push(flag)
   }
+  if (debug)
+    console.log({ szData: szData, effects: flagArr });
   
   return flagArr
 }
 
-export function skillRelative (szData, team, tar) {
+export function skillRelative (szData, team, tar, debug = false) {
   let flagArr = []
   // case: as skill enhance
   if (/答題技能「\S+」的效果值上升\d+點/.test(szData.info)) {
@@ -331,5 +333,7 @@ export function skillRelative (szData, team, tar) {
       flagArr.push(flag)
     }
   }
+  if (debug)
+    console.log({ szData: szData, effects: flagArr });
   return flagArr
 }

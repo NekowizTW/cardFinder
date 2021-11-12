@@ -156,9 +156,11 @@ class Team extends React.Component {
   generateSkillIcon (card, idx, type) {
     let res = []
     if (type === 'as' && card.asData !== undefined) {
-      res = card.as2Data.type.split(/[・‧]/)
+      res = [...card.asData.type.split(/[・‧]/),
+             ...card.as2Data.type.split(/[・‧]/)]
     } else if (type === 'ss' && card.ssData !== undefined) {
-      res = card.ss2Data.type.replace(/【\S+】/, '').split(/[・‧]/)
+      res = [...card.ssData.type.replace(/【\S+】/, '').split(/[・‧]/),
+             ...card.ss2Data.type.replace(/【\S+】/, '').split(/[・‧]/)]
     } else if (type === 'exas' && card.EXASData !== undefined){
       res = card.EXASData.type.split(/[・‧]/)
     }

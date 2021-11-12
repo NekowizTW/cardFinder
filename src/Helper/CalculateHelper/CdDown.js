@@ -1,7 +1,7 @@
 import { initEffect,
          fetchValFromInfo } from './Utils.js'
 
-export default function cdDown (szData, team, tar) {
+export default function cdDown (szData, team, tar, debug = false) {
   let effectArr = []
   // case: self first cd down
   if (/縮短首次發動特殊技能回合數\d+回合/.test(szData.info)) {
@@ -18,7 +18,7 @@ export default function cdDown (szData, team, tar) {
     effectArr.push(effect)
   }
   // case: specified skill cd down
-  if (/縮短特殊技能「\S+」(、「\S+」)?發動回合數1回合/.test(szData.info)) {
+  if (/縮短特殊技能「\S+」(、「\S+」)?發動回合數\d+回合/.test(szData.info)) {
     let effect1 = initEffect(team.length, 'cdf'),
         effect2 = initEffect(team.length, 'cds')
     const skillType = fetchValFromInfo(szData.info, /縮短特殊技能「(\S+)」/)
@@ -30,5 +30,7 @@ export default function cdDown (szData, team, tar) {
     }
     effectArr.push(effect1, effect2)
   }
+  if (debug)
+    console.log({ szData: szData, effects: effectArr });
   return effectArr
 }
