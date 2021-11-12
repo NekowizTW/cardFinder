@@ -83,7 +83,7 @@
             internalLinks.forEach((el) => {
                 if (el.href.indexOf('#') === -1) return;
 
-                if (el.href === location.href)
+                if (location.href.indexOf(el.href) >= 0)
                     setActivePage(el);
 
                 el.addEventListener('click', (e) => {
