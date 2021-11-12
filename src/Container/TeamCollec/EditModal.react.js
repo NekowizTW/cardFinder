@@ -17,7 +17,7 @@ const customStyles = {
   content: {
     width: '80%',
     height: '100%',
-    maxWidth: '500px',
+    maxWidth: '600px',
     maxHeight: '600px',
     top: '50%',
     left: '50%',
@@ -26,6 +26,7 @@ const customStyles = {
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
   },
+  overlay: {zIndex: 2000}
 }
 
 class EditModal extends React.Component {
@@ -50,7 +51,7 @@ class EditModal extends React.Component {
             value: card.id,
             small_filename: card.small_filename
           }
-        })
+        }).filter(option => option.label.length > 0)
       ]
       _this.setState({
         cardOptions: cardOptions,
@@ -222,11 +223,7 @@ class EditModal extends React.Component {
     const card = this.getMember(team, editIdx)
     const ex1 = this.getEx(team, editIdx, 0)
     const ex2 = this.getEx(team, editIdx, 1)
-    // const card = this.getMember(id)
-    // const ex1Id = (idx === 5) ? this.props.team.helperEx[0] : this.props.team.teamEx[idx][0]
-    // const ex2Id = (idx === 5) ? this.props.team.helperEx[1] : this.props.team.teamEx[idx][1]
-    // const ex1 = this.getEx(ex1Id)
-    // const ex2 = this.getEx(ex2Id)
+    const ex3 = this.getEx(team, editIdx, 2)
     return <div>
       <Modal contentLabel={'編輯卡片'}
              style={customStyles}
@@ -277,16 +274,27 @@ class EditModal extends React.Component {
               <span></span>
             </label>
           </div>}
-          <div className={'pure-u-1 pure-u-md-1-2'}>
+          <div className={'pure-u-1 pure-u-md-1-3'}>
             <Select className={'pure-input-1'}
                     value={ex1}
                     onChange={(obj) => {this.setEx(team, obj, editIdx, 0)}}
                     options={this.state.exOptions} />
           </div>
-          <div className={'pure-u-1 pure-u-md-1-2'}>
+          <div className={'pure-u-1 pure-u-md-1-3'}>
             <Select className={'pure-input-1'}
                     value={ex2}
                     onChange={(obj) => {this.setEx(team, obj, editIdx, 1)}}
+                    options={this.state.exOptions} />
+          </div>
+          <div className={'pure-u-1 pure-u-md-1-3'}>
+            <button className={`pure-button ${ex3.value.length === 0 ? '' : 'hide'}`}
+                    onClick={(e) => {
+                      e.target.classList.add('hide')
+                      e.target.nextElementSibling.classList.remove('hide')
+                    }}>啟用第三潛能</button>
+            <Select className={`pure-input-1 ${ex3.value.length === 0 ? 'hide' : ''}`}
+                    value={ex3}
+                    onChange={(obj) => {this.setEx(team, obj, editIdx, 2)}}
                     options={this.state.exOptions} />
           </div>
           <hr className={'pure-u-1'} />

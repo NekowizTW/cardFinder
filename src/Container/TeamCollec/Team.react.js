@@ -17,8 +17,8 @@ import RenderCertainSenzai    from './RenderCertainSenzai.react.js'
 
 function decode (code) {
   const reLead = /(L([\u4E00-\u9FFF]+)([・‧][\u4E00-\u9FFF]+)?((A\+?)|(S))\d+)/
-  const reTeam = /(T\d+)(M\d+)?(S\d+)?(X)?(E\d+)?(E\d+)?/gm
-  const reHelp = /(H\d+)(M\d+)?(S\d+)?(E\d+)?(E\d+)?/
+  const reTeam = /(T\d+)(M\d+)?(S\d+)?(X)?(E\d+)?(E\d+)?(E\d+)?/gm
+  const reHelp = /(H\d+)(M\d+)?(S\d+)?(E\d+)?(E\d+)?(E\d+)?/
   let team = {
     selected: [],
     leaderEX: '',
@@ -93,6 +93,7 @@ function decode (code) {
         team.helper.ex.push(mi.replace('E', ''))
     })
   }
+  console.log(team);
   return team
 }
 
@@ -283,7 +284,7 @@ class Team extends React.Component {
             if (exName <= 10) exName = exi.name
             else if (lbp > 0) exName = `${exi.name.slice(0, lbp)}\n${exi.name.slice(lbp)}`
             else if (lbp === 0) exName = `${exi.name.slice(0, rbp)}\n${exi.name.slice(rbp)}`
-            return <div key={`team-${idx}-ex${i + 1}`} className={'pure-u-1-2 exSlot'}>
+            return <div key={`team-${idx}-ex${i + 1}`} className={`pure-u-1-${exs.length === 3 ? '3' : '2'} exSlot`}>
               <img src={linkGenerator(exi.small_filename)} />
               <span>{exName}</span>
             </div>
