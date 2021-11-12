@@ -112,6 +112,7 @@ function encode (team) {
          +  (teammate.exas                 ? `X`                   : '')
          +  (teammate.ex[0]  !== undefined ? `E${teammate.ex[0]}`  : '')
          +  (teammate.ex[1]  !== undefined ? `E${teammate.ex[1]}`  : '')
+         +  (teammate.ex[2]  !== undefined ? `E${teammate.ex[2]}`  : '')
   })
   // helper
   if (team.helper.id !== -1) {
@@ -120,6 +121,7 @@ function encode (team) {
          +  (team.helper.szSlot !== 10        ? `S${team.helper.szSlot}` : '')
          +  (team.helper.ex[0]  !== undefined ? `E${team.helper.ex[0]}`  : '')
          +  (team.helper.ex[1]  !== undefined ? `E${team.helper.ex[1]}`  : '')
+         +  (team.helper.ex[2]  !== undefined ? `E${team.helper.ex[2]}`  : '')
   }
   return code
 }
