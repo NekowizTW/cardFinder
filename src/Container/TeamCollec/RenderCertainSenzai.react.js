@@ -11,6 +11,8 @@ const noteObj = {
     '火': { fmt: '減輕火屬性傷害', image: 'Senzai_Shield_F.png'},
     '水': { fmt: '減輕水屬性傷害', image: 'Senzai_Shield_W.png'},
     '雷': { fmt: '減輕雷屬性傷害', image: 'Senzai_Shield_T.png'},
+    '光': { fmt: '減輕光屬性傷害', image: 'Senzai_Shield_DL.png'},
+    '闇': { fmt: '減輕闇屬性傷害', image: 'Senzai_Shield_DL.png'},
     '火水': { fmt: '減輕火水屬性傷害', image: 'Senzai_Shield_FW.png'},
     '火雷': { fmt: '減輕火雷屬性傷害', image: 'Senzai_Shield_FT.png'},
     '水雷': { fmt: '減輕水雷屬性傷害', image: 'Senzai_Shield_WT.png'},

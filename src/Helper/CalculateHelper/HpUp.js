@@ -24,7 +24,7 @@ export default function hpUp (szData, team, tar, debug = false) {
     if (/若為隊長時又再提升\d+點/.test(szData.info) && tar === 0)
       effect.hp += parseInt(szData.const2)
     else
-      effect.hp += parseInt(szData.const)
+      effect.atk += szData.const2 !== undefined ? parseInt(szData.const1) : parseInt(szData.const)
     effectArr.push(effect)
   }
   // case: specified wildcard main prop hp up

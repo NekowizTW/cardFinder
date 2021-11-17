@@ -76,8 +76,9 @@ class EditModal extends React.Component {
     const cardOptions = [{ label: '無', value: '-1', small_filename: '0000.png'},
       ...Store.getState().SourceCards.map(card => {
         return {
-          label: `${card.name} [${card.evo_now}/${card.evo_max}]`,
+          label: `${card.name}`,
           value: card.id,
+          evo: `[${card.evo_now}/${card.evo_max}]`,
           small_filename: card.small_filename,
           isHaifu: card.obtainType !== undefined && card.obtainType.type === 'haifu'
         }
@@ -303,7 +304,7 @@ class EditModal extends React.Component {
               <TextFilter
                 filter={this.state.searchString} onFilter={(e) => this.filterChange(e.target.value)}
                 debounceTimeout={100} minLength={1}
-                placeholder={'請輸入卡片編號或卡片名字'} className={'pure-u-1'}
+                placeholder={'請輸入卡片名字'} className={'pure-u-1'}
               />
               <label htmlFor={'filter-onlyHaifu'} className={'pure-u-1 pure-u-md-1-2'}>
                 <input id={'filter-onlyHaifu'} type="checkbox"
@@ -329,7 +330,7 @@ class EditModal extends React.Component {
                            src={linkGenerator(option.small_filename)}  />
                     </div>
                     <p className={'pure-u-2-3'}>
-                      <span style={{verticalAlign: 'middle'}}>{option.label}</span>
+                      <span style={{verticalAlign: 'middle'}}>{option.label} <small>{option.evo}</small></span>
                     </p>
                   </a>
                 })}
