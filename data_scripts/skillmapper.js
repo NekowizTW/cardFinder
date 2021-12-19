@@ -59,6 +59,8 @@ function cardDataParse (data) {
     // Mapping SS2 and EXAS
     if(dataExist(res.cards[index].ss2)) {
       card.ss2Data = _.find(res.Special2, {'name': res.cards[index].ss2}) || {'name': res.cards[index].ss2, 'info': '尚無技能資料'};
+      card.ss2Data.cdf = Math.max((parseInt(card.ss2Data.turn) || 99) - cdf, 0);
+      card.ss2Data.cds = Math.max((parseInt(card.ss2Data.turn) || 99) - cds, 0);
       // exas detect
       card.EXASData = _.find(res.EXAS, {'name': res.cards[index].id}) || {};
     } else card.ss2Data = res.Special2[0];

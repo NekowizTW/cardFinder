@@ -361,6 +361,10 @@ $exasColor: lighten(rgb(82, 0, 0), 25%);
       content: "EXAS";
     }
   }
+  b {
+    display: block;
+    margin-top: 1em;
+  }
   span {
     float: right;
     display: block;
@@ -431,6 +435,9 @@ $exasColor: lighten(rgb(82, 0, 0), 25%);
 }
 .evoBak, .evoBnc, .evoFwd div[class^="pure-u-1-"]{
   background-color: lighten(rgba(66, 32, 16, 255), 70%);
+}
+.evoPath > .evoNode:last-child .evoSpace.down-arrow {
+  border-color: transparent;
 }
 
 .selectList {

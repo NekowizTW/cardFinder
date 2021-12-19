@@ -106,33 +106,56 @@ class Card extends React.Component {
           >
             <TabPane tab='一般型態' key='0'>
               <div className={'skillData as'}>
-                <p><b>{data.asData.name}</b> <span>{data.asData.type}</span></p>
-                <p>{data.asData.info}</p>
+                <b>
+                  {data.asData.name}<br />
+                  <small>{data.asData.type}</small>
+                </b>
+                <p>
+                  {data.asData.info}
+                </p>
               </div>
               <div className={'skillData ss'}>
-                <p><b>{data.ssData.name}({data.ssData.turn})</b> <span>{data.ssData.type}</span></p>
-                <p>{data.ssData.info}</p>
+                <b>
+                  {data.ssData.name}<span>{data.ssData.cdf}/{data.ssData.cds} Turns</span><br />
+                  <small>{data.ssData.type}</small>
+                </b>
+                <p>
+                  {data.ssData.info}
+                </p>
               </div>
               { data.EXASData && 
                 <div className={'skillData exas'}>
-                  <p><b>【傳奇型態條件】</b></p>
+                  <b>【傳奇型態條件】</b>
                   <p>{data.EXASData.condition}</p>
                 </div>
               }
             </TabPane>
             <TabPane tab='傳奇型態' key='1'>
               <div className={'skillData as'}>
-                <p><b>{data.as2Data.name}</b> <span>{data.as2Data.type}</span></p>
-                <p>{data.as2Data.info}</p>
+                <b>
+                  {data.as2Data.name}<br />
+                  <small>{data.as2Data.type}</small>
+                </b>
+                <p>
+                  {data.as2Data.info}
+                </p>
               </div>
               <div className={'skillData ss'}>
-                <p><b>{data.ss2Data.name}({data.ss2Data.turn})</b> <span>{data.ss2Data.type}</span></p>
+                <b>
+                  {data.ss2Data.name}<span>{data.ss2Data.cdf}/{data.ss2Data.cds} Turns</span><br />
+                  <small>{data.ss2Data.type}</small>
+                </b>
                 <p>{data.ss2Data.info}</p>
               </div>
               { data.EXASData && 
                 <div className={'skillData exas'}>
-                  <p><b>&nbsp;</b> <span>{data.EXASData.type}</span></p>
-                  <p>{data.EXASData.info}</p>
+                  <b>
+                      &nbsp;<br />
+                      <small>{data.EXASData.type}</small>
+                  </b>
+                  <p>
+                    {data.EXASData.info}
+                  </p>
                 </div>
               }
             </TabPane>

@@ -77,7 +77,8 @@ class Card extends React.Component {
         <p key={`card-${data.id}-hpatk`} className={'pure-u-1-6 numberFrame'}>
           <span>{data.max_hp}</span><br/>
           <span>{data.max_atk}</span><br/>
-          {data.ssData.turn && <span>{data.ssData.cdf}({data.ssData.cds})</span>}
+          {data.ssData.turn && <span>{data.ssData.cdf}/{data.ssData.cds}</span>}&nbsp;
+          {data.ss2Data.turn && <span>{data.ss2Data.cdf}/{data.ss2Data.cds}</span>}
         </p>
       </div>);
     }

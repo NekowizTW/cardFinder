@@ -27,8 +27,8 @@ export function globalFlag (szData, team, tar, debug = false) {
     let flag1 = initFlag(team.length, 'exp')
     let flag2 = initFlag(team.length, 'coin')
     flag1.global = flag2.global = true
-    flag.exp = parseInt(fetchValFromInfo(szData.info, /(\d+)%/))
-    flag.coin = parseInt(fetchValFromInfo(szData.info, /(\d+)%/))
+    flag1.exp = parseInt(fetchValFromInfo(szData.info, /(\d+)%/))
+    flag2.coin = parseInt(fetchValFromInfo(szData.info, /(\d+)%/))
     flagArr.push(flag1, flag2)
   }
   if (/金幣\d+%、經驗值\d+%/.test(szData.info)) {
