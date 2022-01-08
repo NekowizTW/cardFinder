@@ -31,11 +31,24 @@ function genSkillCategoriesFromSource(CardCollecSource, CardSkillCategories){
     { name: 'EXAS_Type', path: 'EXASData' }
   ]
 
+  // an arrow function for filtering available functions, regex search is for AS and indexOf is for SS.
+  let skillFit = (flattedCategoryItem, sourceSkillItem, skillType) => {
+    // special case: An SS skill group is called undefined. It's not the target for user to search.
+    if (sourceSkillItem === undefined) return false;
+    if (skillType.indexOf('SS') !== -1)
+      return sourceSkillItem.indexOf(flattedCategoryItem.value) !== -1;
+    else
+      return sourceSkillItem.search(flattedCategoryItem.value) !== -1;
+  }
+
   attrsToCheck.map(item => {
-    // modified for two layer skill list
-    let originalSkillList = CardSkillCategories[item.name].reduce((collection, item) => {
-      if (Object.keys(item).indexOf('options') >= 0) collection.push(...item.options);
-      else collection.push(item);
+    // modified for two layer skill list, some unhandled skill will be in the other group.
+    let otherCategoryIdx = CardSkillCategories[item.name].findIndex(category => category.label === '其他');
+    let originalSkillList = CardSkillCategories[item.name].reduce((collection, item, idx) => {
+      if (Object.keys(item).indexOf('options') >= 0)
+        collection.push(...item.options.map((o, i) => ({...o, parentIdx: idx, selfIdx: i})));
+      else
+        collection.push({...item, parentIdx: idx, selfIdx: -1});
       return collection;
     }, []);
     let parsedSkillList = _.uniq(CardCollecSource.reduce((r, o) => {
@@ -48,13 +61,6 @@ function genSkillCategoriesFromSource(CardCollecSource, CardSkillCategories){
     }, []))
 
     if (item.name.indexOf('AS') >= 0) {
-      // convert regex to string in CardSkillCategories
-      originalSkillList = originalSkillList.map(o => {
-        let r = Object.assign({}, o);
-        r.value = r.value.toString().substring(1, r.value.toString().length - 1)
-                    .replaceAll(/[\\\^\$]/g, '');
-        return r;
-      });
       // split all parsedSkill in parsedSkillList, and uniq again
       let parsedSkillListReCollect = [];
       parsedSkillList.forEach(o => {
@@ -65,28 +71,32 @@ function genSkillCategoriesFromSource(CardCollecSource, CardSkillCategories){
       parsedSkillList = _.uniq(parsedSkillListReCollect);
     }
 
-    // logger.debug('SKILL_LIST:', item.name, parsedSkillList);
+    // disable unused options which doesn't have any card
     for (let originslSkillItem of originalSkillList) {
-      if (parsedSkillList.indexOf(originslSkillItem.value) < 0 && !originslSkillItem.isDisabled) {
-        logger.warn(`[Skill Scanner: ${item.name}] Category not used: ${originslSkillItem.value}`);
-        originalSkillList.splice(originalSkillList.findIndex(o => o.value === originslSkillItem.value), 1);
+      const idx = parsedSkillList.findIndex(parsedSkillItem => skillFit(originslSkillItem, parsedSkillItem, item.name));
+      if (idx === -1) {
+        logger.warn(`[Skill Scanner: ${item.name}] Category not used: ${originslSkillItem.label}`);
+        CardSkillCategories[item.name][originslSkillItem.parentIdx]['options'][originslSkillItem.selfIdx].isDisabled = true;
+      } else if (originslSkillItem.isDisabled) {
+        CardSkillCategories[item.name][originslSkillItem.parentIdx]['options'][originslSkillItem.selfIdx].isDisabled = false;
       }
     }
 
+    // create options which is not in available options
     for (let parsedSkillItem of parsedSkillList) {
-      if (!originalSkillList.find(o => o.value === parsedSkillItem)) {
+      // special case: An SS skill group is called undefined. It's not the target for user to search..
+      if (parsedSkillItem === undefined) continue;
+      const idx = originalSkillList.findIndex(originslSkillItem => skillFit(originslSkillItem, parsedSkillItem, item.name));
+      if (idx === -1) {
         logger.warn(`[Skill Scanner: ${item.name}] Unknown skill ${parsedSkillItem}, move to 其他 category.`)
-        originalSkillList.push({value: parsedSkillItem, label: parsedSkillItem, unknown: true});
+        CardSkillCategories[item.name][otherCategoryIdx]['options'].push({
+          value: item.name.indexOf('AS') ? new RegExp(parsedSkillItem) : parsedSkillItem,
+          label: parsedSkillItem,
+          unknown: true
+        });
       }
     }
   })
-
-  /*CardSkillCategories = assign(CardSkillCategories, {
-    SKILL_AS: _.uniq(CardCollecSource.map(obj => obj.asData.type)).filter(Boolean).map(str => ({'label':str, 'value':str})),
-    SKILL_SS: _.uniq(CardCollecSource.map(obj => obj.ssData.type)).filter(Boolean).map(str => ({'label':str, 'value':str})),
-    SKILL_AS2: _.uniq(CardCollecSource.map(obj => obj.as2Data.type)).filter(Boolean).map(str => ({'label':str, 'value':str})),
-    SKILL_SS2: _.uniq(CardCollecSource.map(obj => obj.ss2Data.type)).filter(Boolean).map(str => ({'label':str, 'value':str}))
-  });*/
 }
 
 // So use findByArray to filter props, breeds and ranks.
@@ -212,14 +222,25 @@ function filterCards (source, filterObj) {
 function sortCards (list, sortkey, ordering) {
   const rank_order = ['C+','B','B+','A','A+','S','S+','SS','SS+','L','LtoL']
   ordering = ordering === 'desc' ? -1 : 1
+  // special case for ss sort
+  let ssKey = undefined
+  if (sortkey.indexOf('ss') === 0) {
+    [ssKey, sortkey] = sortkey.split('.')
+  }
+
   return list.sort((a, b) => {
     let attrA, attrB;
     if (sortkey === 'rank') {
       attrA = rank_order.indexOf(a['rank']);
       attrB = rank_order.indexOf(b['rank']);
-    } else if (sortkey === 'cdf' || sortkey === 'cds') {
-      attrA = a.ssData[sortkey] !== null ? parseInt(a.ssData[sortkey]) : 99;
-      attrB = b.ssData[sortkey] !== null ? parseInt(b.ssData[sortkey]) : 99;
+    } else if (ssKey !== undefined) {
+      if (ssKey === 'ss2') {
+        attrA = a.ss2Data[sortkey] !== null ? parseInt(a.ss2Data[sortkey]) : 99;
+        attrB = b.ss2Data[sortkey] !== null ? parseInt(b.ss2Data[sortkey]) : 99;
+      } else {
+        attrA = a.ssData[sortkey] !== null ? parseInt(a.ssData[sortkey]) : 99;
+        attrB = b.ssData[sortkey] !== null ? parseInt(b.ssData[sortkey]) : 99;
+      }
     } else {
       attrA = parseInt(a[sortkey]);
       attrB = parseInt(b[sortkey]);
@@ -263,14 +284,16 @@ function getCardSubset (source, filter, settings) {
 export default function Reducer (state, action) {
   switch (action.type) {
     case 'InitCardData':
-      genSkillCategoriesFromSource(action.payload.card, constOptions); //remove this when new skill cate is done
+      // copy option for unhandled card options
+      let availableOptions = {...constOptions}
+      genSkillCategoriesFromSource(action.payload.card, availableOptions); //remove this when new skill cate is done
       return Object.assign({}, state, 
         {
           SourceCards: action.payload.card,
           SourceSenzai: action.payload.senzai,
           SourceEXCards: action.payload.exCard,
           SourceLeaderEXCards: action.payload.leaderEXCards,
-          SourceFilterSettings: assign(constOptions)
+          SourceFilterSettings: assign(availableOptions)
         }, 
         getCardSubset(action.payload.card, state.ListFiltter, state.ListSettings)
       )

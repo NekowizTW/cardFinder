@@ -20,8 +20,10 @@ const sortOptions = [
   { value: 'max_hp',  label: '血量' },
   { value: 'cost',    label: 'Cost' },
   { value: 'rank',    label: 'Rank' },
-  { value: 'cdf',     label: '首回CD' },
-  { value: 'cds',     label: '次回CD' }
+  { value: 'ss1.cdf',  label: 'SS 首回CD' },
+  { value: 'ss1.cds',  label: 'SS 次回CD' },
+  { value: 'ss2.cdf',  label: 'SS2 首回CD' },
+  { value: 'ss2.cds',  label: 'SS2 次回CD' }
 ]
 
 const orderOptions = [
