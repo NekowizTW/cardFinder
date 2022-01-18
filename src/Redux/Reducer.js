@@ -203,7 +203,7 @@ function filterCards (source, filterObj) {
       const exasConditionMatched = exasConditionRegex => {
         return exasConditionRegex.test(o.EXASData.condition);
       }
-      return searchObj.exasCondition.every(exasConditionMatched);
+      return searchObj.exasCondition.some(exasConditionMatched);
     });
   }
   if (searchObj.exasType.length > 0) {

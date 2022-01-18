@@ -270,6 +270,7 @@ function queryObtainType(state, response) {
     {re: /精靈圖鑑\/尚無資料/,        gachaType: -1}, // 望無資料：資料部份缺失頁面
     {re: /精靈圖鑑\/以/,             gachaType: -1}, // 只紀錄清單
     {re: /精靈圖鑑\/友情轉蛋/,        gachaType: 0}, // 保留，用於區分其他轉蛋
+    {re: /精靈圖鑑\/感謝祭/,          gachaType: 2}, // 全頁都是轉蛋
     {re: /精靈圖鑑\/\S+轉蛋/,        gachaType: 2}, // 全頁都是轉蛋
     {re: /精靈圖鑑\/主題限定/,        gachaType: 2}, // 全頁都是轉蛋
     {re: /精靈圖鑑\/聖誕節/,         gachaType: 2} // 全頁都是轉蛋

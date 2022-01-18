@@ -819,12 +819,11 @@ export const ZZ = [{
 export const EXAS_Condition = [{
         label: '組隊相關',
         options: [
-            { value: /「設為隊長」/, label: '設為隊長' },
-            { value: /「主屬性：\S、複屬性：\S」/, label: '主副屬性固定' }
+            { value: /「設為隊長」/, label: '設為隊長' }
         ]
     },
     {
-        label: '隊伍狀態相',
+        label: '隊伍狀態相關',
         options: [
             { value: /「隊友精靈的HP從未滿100%變為100%」/, label: '隊友精靈的HP從未滿100%變為100%' }
         ]
@@ -841,7 +840,6 @@ export const EXAS_Condition = [{
         label: '連鎖數相關',
         options: [
             { value: /「連鎖數達\d+次以上」/, label: '連鎖數達數次以上' },
-            { value: /「連鎖數封印」、「連鎖數解除」、「減少連鎖」/, label: '連鎖數封印、連鎖數解除、減少連鎖' }
         ]
     },
     {
