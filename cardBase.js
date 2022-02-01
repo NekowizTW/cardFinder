@@ -304,6 +304,8 @@ function queryObtainType(state, response) {
     for (const idx in lines) {
       if (lines[idx].indexOf('Card/Data') >= 0) {
         const id = lines[idx].match(re)
+        if (id === null) continue
+
         state.data.push({
           id: id[0],
           title: title.replace('精靈圖鑑/', ''),
