@@ -90,7 +90,7 @@ function genSkillCategoriesFromSource(CardCollecSource, CardSkillCategories){
       if (idx === -1) {
         logger.warn(`[Skill Scanner: ${item.name}] Unknown skill ${parsedSkillItem}, move to 其他 category.`)
         CardSkillCategories[item.name][otherCategoryIdx]['options'].push({
-          value: item.name.indexOf('AS') ? new RegExp(parsedSkillItem) : parsedSkillItem,
+          value: item.name.indexOf('AS') !== -1 ? new RegExp(parsedSkillItem) : parsedSkillItem,
           label: parsedSkillItem,
           unknown: true
         });
