@@ -36,10 +36,13 @@
                         <a class="pure-menu-link" href="#/team/">隊伍生成</a>
                     </li>
                     <li class="pure-menu-item">
-                        <a class="pure-menu-link" href="http://zh.nekowiz.wikia.com">黑貓wikia <i class="fas fa-external-link-alt"></i></a>
+                        <a class="pure-menu-link" href="https://docs.google.com/forms/d/e/1FAIpQLSee_Qv-mXFiYq5T3eFhjRR4zU21ut9FUKGLU4ud53RJv0aSgw/viewform" target="_blank" onclick="reportLink(event)">回報問題 <i class="fas fa-external-link-alt"></i></a>
                     </li>
                     <li class="pure-menu-item">
-                        <a class="pure-menu-link" href="https://github.com/NekowizTW/cardFinder">專案地址 <i class="fas fa-external-link-alt"></i></a>
+                        <a class="pure-menu-link" href="http://zh.nekowiz.wikia.com" target="_blank">黑貓wikia <i class="fas fa-external-link-alt"></i></a>
+                    </li>
+                    <li class="pure-menu-item">
+                        <a class="pure-menu-link" href="https://github.com/NekowizTW/cardFinder" target="_blank">專案地址 <i class="fas fa-external-link-alt"></i></a>
                     </li>
                 </ul>
             </div>
@@ -78,6 +81,11 @@
         </div>
     </div>
     <script>
+        function reportLink (e) {
+            e.preventDefault();
+            const suffix = `?usp=pp_url&entry.1990257246=&entry.1921144916=${encodeURIComponent(location.href)}`;
+            window.open(`${e.target.href}${suffix}`, `_blank`);
+        }
         (function (window, document) {
             // we fetch the elements each time because docusaurus removes the previous
             // element references on page navigation

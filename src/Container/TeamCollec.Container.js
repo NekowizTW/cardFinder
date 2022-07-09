@@ -33,7 +33,8 @@ class TeamCollec extends React.Component {
       unsubscribe: unsubscribe,
       editIdx: -1,
       editLeader: false,
-      isCalculated: false
+      isCalculated: false,
+      errorSenzai: []
     }
   }
 
@@ -63,10 +64,11 @@ class TeamCollec extends React.Component {
       return Object.assign({}, card, {sz: szs}, {ex: exs})
     })
     // console.log(teamData)
-    const calculated = calcSenzai(teamData)
+    const { calculated, errorSenzai } = calcSenzai(teamData)
     this.setState({
       calculated: calculated,
-      isCalculated: true
+      isCalculated: true,
+      errorSenzai: errorSenzai
     })
   }
 
@@ -76,6 +78,7 @@ class TeamCollec extends React.Component {
       <Team code={code}
             team={this.state.team}
             calculated={this.state.calculated}
+            errorSenzai={this.state.errorSenzai}
             openEditor={(idx) => this.changeEditIdx(idx)}
             openLeaderEditor={() => this.toggleEditLeader()} />
       <EditLeader team={this.state.team}

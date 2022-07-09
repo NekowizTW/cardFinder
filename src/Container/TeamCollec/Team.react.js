@@ -318,6 +318,9 @@ class Team extends React.Component {
     const leaderEX = this.getLeader(team.leaderEX)
     const md  = this.state.toggle ? '-md'      : ''
     const rwd = this.state.toggle ? 'pure-u-1' : ''
+    const reportLink = `https://docs.google.com/forms/d/e/1FAIpQLSee_Qv-mXFiYq5T3eFhjRR4zU21ut9FUKGLU4ud53RJv0aSgw/viewform?usp=pp_url`
+                     + `&entry.1990257246=使用隊伍搜尋器計算潛能時發生問題，潛能列表如下：%0A${this.props.errorSenzai.join('%0A')}`
+                     + `&entry.1921144916=${encodeURIComponent(`${prefix}/${url}`)}`
     return <div>
       <p>
         本隊伍連結: <Link to={url} target={'_blank'} style={{wordBreak: 'break-all'}}>{`${prefix}/${url}`}</Link><br />
@@ -332,6 +335,14 @@ class Team extends React.Component {
           使用說明
         </button>
       </div>
+      {this.props.errorSenzai.length !== 0 && <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        以下潛能在計算期間出現問題，隊伍部份數值可能不正確。
+        <a href={reportLink} target="_blank">點此回報</a>
+        <ol>
+          {this.props.errorSenzai.map((name) => <li>{name}</li>)}
+        </ol>
+      </div>}
       <div ref={this.captureRef} className={'pure-form pure-form-stacked'}
            style={{ 'backgroundColor': this.state.toggle ? 'inherit' : '#fafafa',
                     'width': this.state.toggle ? 'auto' : '800px' }}>
