@@ -36,7 +36,7 @@ function genSkillCategoriesFromSource(CardCollecSource, CardSkillCategories){
     // special case: An SS skill group is called undefined. It's not the target for user to search.
     if (sourceSkillItem === undefined) return false;
     if (skillType.indexOf('SS') !== -1)
-      return sourceSkillItem.indexOf(flattedCategoryItem.value) !== -1;
+      return sourceSkillItem === flattedCategoryItem.value;
     else
       return sourceSkillItem.search(flattedCategoryItem.value) !== -1;
   }
