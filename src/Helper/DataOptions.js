@@ -746,7 +746,7 @@ export const ZZ = [{
     {
         label: '連鎖相關',
         options: [
-            { value: /^提升連鎖$/, label: '起始連鎖增加' },
+            { value: /^提升連鎖\S$/, label: '起始連鎖增加' },
             { value: /^防禦連鎖\S$/, label: '連鎖防禦' }
         ]
     },
