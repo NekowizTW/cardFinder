@@ -32,6 +32,8 @@ export default function atkUp (szData, team, tar, debug = false) {
   if (/(火|水|雷)．(火|水|雷)屬性隊友的攻擊力上升\d+點/.test(szData.info) ||
       /^隊友的攻擊力上升\d+點/.test(szData.info)) {
     let effect = initEffect(team.length, 'atk')
+    if (szData.elmts === undefined)
+        szData.elmts = ['火', '水', '雷']
     effect.target = team.map(card => szData.elmts.indexOf(card.prop) >= 0)
     effect.atk += parseInt(szData.const)
     effectArr.push(effect)

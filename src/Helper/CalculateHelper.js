@@ -16,7 +16,7 @@ import { conditionFlag,
 export function calcSenzai (team) {
   // console.log(team)
   let errorSenzai = []
-  const debug = false;
+  const debug = true;
   let hpa   = Array(team.length).fill(0),
       atka  = Array(team.length).fill(0),
       costa = Array(team.length).fill(0),
@@ -102,7 +102,7 @@ export function calcSenzai (team) {
               throw 'NaN Value Appeared.'
           }
         }
-        flagArr = [...flagArr, ...subFlagArr]
+        effectArr = [...effectArr, ...subEffectArr]
         for (const subFlag of subFlagArr) {
           for (const key in subFlag) {
             if (typeof subFlag[key] === 'undefined')
@@ -148,6 +148,7 @@ export function calcSenzai (team) {
     }
     // console.log([hpa, atka, costa, cdfa, cdsa])
   })
+  console.log([hpa, atka, costa, cdfa, cdsa, flags])
 
   return {
     calculated: [hpa, atka, costa, cdfa, cdsa, flags],
