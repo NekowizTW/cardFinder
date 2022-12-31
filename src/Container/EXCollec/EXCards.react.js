@@ -19,10 +19,11 @@ function parseSource (source) {
   if (m[1].indexOf('取得來源') >= 0)
     return { text: sourceArr.slice(1), link: { text: '結晶化', href: `${baseURL}結晶化` } }
 
+  console.log(`special case: ${JSON.stringify(sourceArr)}, m: ${JSON.stringify(m)}`)
   const split = m[1].indexOf('|')
   return {
     text: [sourceArr[0].replace(m[0], ''), ...sourceArr.slice(1)],
-    link: { text: m[1].slice(split + 1), href: `${baseURL}${m[1].slice(0, split - 1)}` }
+    link: { text: m[1].slice(split + 1), href: `${baseURL}${m[1].slice(0, split)}` }
   }
 }
 

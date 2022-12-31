@@ -13,7 +13,7 @@ import { getCardById,
          getSenzaiByName,
          getEXCardById   } from '../Helper/StoreHelper.js'
 import { findByAttribute } from '../Helper/RenderHelper.js'
-import { calcSenzai }      from '../helper/CalculateHelper.js'
+import { calcSenzai }      from '../Helper/CalculateHelper.js'
 
 const url_parse = url.parse(location(), true)
 const path = url_parse.href.replace(url_parse.hash, '')
