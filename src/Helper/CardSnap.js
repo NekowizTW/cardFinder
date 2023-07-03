@@ -25,7 +25,7 @@ const availableJSON = {
 const CardSnap = (baseUrl, list)=> {
   const tasks = list.map(type => {
     return new Promise((resolve, reject) => {
-      const url = `${baseUrl}json/${availableJSON[type]}`
+      const url = `${baseUrl}/${availableJSON[type]}`
       fetch(url)
         .then(raw => raw.json())
         .then(data => resolve(data))

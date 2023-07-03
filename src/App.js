@@ -19,7 +19,7 @@ import EXCollec   from './Container/EXCollec.Container.js'
 import './assets/css/main.scss'
 
 const url_parse = url.parse(location(), true)
-const path = url_parse.href.replace(url_parse.hash, '')
+const path = 'https://nekowiztw.github.io/wikidata-sync/cards/'
 const pageState = url_parse.hash
 
 class App extends React.Component {
