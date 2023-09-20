@@ -49,7 +49,7 @@ export const SKILL_AS = [
         options: [
             { value: /^攻擊/, label: '攻擊' },
             { value: /連鎖攻擊/, label: '連鎖攻擊' },
-            { value: /種族數攻擊/, label: '種族數攻擊' },
+            { value: /^種族數攻擊/, label: '種族數攻擊' },
             { value: /精神抖擻攻擊/, label: '精神抖擻攻擊' },
             { value: /瀕死攻擊/, label: '瀕死攻擊' },
             { value: /屬性的庇佑/, label: '屬性的庇佑' },
@@ -72,6 +72,7 @@ export const SKILL_AS = [
         options: [
             { value: /強化攻擊/, label: '強化攻擊' },
             { value: /強化種族攻擊/, label: '強化種族攻擊' },
+            { value: /強化種族數攻擊/, label: '強化種族數攻擊' },
             { value: /強化複屬性攻擊/, label: '強化複屬性攻擊' },
             { value: /防禦/, label: '防禦' },
             { value: /傷害減免/, label: '傷害減免' }
@@ -80,7 +81,7 @@ export const SKILL_AS = [
     {
         label: '特效',
         options: [
-            { value: /屬性特效/, label: '屬性特效' },
+            { value: /屬性特效$/, label: '屬性特效' },
             { value: /種族特效/, label: '種族特效' },
             { value: /屬性特效連擊/, label: '屬性特效連擊' },
             { value: /狀態特效/, label: '狀態特效' }
@@ -115,7 +116,7 @@ export const SKILL_AS2 = [
         options: [
             { value: /^攻擊/, label: '攻擊' },
             { value: /連鎖攻擊/, label: '連鎖攻擊' },
-            { value: /種族數攻擊/, label: '種族數攻擊' },
+            { value: /^種族數攻擊/, label: '種族數攻擊' },
             { value: /精神抖擻攻擊/, label: '精神抖擻攻擊' },
             { value: /瀕死攻擊/, label: '瀕死攻擊' },
             { value: /屬性的庇佑/, label: '屬性的庇佑' },
@@ -944,7 +945,7 @@ export const EXAS_Type = [{
             { value: /瀕死攻擊/, label: '瀕死攻擊' },
             { value: /連鎖攻擊/, label: '連鎖攻擊' },
             { value: /精神抖擻攻擊/, label: '精神抖擻攻擊' },
-            { value: /種族數攻擊/, label: '種族數攻擊' },
+            { value: /^種族數攻擊/, label: '種族數攻擊' },
             { value: /掠奪攻擊/, label: '掠奪攻擊' },
             { value: /問題類型顏色數攻擊/, label: '問題類型顏色數攻擊' },
             { value: /問題類型屬性次數攻擊/, label: '問題類型屬性次數攻擊' }
@@ -973,6 +974,7 @@ export const EXAS_Type = [{
             { value: /強化攻擊/, label: '強化攻擊' },
             { value: /強化複屬性攻擊/, label: '強化複屬性攻擊' },
             { value: /強化種族攻擊/, label: '強化種族攻擊' },
+            { value: /強化種族數攻擊/, label: '強化種族數攻擊' },
             { value: /整合（攻擊）/, label: '整合【攻擊】' },
             { value: /整合（強化攻擊）/, label: '整合【強化攻擊】' },
             { value: /整合（強化複屬性攻擊）/, label: '整合【強化複屬性攻擊】' },
