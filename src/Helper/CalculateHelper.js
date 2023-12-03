@@ -1,17 +1,17 @@
 import { logger } from 'log-prettier'
 
-import atkUp        from './CalculateHelper/AtkUp.js'
-import hpUp         from './CalculateHelper/HpUp.js'
-import costDown     from './CalculateHelper/CostDown.js'
-import cdDown       from './CalculateHelper/CdDown.js'
-import hpatk_Effect from './CalculateHelper/HpAtk_Effect.js'
+import atkUp        from './CalculateHelper/AtkUp'
+import hpUp         from './CalculateHelper/HpUp'
+import costDown     from './CalculateHelper/CostDown'
+import cdDown       from './CalculateHelper/CdDown'
+import hpatk_Effect from './CalculateHelper/HpAtk_Effect'
 
 import { globalFlag,
          mindRelative,
          recoverRelative,
-         groupGlobal }     from './CalculateHelper/GlobalFlag.js'
+         groupGlobal }     from './CalculateHelper/GlobalFlag'
 import { conditionFlag,
-         skillRelative }   from './CalculateHelper/ConditionFlag.js'
+         skillRelative }   from './CalculateHelper/ConditionFlag'
 
 export function calcSenzai (team) {
   // console.log(team)

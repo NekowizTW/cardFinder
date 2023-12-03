@@ -1,5 +1,5 @@
 import { initFlag,
-         fetchValFromInfo } from './Utils.js'
+         fetchValFromInfo } from './Utils'
 
 export function conditionFlag (szData, team, tar, debug = false) {
   let flagArr = []

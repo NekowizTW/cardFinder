@@ -1,4 +1,4 @@
-import { initEffect } from './Utils.js'
+import { initEffect } from './Utils'
 
 export default function hpUp (szData, team, tar, debug = false) {
   let effectArr = []

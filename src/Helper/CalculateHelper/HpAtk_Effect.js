@@ -1,7 +1,7 @@
 import { initEffect,
-         fetchValFromInfo } from './Utils.js'
-import atkUp from './AtkUp.js'
-import hpUp  from './HpUp.js'
+         fetchValFromInfo } from './Utils'
+import atkUp from './AtkUp'
+import hpUp  from './HpUp'
 
 export default function hpatk_Effect (szData, team, tar, debug = false) {
   let effectArr = []

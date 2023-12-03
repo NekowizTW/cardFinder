@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import Store from '../Redux/Store.js'
+import Store from '../Redux/Store'
 
 // card relative
 export function getCardById (id) {

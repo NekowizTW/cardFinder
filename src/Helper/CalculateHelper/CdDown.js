@@ -1,5 +1,5 @@
 import { initEffect,
-         fetchValFromInfo } from './Utils.js'
+         fetchValFromInfo } from './Utils'
 
 export default function cdDown (szData, team, tar, debug = false) {
   let effectArr = []

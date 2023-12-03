@@ -1,7 +1,7 @@
 import CryptoJS from 'crypto-js'
 import _ 		    from 'lodash'
 
-import * as constOptions from './DataOptions.js'
+import * as constOptions from './DataOptions'
 
 export function findByAttribute (collection, key, value) {
   return _.find(collection, { [key]: value })

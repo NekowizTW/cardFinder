@@ -1,6 +1,6 @@
 import { initFlag,
          fetchValFromInfo,
-         fullWidthNumber2Integer } from './Utils.js'
+         fullWidthNumber2Integer } from './Utils'
 
 export function globalFlag (szData, team, tar, debug = false) {
   let flagArr = []

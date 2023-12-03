@@ -1,8 +1,7 @@
-import assign     from "object-assign";
 import _          from 'lodash';
 import { logger } from 'log-prettier';
 
-import * as constOptions from '../Helper/DataOptions.js';
+import * as constOptions from '../Helper/DataOptions';
 
 // This mixin is to find that the card's property is in values(array) or not
 _.mixin({
@@ -277,7 +276,11 @@ function getCardSubset (source, filter, settings) {
   const { listCards, totalCount, maxPage } = pagingAndSortCards(subset, settings);
   return {
     ListCards: listCards,
-    ListSettings: Object.assign(settings, {totalCount: totalCount, maxPage: maxPage})
+    ListSettings: {
+      ...settings,
+      totalCount: totalCount,
+      maxPage: maxPage,
+    }
   }
 }
 
@@ -287,34 +290,34 @@ export default function Reducer (state, action) {
       // copy option for unhandled card options
       let availableOptions = {...constOptions}
       genSkillCategoriesFromSource(action.payload.card, availableOptions); //remove this when new skill cate is done
-      return Object.assign({}, state, 
-        {
-          SourceCards: action.payload.card,
-          SourceSenzai: action.payload.senzai,
-          SourceEXCards: action.payload.exCard,
-          SourceLeaderEXCards: action.payload.leaderEXCards,
-          SourceFilterSettings: assign(availableOptions)
-        }, 
-        getCardSubset(action.payload.card, state.ListFiltter, state.ListSettings)
-      )
+      return {
+        ...state, 
+        SourceCards: action.payload.card,
+        SourceSenzai: action.payload.senzai,
+        SourceEXCards: action.payload.exCard,
+        SourceLeaderEXCards: action.payload.leaderEXCards,
+        SourceFilterSettings: availableOptions,
+        ...getCardSubset(action.payload.card, state.ListFiltter, state.ListSettings),
+      }
     case 'FilterChange':
       const new_filter = action.payload;
-      return Object.assign({}, state,
-        {
-          ListFiltter: new_filter
-        },
-        getCardSubset(state.SourceCards, new_filter, Object.assign(state.ListSettings, { page: 0 }))
-      )
+      return {
+        ...state,
+        ListFiltter: new_filter,
+        ...getCardSubset(state.SourceCards, new_filter, { ...state.ListSettings, page: 0 }),
+      }
     case 'ListingChange':
-      const new_listing = Object.assign(state.ListSettings, action.payload);
-      return Object.assign({}, state,
-        {
-          ListSettings: new_listing
-        },
-        getCardSubset(state.SourceCards, state.ListFiltter, new_listing)
-      )
+      const new_listing = { ...state.ListSettings, ...action.payload };
+      return {
+        ...state,
+        ListSettings: new_listing,
+        ...getCardSubset(state.SourceCards, state.ListFiltter, new_listing),
+      }
     case 'UpdateTeam':
-      return Object.assign({}, state, { TeamCards: action.payload })
+      return {
+        ...state,
+        TeamCards: action.payload,
+      }
     default:
       return state;
   }
