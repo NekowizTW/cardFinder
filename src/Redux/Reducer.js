@@ -27,7 +27,7 @@ function genSkillCategoriesFromSource(CardCollecSource, CardSkillCategories){
     { name: 'SKILL_SS', path: 'ssData' },
     { name: 'SKILL_AS2', path: 'as2Data' },
     { name: 'SKILL_SS2', path: 'ss2Data' },
-    { name: 'EXAS_Type', path: 'EXASData' }
+    { name: 'EXASType', path: 'EXASData' }
   ]
 
   // an arrow function for filtering available functions, regex search is for AS and indexOf is for SS.

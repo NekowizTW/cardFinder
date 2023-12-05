@@ -3,7 +3,7 @@ import TextFilter  from 'react-text-filter'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBan } from '@fortawesome/free-solid-svg-icons'
 
-import { tw_filenameFix,
+import { twFilenameFix,
          linkGenerator }   from '../../Helper/RenderHelper'
 
 class LeaderEX extends React.Component {
@@ -94,7 +94,7 @@ class LeaderEX extends React.Component {
     }
 
     function cardItem (data, idx) {
-      const small_filename = tw_filenameFix(data.small_filename) || '0000.png'
+      const small_filename = twFilenameFix(data.small_filename) || '0000.png'
 
       return (<div className={'pure-u-1 excard-container'} key={`excard-${data.name}-container`}>
         <div className={'excard'} key={`excard-${data.name}-card`}>

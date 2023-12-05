@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import Action              from '../../Redux/Action';
 import { getCardById,
          getSenzaiByName } from '../../Helper/StoreHelper'
-import { tw_filenameFix,
+import { twFilenameFix,
          linkGenerator }   from '../../Helper/RenderHelper'
 
 class Card extends React.Component {
@@ -36,7 +36,7 @@ class Card extends React.Component {
     const cardHandler = this
 
     function cardItem (data) {
-      const small_filename = tw_filenameFix(data.small_filename) || '0000.png'
+      const small_filename = twFilenameFix(data.small_filename) || '0000.png'
       const hover = cardHandler.state.team.selected.indexOf(data.id) > -1 ? 'selected' : ''
 
       return (<div key={`card-${data.id}-base`} className={`cardItem pure-g ${hover}`}>

@@ -6,7 +6,7 @@ import Tabs,
 import EvoCard from './EvoCard'
 
 import { getSenzaiByName }         from '../../Helper/StoreHelper'
-import { tw_filenameFix,
+import { twFilenameFix,
          linkGenerator,
          reverseOptionsGenerator } from '../../Helper/RenderHelper'
 
@@ -35,8 +35,8 @@ class Card extends React.Component {
 
   render () {
     const data           = this.props.data
-    const card_filename  = tw_filenameFix(data.card_filename) || "0000.png"
-    const small_filename = tw_filenameFix(data.small_filename) || "0000.png"
+    const card_filename  = twFilenameFix(data.card_filename) || "0000.png"
+    const small_filename = twFilenameFix(data.small_filename) || "0000.png"
     // 1st State: Waiting for Data.
     if (Object.keys(data).length === 0 && data.constructor === Object)
       return (<div>等待卡片資料中...</div>)

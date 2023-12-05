@@ -8,7 +8,7 @@ import { getCardById,
          getSenzaiByName,
          getEXCardById,
          getLeaderEXByValue } from '../../Helper/StoreHelper'
-import { tw_filenameFix,
+import { twFilenameFix,
          linkGenerator,
          findByAttribute,
          uniqArray       }    from '../../Helper/RenderHelper'

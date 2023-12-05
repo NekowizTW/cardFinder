@@ -9,7 +9,7 @@ import Store              from '../../Redux/Store'
 import { getCardById,
          getSenzaiByName,
          getEXCardById  } from '../../Helper/StoreHelper'
-import { tw_filenameFix,
+import { twFilenameFix,
          linkGenerator,
          filterByObject } from '../../Helper/RenderHelper'
 

@@ -5,7 +5,7 @@ import { faBan } from '@fortawesome/free-solid-svg-icons'
 
 import { getSenzaiByName } from '../../Helper/StoreHelper'
 
-import { tw_filenameFix,
+import { twFilenameFix,
          linkGenerator }   from '../../Helper/RenderHelper'
 
 const baseURL = 'https://nekowiz.fandom.com/zh/wiki/'
@@ -94,7 +94,7 @@ class EXCards extends React.Component {
     }
 
     function cardItem (data, idx) {
-      const small_filename = tw_filenameFix(data.small_filename) || '0000.png'
+      const small_filename = twFilenameFix(data.small_filename) || '0000.png'
 
       return (<div className={'pure-u-1 pure-u-md-1-2 excard-container'} key={`excard-${data.id}-container`}>
         <div className={'excard'} key={`excard-${data.id}-card`}>

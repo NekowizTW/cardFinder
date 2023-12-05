@@ -4,7 +4,7 @@ import Modal  from 'react-modal'
 
 import Action                     from '../../Redux/Action'
 import Store                      from '../../Redux/Store'
-import { tw_filenameFix,
+import { twFilenameFix,
          linkGenerator }          from '../../Helper/RenderHelper'
 
 const customStyles = {

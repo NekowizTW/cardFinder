@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { tw_filenameFix,
+import { twFilenameFix,
          linkGenerator   } from '../../Helper/RenderHelper'
 
 const noteObj = {

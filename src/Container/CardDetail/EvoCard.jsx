@@ -1,9 +1,10 @@
 import React      from 'react'
 import { Link }   from 'react-router-dom'
 import { logger } from 'log-prettier'
+import _          from 'lodash'
 
 import { getCardById }   from '../../Helper/StoreHelper'
-import { tw_filenameFix,
+import { twFilenameFix,
          linkGenerator } from '../../Helper/RenderHelper'
 
 const outerURL = `https://nekowiz.fandom.com/zh/wiki/卡片資料`;
@@ -61,7 +62,7 @@ class EvoCard extends React.Component {
   //  - disable_down: disable down arrow
   generateCard (id, self_card = false, disable_down = false) {
     const data = getCardById(id);
-    const small_filename = tw_filenameFix(data.small_filename) || "0000.png";
+    const small_filename = twFilenameFix(data.small_filename) || "0000.png";
     return (
       <div className={'pure-u-1 evoNode'} key={`evo-card-${data.id}`}>
         <div className={'pure-g'}>
