@@ -1,0 +1,38 @@
+.senzaiList{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: left;
+  flex-wrap: wrap;
+  &:before{
+    content: " ";
+    background-image: url('../images/senzaiPrefix.png');
+    background-repeat: no-repeat;
+    background-size: 60px;
+    width: 60px;
+    height: 22px;
+    margin: 2px;
+    margin-top: 5px;
+  }
+  span.legend{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    &:before{
+      content: "|";
+      margin: 5px 5px 5px 5px;
+      vertical-align: super;
+    }
+  }
+  img{
+    width: 22px;
+    height: auto;
+  }
+}
+
+.senzaiList.Legend:before{
+  width: 134px;
+  height: 22px;
+  background-size: 128px;
+  background-image: url('../images/senzaiLPrefix.png');
+}

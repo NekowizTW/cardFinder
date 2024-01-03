@@ -1,0 +1,27 @@
+.teamAS, .teamSS, .teamEXAS {
+  display: table;
+  margin-top: 1em;
+  &> div {
+    display: table-cell;
+    vertical-align: middle;
+    width: 4.8em;
+    height: 3.6em;
+    color: #fafafa;
+    font-size: 1.2em;
+    font-weight: 900;
+    font-style: italic;
+    white-space: pre-line;
+  }
+}
+
+.teamAS > div {
+  text-shadow: -1px 0 rgb(0, 34, 119), 0 1px rgb(0, 34, 119), 1px 0 rgb(0, 34, 119), 0 -1px rgb(0, 34, 119);
+}
+
+.teamSS > div {
+  text-shadow: -1px 0 rgb(17, 136, 0), 0 1px rgb(17, 136, 0), 1px 0 rgb(17, 136, 0), 0 -1px rgb(17, 136, 0);
+}
+
+.teamEXAS > div {
+  text-shadow: -1px 0 rgb(255, 0, 0), 0 1px rgb(255, 0, 0), 1px 0 rgb(255, 0, 0), 0 -1px rgb(255, 0, 0);
+}

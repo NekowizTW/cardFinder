@@ -1,0 +1,18 @@
+$red: rgb(255, 0, 0);
+
+.clearBtn {
+  display: flex;
+  align-items: center;
+  border: none;
+  color: #FFF;
+  border-radius: 50%;
+  height: 1.5em;
+  background-color: $red;
+
+  &:hover { filter: brightness(115%); }
+  &:active { filter: brightness(85%); }
+
+  &.disabled {
+    filter: opacity(0.6);
+  }
+}

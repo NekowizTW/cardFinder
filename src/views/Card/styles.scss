@@ -1,0 +1,29 @@
+.reverse-search-button {
+  width: 90%;
+  border: none;
+  border-radius: 10px;
+  color: #333;
+  background-color: #f1f3f4;
+  display: flex;
+  gap: 1em;
+
+  .lead {
+    width: 3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .context {
+    margin: 0.75em 0 0.75em;
+    max-width: calc(100% - 5em);
+    text-align: left;
+    span {
+      word-wrap: break-word;
+    }
+  }
+  
+  &:active {
+    background-color: #C6CED2;
+  }
+}

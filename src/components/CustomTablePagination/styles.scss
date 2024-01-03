@@ -1,0 +1,72 @@
+.MuiTablePagination-root {
+  margin: 10px 0 10px;
+}
+.MuiTablePagination-spacer {
+  display: none;
+}
+
+.MuiTablePagination-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: inherit;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+}
+
+.MuiTablePagination-selectLabel {
+  margin: 0;
+}
+
+.MuiTablePagination-select {
+  padding: 2px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: transparent;
+  color: #212121;
+
+  &:hover {
+    background-color: #fafafa;
+  }
+
+  &:focus {
+    outline: 1px solid #90caf9;
+  }
+}
+
+.MuiTablePagination-displayedRows {
+  margin: 0;
+
+  @media (min-width: 768px) {
+    margin-left: auto;
+  }
+}
+
+.MuiTablePagination-actions {
+  padding: 2px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.MuiTablePagination-actions > button {
+  margin: 0 8px;
+  border: none;
+  border-radius: 4px;
+  background-color: transparent;
+  color: #212121;
+
+  &:hover {
+    background-color: #fafafa;
+  }
+
+  &:focus {
+    outline: 1px solid #90caf9;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+  }
+}
