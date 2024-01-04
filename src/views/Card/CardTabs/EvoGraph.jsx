@@ -10,7 +10,7 @@ import { WIKI_URL } from '../../../model/variables';
 import { siblingTester } from './utils';
 
 const EvoAsset = React.memo(({ itemId }) => {
-  const card = useGetCard(itemId);
+  const { card } = useGetCard(itemId);
   const smallFilename = card?.small_filename ?? `${itemId}.png`;
 
   return (
@@ -38,9 +38,10 @@ EvoAsset.defaultProps = {
 };
 
 const EvoHeader = React.memo(({ cardId, isSelf }) => {
+  const { card } = useGetCard(cardId);
   const {
     id, small_filename: smallFilename, evo_to: evoTo, evoArr, evo_price: evoPrice,
-  } = useGetCard(cardId);
+  } = card;
   const hasNext = !!evoTo;
 
   return (
