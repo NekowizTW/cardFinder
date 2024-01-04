@@ -87,7 +87,7 @@ export default function CardRow({
         </span>
         )}
       </p>
-      <div className="pure-u-1-6" />
+      <div className="pure-u-1 pure-u-sm-1-6" />
       <div className="pure-u-1 pure-u-sm-5-6">
         <SenzaiRow
           belongsTo={data.id}

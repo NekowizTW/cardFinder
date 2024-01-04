@@ -109,25 +109,25 @@ export default function EXCardsList() {
 
   return (
     <>
+      <div className="pure-form" style={{ display: 'flex', width: '100%' }}>
+        <SearchBar
+          onSearch={handleSearch}
+          placeholder="請輸入結晶名稱或效果關鍵詞"
+          style={{ flexGrow: 1 }}
+        />
+        <button
+          className="button-error pure-button"
+          type="button"
+          onClick={handleReset}
+          style={{ height: 36.4, flex: 0.2 }}
+        >
+          清除
+        </button>
+      </div>
       <CustomStickyHeader style={{
         display: 'flex', flexDirection: 'column', gap: 16, width: '100%',
       }}
       >
-        <div className="pure-form" style={{ display: 'flex' }}>
-          <SearchBar
-            onSearch={handleSearch}
-            placeholder="請輸入結晶名稱或效果關鍵詞"
-            style={{ flexGrow: 1 }}
-          />
-          <button
-            className="button-error pure-button"
-            type="button"
-            onClick={handleReset}
-            style={{ height: 36.4, flex: 0.2 }}
-          >
-            清除
-          </button>
-        </div>
         <CustomTablePagination
           count={count}
           pageNum={pageNum}

@@ -20,6 +20,12 @@ export default function CustomTablePagination({
         root: 'div',
       }}
       slotProps={{
+        toolbar: {
+          style: {
+            justifyContent: 'flex-end',
+            flexWrap: 'wrap',
+          },
+        },
         actions: {
           showFirstButton: true,
           showLastButton: true,

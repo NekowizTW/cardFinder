@@ -47,7 +47,7 @@ export const initCards = createAsyncThunk(
 export const filterCards = createAsyncThunk(
   'cards/filter',
   async (_, thunkAPI) => {
-    const { cards, filters } = thunkAPI.getState();
-    return cardsFilter(cards.sourceCards, filters);
+    const { cards, filters, user } = thunkAPI.getState();
+    return cardsFilter(cards.sourceCards, filters, user.selected);
   },
 );

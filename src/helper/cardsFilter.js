@@ -166,20 +166,21 @@ const senzaiPropsFilter = {
 
 const additionalPropsFilter = {
   prepare: ({
-    isHaifu, isMaxEvo,
-  }) => ({
-    isHaifu, isMaxEvo,
+    isHaifu, isMaxEvo, isSelectedOnly,
+  }, selected) => ({
+    isHaifu, isMaxEvo, isSelectedOnly, selectedSet: new Set(selected),
   }),
   handler: (card, {
-    isHaifu, isMaxEvo,
+    isHaifu, isMaxEvo, isSelectedOnly, selectedSet,
   }) => {
     if (isHaifu && !(card.obtainType?.type === 'haifu')) return false;
     if (isMaxEvo && card.evo_to !== '') return false;
+    if (isSelectedOnly && !selectedSet.has(card.id)) return false;
     return true;
   },
 };
 
-export default function cardsFilter(cards, filters) {
+export default function cardsFilter(cards, filters, selected = []) {
   const nextFilters = {
     search: searchFilter.prepare(filters),
     ...basicPropsFilter.prepare(filters),
@@ -187,7 +188,7 @@ export default function cardsFilter(cards, filters) {
     ...ssPropsFilter.prepare(filters),
     ...exasPropsFilter.prepare(filters),
     ...senzaiPropsFilter.prepare(filters),
-    ...additionalPropsFilter.prepare(filters),
+    ...additionalPropsFilter.prepare(filters, selected),
   };
 
   const result = cards.reduce((acc, card) => {

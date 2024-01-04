@@ -21,7 +21,7 @@ export default function EditCard() {
 
   const { filteredCards } = useGetFilteredCards();
   const filters = useSelector((state) => state.filters);
-  const { isHaifu, isMaxEvo } = filters;
+  const { isHaifu, isMaxEvo, isSelectedOnly } = filters;
 
   const cards = React.useMemo(
     () => {
@@ -38,6 +38,7 @@ export default function EditCard() {
   const handleChange = (key, newValue) => dispatch(setAdditionalPropsFilter({
     isMaxEvo,
     isHaifu,
+    isSelectedOnly,
     [key]: newValue,
   }));
 
@@ -75,6 +76,11 @@ export default function EditCard() {
               label="只顯示配佈卡"
               checked={isHaifu}
               onChange={(event) => handleChange('isHaifu', event.target.checked)}
+            />
+            <CustomSwitch
+              label="只顯示已選擇的卡片"
+              checked={isSelectedOnly}
+              onChange={(event) => handleChange('isSelectedOnly', event.target.checked)}
             />
           </div>
           <h4 className="pure-u-1" style={{ textAlign: 'left' }}>搜尋結果</h4>

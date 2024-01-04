@@ -23,6 +23,7 @@ const initialState = {
   exasType: [],
   isHaifu: false,
   isMaxEvo: true,
+  isSelectedOnly: false,
 };
 
 const filterReducer = createReducer(initialState, (builder) => {
@@ -62,6 +63,7 @@ const filterReducer = createReducer(initialState, (builder) => {
       ...state,
       isHaifu: action.payload.isHaifu,
       isMaxEvo: action.payload.isMaxEvo,
+      isSelectedOnly: action.payload.isSelectedOnly,
     }))
     .addCase(setAllPropsFilter.fulfilled, (state, action) => ({
       ...state,

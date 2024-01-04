@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 
-import { toggleCard } from '../../actions/userActions';
+import { clearSelected, toggleCards } from '../../actions/userActions';
 import {
   CustomStickyHeader, CustomSwitch, CustomTablePagination, LoadingOverlay,
 } from '../../components';
@@ -67,55 +67,83 @@ export default function List() {
   }), [filteredCards, orderBy, sortBy]);
   const slicedCards = cards.slice(paging * pageNum, paging * (pageNum + 1));
   const selectedCardSet = new Set(selected);
+  const isPageSelected = slicedCards.every(({ id }) => selectedCardSet.has(id));
 
-  const handleSelect = (id, checked) => dispatch(toggleCard({ id, checked }));
+  const handleSelect = (id, checked) => dispatch(toggleCards({ ids: [id], checked }));
+
+  const handleSelectAll = () => dispatch(
+    toggleCards({ ids: slicedCards.map(({ id }) => id), checked: !isPageSelected }),
+  );
+
+  const handleClearAll = () => dispatch(clearSelected());
 
   return (
     <>
       <hr />
-      <CustomStickyHeader>
-        <div className="pure-g" style={{ alignItems: 'flex-end' }}>
-          <div className="pure-u-1 pure-u-md-1-2">
-            <CustomSwitch
-              label="啟用卡片選擇"
-              checked={enabledSelect}
-              onChange={(e) => setEnabledSelect(e.target.checked)}
-            />
-          </div>
-          <div className="pure-u-1-2 pure-u-md-1-4">
-            <Select
-              value={sortOptions.find((option) => option.value === sortBy)}
-              options={sortOptions}
-              isOptionSelected={(option, selectedValue) => option.value === selectedValue}
-              label="排序"
-              onChange={(newValue) => setSortBy(newValue.value)}
-            />
-          </div>
-          <div className="pure-u-1-2 pure-u-md-1-4">
-            <Select
-              value={orderOptions.find((option) => option.value === orderBy)}
-              options={orderOptions}
-              isOptionSelected={(option, selectedValue) => option.value === selectedValue}
-              label="排列方式"
-              onChange={(newValue) => setOrderBy(newValue.value)}
-            />
-          </div>
-        </div>
-        <div style={{
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap',
-        }}
-        >
-          <div>
-            {enabledSelect && <p style={{ margin: '0.5em 0 0', lineHeight: '1em' }}>{`已選擇${selected.length}張卡片`}</p>}
-          </div>
-          <CustomTablePagination
-            count={count}
-            pageNum={pageNum}
-            onPageNumChange={setPageNum}
-            paging={paging}
-            onPagingChange={setPaging}
+      <div className="pure-g" style={{ alignItems: 'flex-end' }}>
+        <div className="pure-u-1 pure-u-md-1-2">
+          <CustomSwitch
+            label="啟用卡片選擇"
+            checked={enabledSelect}
+            onChange={(e) => setEnabledSelect(e.target.checked)}
           />
         </div>
+        <div className="pure-u-1-2 pure-u-md-1-4">
+          <Select
+            value={sortOptions.find((option) => option.value === sortBy)}
+            options={sortOptions}
+            isOptionSelected={(option, selectedValue) => option.value === selectedValue}
+            label="排序"
+            onChange={(newValue) => setSortBy(newValue.value)}
+          />
+        </div>
+        <div className="pure-u-1-2 pure-u-md-1-4">
+          <Select
+            value={orderOptions.find((option) => option.value === orderBy)}
+            options={orderOptions}
+            isOptionSelected={(option, selectedValue) => option.value === selectedValue}
+            label="排列方式"
+            onChange={(newValue) => setOrderBy(newValue.value)}
+          />
+        </div>
+      </div>
+      <div style={{
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap',
+      }}
+      >
+        {enabledSelect && (
+          <div style={{
+            margin: '1em 0 0', display: 'flex', alignItems: 'center', gap: 4,
+          }}
+          >
+            <p style={{ lineHeight: '1em' }}>{`已選擇${selected.length}張卡片`}</p>
+            <button
+              type="button"
+              className={`pure-button button-xsmall ${isPageSelected ? 'button-error' : ''}`}
+              onClick={handleSelectAll}
+            >
+              {isPageSelected ? '取消全選' : '全選'}
+            </button>
+            <button
+              type="button"
+              className="pure-button button-xsmall button-warning"
+              onClick={handleClearAll}
+              disabled={selected.length === 0}
+            >
+              清除所有選擇
+            </button>
+          </div>
+        )}
+      </div>
+      <CustomStickyHeader>
+        <CustomTablePagination
+          count={count}
+          pageNum={pageNum}
+          onPageNumChange={setPageNum}
+          paging={paging}
+          onPagingChange={setPaging}
+        />
+
       </CustomStickyHeader>
       <div style={{ position: 'relative', paddingTop: '0.5em', zIndex: 0 }}>
         {status !== FETCH_STATUS.SUCCESS && (

@@ -77,6 +77,7 @@ export default function Builder() {
         <input
           type="text"
           value={teamFullUrl}
+          readOnly
           style={{ width: '100%' }}
         />
         <div className="button-group">

@@ -61,9 +61,9 @@ export const setSenzaiPropsFilter = createAsyncThunk(
 export const setAdditionalPropsFilter = createAsyncThunk(
   'filters/onAdditionalPropChanges',
   async ({
-    isHaifu, isMaxEvo,
+    isHaifu, isMaxEvo, isSelectedOnly,
   }) => ({
-    isHaifu, isMaxEvo,
+    isHaifu, isMaxEvo, isSelectedOnly,
   }),
 );
 

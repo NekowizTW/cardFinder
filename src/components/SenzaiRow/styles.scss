@@ -6,7 +6,7 @@
   flex-wrap: wrap;
   &:before{
     content: " ";
-    background-image: url('../images/senzaiPrefix.png');
+    background-image: url('../../assets/images/senzaiPrefix.png');
     background-repeat: no-repeat;
     background-size: 60px;
     width: 60px;
@@ -28,11 +28,16 @@
     width: 22px;
     height: auto;
   }
+  @media screen and (max-width: 767px) {
+    &:before{
+      width: 0;
+    }
+  }
 }
 
 .senzaiList.Legend:before{
   width: 134px;
   height: 22px;
   background-size: 128px;
-  background-image: url('../images/senzaiLPrefix.png');
+  background-image: url('../../assets/images/senzaiLPrefix.png');
 }
