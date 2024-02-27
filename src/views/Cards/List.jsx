@@ -80,7 +80,14 @@ export default function List() {
   return (
     <>
       <hr />
-      <div className="pure-g" style={{ alignItems: 'flex-end' }}>
+      <div
+        className="pure-g"
+        style={{
+          position: 'relative',
+          zIndex: 2,
+          alignItems: 'flex-end',
+        }}
+      >
         <div className="pure-u-1 pure-u-md-1-2">
           <CustomSwitch
             label="啟用卡片選擇"
