@@ -1,4 +1,4 @@
-NekowizTW cardFinder (based on Node v14)
+NekowizTW cardFinder (based on Node v20)
 ====
 
 Introduction
@@ -20,16 +20,16 @@ Data
 Contribute
 ----
 
-若要支援此專案，請在[Wikia論壇](http://zh.nekowiz.wikia.com/d/f)上發表你的意願或是透過此專案的Issue提報來告知。
+若要支援此專案，可以透過以下三種管道回報問題或是請求參與專案。
+- [Wikia論壇](http://zh.nekowiz.wikia.com/d/f)
+- [Github Issue](https://github.com/NekowizTW/cardFinder/issues)
+- [Google表單](https://docs.google.com/forms/d/e/1FAIpQLSee_Qv-mXFiYq5T3eFhjRR4zU21ut9FUKGLU4ud53RJv0aSgw/viewform)
 
-此專案理想版本為nodejs 14，舊版本請至少支援EcmaScript 6。
+此專案理想版本為nodejs 20，舊版本請至少支援EcmaScript 6。
 
-備註：資料同步處理部份需要安裝以下三個套件，透過執行``node cardBase.js``即可完成一次資料同步處理。但佈署上需要同時佈署到``master``以及``gh-pages``兩個branch上。
-```
-lodash
-node-fetch
-listr2
-```
+目前已經透過Github Action在另一個Repository進行一週兩次的資料同步，請關注首頁的更新日期。
+
+更新資料的Script等待之後進行整理，不過會優先動另一個Repository的再來整理這裡的。
 
 Thanks
 ----
