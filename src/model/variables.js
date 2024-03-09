@@ -1,5 +1,7 @@
 export const BASE_URL = 'https://nekowiztw.github.io/wikidata-sync/cards/';
 
+export const CDN_URL = 'https://cdn.jsdelivr.net/gh/nekowiztw/wikidata-sync@gh-pages/cards/';
+
 export const WIKI_URL = 'https://nekowiz.fandom.com/zh/wiki';
 
 export const JSON_NAMES = {
