@@ -48,6 +48,10 @@ $blue: rgb(0, 34, 119);
   }
   .profileFrame{
     position: relative;
+    box-sizing: border-box;
+    padding-top: 0.25em;
+    padding-left: 25px;
+    text-align: left;
     span.circleMark{
       position: absolute;
       color: red;
@@ -59,13 +63,19 @@ $blue: rgb(0, 34, 119);
       left: 0px;
       top: 5px;
       font-size: 15px;
+      line-height: 25px;
+      text-align: center;
 
       @media screen and (max-width: 640px) {
-        top: 25px;
+        width: 18px;
+        height: 18px;
+        font-size: 12px;
+        line-height: 18px;
       }
     }
     @media screen and (min-width: 640px) {
-      br{ display: none; }
+      br { display: none; }
+      text-align: center;
     }
   }
   .numberFrame{

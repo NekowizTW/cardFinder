@@ -60,13 +60,13 @@ export default function CardRow({
         <Link to={`/card/${data.id}`}>
           {`No. ${data.id} ${data.name}`}
         </Link>
-        <div className="pure-g">
-          <p className="pure-u-1-3">{data.breed}</p>
-          <p className="pure-u-1-3">{`${data.evo_now}/${data.evo_max}`}</p>
-          <p className="pure-u-1-3">{data.cost}</p>
+        <div className="pure-g" style={{ margin: '0.5em 0' }}>
+          <span className="pure-u-1-3">{data.breed || '--'}</span>
+          <span className="pure-u-1-3">{`${data.evo_now}/${data.evo_max}`}</span>
+          <span className="pure-u-1-3">{data.cost || '00'}</span>
         </div>
       </div>
-      <p className="pure-u-1-6 numberFrame">
+      <div className="pure-u-1-6 numberFrame">
         <span>{data.max_hp}</span>
         <br />
         <span>{data.max_atk}</span>
@@ -86,7 +86,7 @@ export default function CardRow({
           {data.ss2Data.cds}
         </span>
         )}
-      </p>
+      </div>
       <div className="pure-u-1 pure-u-sm-1-6" />
       <div className="pure-u-1 pure-u-sm-5-6">
         <SenzaiRow
