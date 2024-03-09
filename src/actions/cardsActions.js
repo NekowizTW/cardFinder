@@ -21,7 +21,8 @@ export const analyzeCards = createAsyncThunk(
 export const initCards = createAsyncThunk(
   'cards/fetch',
   async (_, thunkAPI) => {
-    const cardData = await fetch(BASE_URL + JSON_NAMES['卡片資料'])
+    const cardData = { card: [], Senzai: [] };
+    const source = await fetch(BASE_URL + JSON_NAMES['卡片資料'])
       .then((response) => response.json());
     const exs = await fetch(BASE_URL + JSON_NAMES['結晶'])
       .then((response) => response.json())
@@ -33,6 +34,23 @@ export const initCards = createAsyncThunk(
       .then((data) => data.toSorted(
         (lhs, rhs) => (lhs.name.localeCompare(rhs.name)),
       ));
+
+    // NOTE: Handling old and new format
+    cardData.Senzai = source.Senzai;
+    if (source.card) {
+      cardData.card = source.card;
+    } else {
+      const { prefix, count } = source;
+      const chunks = await Promise.all(
+        [...Array(count)].map(
+          (__, idx) => {
+            const url = `${BASE_URL}${prefix}${idx}.json`;
+            return fetch(url).then((response) => response.json());
+          },
+        ),
+      );
+      cardData.card = chunks.reduce((acc, chunk) => acc.concat(chunk), []);
+    }
 
     await thunkAPI.dispatch(analyzeCards(cardData.card));
 
