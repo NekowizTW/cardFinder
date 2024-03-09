@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  CustomStickyHeader, CustomTablePagination, SearchBar, WikiImage,
+  CustomTablePagination, SearchBar, WikiImage,
 } from '../../components';
 import useGetExcards from '../../hooks/useGetExCards';
 import { FETCH_STATUS } from '../../model/variables';
@@ -46,7 +46,7 @@ EXCard.propTypes = {
 };
 
 const PAGING_OPTIONS = [
-  6, 12, 48, 100,
+  10, 25, 50, 100,
 ];
 
 export default function EXCardsList() {
@@ -57,7 +57,7 @@ export default function EXCardsList() {
     triggerFilter,
   } = useGetExcards();
   const [count, setCount] = React.useState(0);
-  const [paging, setPaging] = React.useState(6);
+  const [paging, setPaging] = React.useState(PAGING_OPTIONS[0]);
   const [pageNum, setPageNum] = React.useState(0);
 
   const slicedEXCards = exCards.slice(paging * pageNum, paging * (pageNum + 1));
@@ -72,7 +72,7 @@ export default function EXCardsList() {
   }, [exCards.length]);
 
   return (
-    <>
+    <div className="pure-u-1">
       <div className="pure-form" style={{ display: 'flex', width: '100%' }}>
         <SearchBar
           onSearch={handleSearch}
@@ -90,25 +90,19 @@ export default function EXCardsList() {
           清除
         </button>
       </div>
-      <CustomStickyHeader
-        style={{
-          display: 'flex', flexDirection: 'column', gap: 16, width: '100%',
-        }}
-      >
-        <CustomTablePagination
-          count={count}
-          pageNum={pageNum}
-          onPageNumChange={setPageNum}
-          paging={paging}
-          onPagingChange={setPaging}
-          pagingOptions={PAGING_OPTIONS}
-        />
-      </CustomStickyHeader>
-      <div className="pure-g">
+      <div className="pure-g" style={{ paddingTop: '0.5em' }}>
         {slicedEXCards.map((exCard) => (
           <EXCard key={exCard.id} ex={exCard} tokens={tokens} />
         ))}
       </div>
-    </>
+      <CustomTablePagination
+        count={count}
+        pageNum={pageNum}
+        onPageNumChange={setPageNum}
+        paging={paging}
+        onPagingChange={setPaging}
+        pagingOptions={PAGING_OPTIONS}
+      />
+    </div>
   );
 }

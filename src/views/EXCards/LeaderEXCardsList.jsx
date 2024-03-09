@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  CustomStickyHeader, CustomTablePagination, LoadingOverlay, SearchBar, WikiImage,
+  CustomTablePagination, LoadingOverlay, SearchBar, WikiImage,
 } from '../../components';
 import useGetLeaderExCards from '../../hooks/useGetLeaderExCards';
 import { FETCH_STATUS } from '../../model/variables';
@@ -76,7 +76,7 @@ LeaderEXCard.propTypes = {
 };
 
 const PAGING_OPTIONS = [
-  3, 6, 24, 50,
+  5, 10, 25, 50,
 ];
 
 export default function EXCardsList() {
@@ -87,7 +87,7 @@ export default function EXCardsList() {
     triggerFilter,
   } = useGetLeaderExCards();
   const [count, setCount] = React.useState(0);
-  const [paging, setPaging] = React.useState(3);
+  const [paging, setPaging] = React.useState(PAGING_OPTIONS[0]);
   const [pageNum, setPageNum] = React.useState(0);
 
   const slicedLeaderEXCards = leaderEXCards.slice(paging * pageNum, paging * (pageNum + 1));
@@ -108,7 +108,7 @@ export default function EXCardsList() {
   }
 
   return (
-    <>
+    <div className="pure-u-1">
       <div className="pure-form" style={{ display: 'flex', width: '100%' }}>
         <SearchBar
           onSearch={handleSearch}
@@ -124,20 +124,7 @@ export default function EXCardsList() {
           清除
         </button>
       </div>
-      <CustomStickyHeader style={{
-        display: 'flex', flexDirection: 'column', gap: 16, width: '100%',
-      }}
-      >
-        <CustomTablePagination
-          count={count}
-          pageNum={pageNum}
-          onPageNumChange={setPageNum}
-          paging={paging}
-          onPagingChange={setPaging}
-          pagingOptions={PAGING_OPTIONS}
-        />
-      </CustomStickyHeader>
-      <div className="pure-g">
+      <div className="pure-g" style={{ paddingTop: '0.5em' }}>
         {slicedLeaderEXCards.map(([groupLabel, leaderEXs]) => (
           <LeaderEXCard
             key={groupLabel}
@@ -147,6 +134,14 @@ export default function EXCardsList() {
           />
         ))}
       </div>
-    </>
+      <CustomTablePagination
+        count={count}
+        pageNum={pageNum}
+        onPageNumChange={setPageNum}
+        paging={paging}
+        onPagingChange={setPaging}
+        pagingOptions={PAGING_OPTIONS}
+      />
+    </div>
   );
 }

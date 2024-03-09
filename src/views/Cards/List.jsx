@@ -4,7 +4,7 @@ import Select from 'react-select';
 
 import { clearSelected, toggleCards } from '../../actions/userActions';
 import {
-  CustomStickyHeader, CustomSwitch, CustomTablePagination, LoadingOverlay,
+  CustomSwitch, CustomTablePagination, LoadingOverlay,
 } from '../../components';
 import useGetFilteredCards from '../../hooks/useGetFilteredCards';
 import { FETCH_STATUS } from '../../model/variables';
@@ -48,6 +48,10 @@ const orderOptions = [
   { value: 1, label: '升序(由低到高)' },
 ];
 
+const PAGING_OPTIONS = [
+  10, 25, 50, 100,
+];
+
 export default function List() {
   const dispatch = useDispatch();
   const { filteredCards, status } = useGetFilteredCards();
@@ -56,7 +60,7 @@ export default function List() {
   const [count, setCount] = React.useState(0);
   const [sortBy, setSortBy] = React.useState('id');
   const [orderBy, setOrderBy] = React.useState(-1);
-  const [paging, setPaging] = React.useState(10);
+  const [paging, setPaging] = React.useState(PAGING_OPTIONS[0]);
   const [pageNum, setPageNum] = React.useState(0);
 
   const cards = React.useMemo(() => filteredCards.toSorted((lhs, rhs) => {
@@ -142,17 +146,7 @@ export default function List() {
           </div>
         )}
       </div>
-      <CustomStickyHeader>
-        <CustomTablePagination
-          count={count}
-          pageNum={pageNum}
-          onPageNumChange={setPageNum}
-          paging={paging}
-          onPagingChange={setPaging}
-        />
-
-      </CustomStickyHeader>
-      <div style={{ position: 'relative', paddingTop: '0.5em', zIndex: 0 }}>
+      <div style={{ paddingTop: '0.5em' }}>
         {status !== FETCH_STATUS.SUCCESS && (
           <LoadingOverlay />
         )}
@@ -166,6 +160,14 @@ export default function List() {
           />
         ))}
       </div>
+      <CustomTablePagination
+        count={count}
+        pageNum={pageNum}
+        onPageNumChange={setPageNum}
+        paging={paging}
+        onPagingChange={setPaging}
+        pagingOptions={PAGING_OPTIONS}
+      />
     </>
   );
 }
