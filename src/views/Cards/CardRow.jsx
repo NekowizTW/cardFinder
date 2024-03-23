@@ -42,7 +42,7 @@ export default function CardRow({
   const handleChange = (id, checked) => onSelect(id, checked);
 
   return (
-    <div className="cardItem pure-g">
+    <div className="cardItem pure-g" id={data.id}>
       <div className="pure-u-1-6 imgFrame">
         <CardRowSelectIcon
           isSelected={isSelected}

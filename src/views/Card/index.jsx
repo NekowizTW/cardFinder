@@ -27,7 +27,10 @@ export default function Card() {
     <div className="cardDetail">
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Link
-          to="/"
+          to={{
+            pathname: '/',
+            hash: `#${cardId}`,
+          }}
           className="pure-button pure-button-primary"
           style={{ display: 'inline-flex', alignItems: 'center' }}
         >

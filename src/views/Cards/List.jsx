@@ -1,7 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import Select from 'react-select';
 
+import {
+  setOrderBy, setPageNum, setPaging, setSortBy,
+} from '../../actions/sortsActions';
 import { clearSelected, toggleCards } from '../../actions/userActions';
 import {
   CustomSwitch, CustomTablePagination, LoadingOverlay,
@@ -53,19 +57,18 @@ const PAGING_OPTIONS = [
 ];
 
 export default function List() {
+  const location = useLocation();
   const dispatch = useDispatch();
   const { filteredCards, status } = useGetFilteredCards();
   const { selected } = useSelector((state) => state.user);
+  const {
+    sortBy, orderBy, paging, pageNum,
+  } = useSelector((state) => state.sorts);
   const [enabledSelect, setEnabledSelect] = React.useState(false);
   const [count, setCount] = React.useState(0);
-  const [sortBy, setSortBy] = React.useState('id');
-  const [orderBy, setOrderBy] = React.useState(-1);
-  const [paging, setPaging] = React.useState(PAGING_OPTIONS[0]);
-  const [pageNum, setPageNum] = React.useState(0);
 
   const cards = React.useMemo(() => filteredCards.toSorted((lhs, rhs) => {
     setCount(filteredCards.length);
-    setPageNum(0);
     const cmp = (getAttrAsNumber(lhs, sortBy) - getAttrAsNumber(rhs, sortBy)) * orderBy;
     return cmp !== 0 ? cmp : (getAttrAsNumber(lhs, 'id') - getAttrAsNumber(rhs, 'id')) * orderBy;
   }), [filteredCards, orderBy, sortBy]);
@@ -80,6 +83,19 @@ export default function List() {
   );
 
   const handleClearAll = () => dispatch(clearSelected());
+
+  const handleSetSortBy = (nextSortBy) => dispatch(setSortBy(nextSortBy));
+
+  const handleSetOrderBy = (nextOrderBy) => dispatch(setOrderBy(nextOrderBy));
+
+  const handleSetPaging = (nextPaging) => dispatch(setPaging(nextPaging));
+
+  const handleSetPageNum = (nextPageNum) => dispatch(setPageNum(nextPageNum));
+
+  React.useEffect(() => {
+    const cardId = location.hash.replace('#', '');
+    document.getElementById(cardId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [cards, paging, location.hash, dispatch]);
 
   return (
     <>
@@ -105,7 +121,7 @@ export default function List() {
             options={sortOptions}
             isOptionSelected={(option, selectedValue) => option.value === selectedValue}
             label="排序"
-            onChange={(newValue) => setSortBy(newValue.value)}
+            onChange={(newValue) => handleSetSortBy(newValue.value)}
           />
         </div>
         <div className="pure-u-1-2 pure-u-md-1-4">
@@ -114,7 +130,7 @@ export default function List() {
             options={orderOptions}
             isOptionSelected={(option, selectedValue) => option.value === selectedValue}
             label="排列方式"
-            onChange={(newValue) => setOrderBy(newValue.value)}
+            onChange={(newValue) => handleSetOrderBy(newValue.value)}
           />
         </div>
       </div>
@@ -163,9 +179,9 @@ export default function List() {
       <CustomTablePagination
         count={count}
         pageNum={pageNum}
-        onPageNumChange={setPageNum}
+        onPageNumChange={handleSetPageNum}
         paging={paging}
-        onPagingChange={setPaging}
+        onPagingChange={handleSetPaging}
         pagingOptions={PAGING_OPTIONS}
       />
     </>
