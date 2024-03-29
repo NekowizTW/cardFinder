@@ -102,6 +102,7 @@ export const SENZAIS = [
       { value: /^增加難易度Ⅴ＆攻擊力上升Ⅰ$/, label: '盤面三色上升、全體增攻' },
       { value: /^答對3色問題(類型)?時，將給予敵方的傷害變為\d(\.\d)?倍。$/, label: '盤面三色增傷' },
       { value: /^答題技能延長\S$/, label: '答題技能時間延長' },
+      { value: /^EXCELLENT回答時間延長\S$/, label: 'EXCELLENT回答時間延長' },
       { value: /^答題重置$/, label: '答題重置' },
     ],
   },
