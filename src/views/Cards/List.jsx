@@ -67,11 +67,13 @@ export default function List() {
   const [enabledSelect, setEnabledSelect] = React.useState(false);
   const [count, setCount] = React.useState(0);
 
-  const cards = React.useMemo(() => filteredCards.toSorted((lhs, rhs) => {
+  const cards = React.useMemo(() => {
     setCount(filteredCards.length);
-    const cmp = (getAttrAsNumber(lhs, sortBy) - getAttrAsNumber(rhs, sortBy)) * orderBy;
-    return cmp !== 0 ? cmp : (getAttrAsNumber(lhs, 'id') - getAttrAsNumber(rhs, 'id')) * orderBy;
-  }), [filteredCards, orderBy, sortBy]);
+    return filteredCards.toSorted((lhs, rhs) => {
+      const cmp = (getAttrAsNumber(lhs, sortBy) - getAttrAsNumber(rhs, sortBy)) * orderBy;
+      return cmp !== 0 ? cmp : (getAttrAsNumber(lhs, 'id') - getAttrAsNumber(rhs, 'id')) * orderBy;
+    });
+  }, [filteredCards, orderBy, sortBy]);
   const slicedCards = cards.slice(paging * pageNum, paging * (pageNum + 1));
   const selectedCardSet = new Set(selected);
   const isPageSelected = slicedCards.every(({ id }) => selectedCardSet.has(id));

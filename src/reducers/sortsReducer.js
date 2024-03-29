@@ -19,7 +19,7 @@ const sortsReducer = createReducer(initialState, (builder) => {
     }))
     .addCase(setOrderBy.fulfilled, (state, action) => ({
       ...state,
-      setOrderBy: action.payload,
+      orderBy: action.payload,
     }))
     .addCase(setPaging.fulfilled, (state, action) => ({
       ...state,
