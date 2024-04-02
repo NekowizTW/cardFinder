@@ -86,8 +86,8 @@ export const EXAS_TYPES = [
   {
     label: '補助',
     options: [
-      { value: /強化攻擊/, label: '強化攻擊' },
-      { value: /強化複屬性攻擊/, label: '強化複屬性攻擊' },
+      { value: /^強化攻擊/, label: '強化攻擊' },
+      { value: /^強化複屬性攻擊/, label: '強化複屬性攻擊' },
       { value: /強化種族攻擊/, label: '強化種族攻擊' },
       { value: /整合（攻擊）/, label: '整合【攻擊】' },
       { value: /整合（強化攻擊）/, label: '整合【強化攻擊】' },
