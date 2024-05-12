@@ -1,6 +1,6 @@
 import md5Hex from 'md5-hex';
 
-export const twFilenameFix = (filename) => filename[0].toUpperCase() + filename.slice(1);
+export const twFilenameFix = (filename) => (filename.length !== 0 ? filename[0].toUpperCase() + filename.slice(1) : '');
 
 export const linkGenerator = (filename) => {
   // const randInt = Math.floor(Math.random() * 5) + 1;
