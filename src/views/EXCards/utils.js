@@ -28,7 +28,7 @@ export const sourceParser = (source = '') => {
   if (m[1].indexOf('取得來源') >= 0) {
     return {
       text: sourceArr.slice(1),
-      link: { text: '結晶化', href: `${WIKI_URL}結晶化` },
+      link: { text: '結晶化', href: `${WIKI_URL}/結晶化` },
     };
   }
 
