@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import 'purecss-sass';
-
 import App from './App';
 
 import './assets/scss/main.scss';

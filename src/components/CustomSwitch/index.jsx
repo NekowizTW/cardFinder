@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Switch } from '@mui/base';
 
-import './styles.scss';
+import classes from './styles.module.scss';
 
 export default function CustomSwitch({
   label, checked, onChange, disabled,
@@ -10,12 +10,22 @@ export default function CustomSwitch({
   const inputId = React.useId();
 
   return (
-    <label className="customSwitchLabel" htmlFor={inputId} style={{ whiteSpace: 'pre' }}>
+    <label className={classes.label} htmlFor={inputId} style={{ whiteSpace: 'pre' }}>
       <Switch
         checked={checked}
         slotProps={{
+          root: { className: classes.root },
+          track: {
+            className: `${classes.track} ${checked && classes.track_checked} ${disabled && classes.track_disabled}`,
+          },
+          thumb: {
+            className: `${classes.thumb} ${checked && classes.thumb_checked} ${disabled && classes.thumb_disabled}`,
+          },
           input: {
-            id: inputId, 'aria-label': label, onChange,
+            id: inputId,
+            className: classes.input,
+            'aria-label': label,
+            onChange,
           },
         }}
         disabled={disabled}

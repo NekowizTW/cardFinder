@@ -1,26 +1,24 @@
-.MuiTablePagination-root {
+.root {
   margin: 10px 0 10px;
 }
-.MuiTablePagination-spacer {
+.spacer {
   display: none;
 }
 
-.MuiTablePagination-toolbar {
+.toolbar {
   display: flex;
+  justify-content: flex-end;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
   background-color: inherit;
-
-  @media (min-width: 768px) {
-    flex-direction: row;
-  }
 }
 
-.MuiTablePagination-selectLabel {
+.selectLabel {
   margin: 0;
 }
 
-.MuiTablePagination-select {
+.select {
   padding: 2px;
   border: 1px solid #eee;
   border-radius: 8px;
@@ -36,7 +34,7 @@
   }
 }
 
-.MuiTablePagination-displayedRows {
+.displayedRows {
   margin: 0;
 
   @media (min-width: 768px) {
@@ -44,14 +42,14 @@
   }
 }
 
-.MuiTablePagination-actions {
+.actions {
   padding: 2px;
   border: 1px solid #eee;
   border-radius: 8px;
   text-align: center;
 }
 
-.MuiTablePagination-actions > button {
+.actions > button {
   margin: 0 8px;
   border: none;
   border-radius: 4px;

@@ -17,5 +17,13 @@ export default defineConfig({
       emitFile: false,
       filename: 'rollupStats.html',
       open: true,
-    })],
+    }),
+  ],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern',
+      },
+    },
+  },
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './styles.scss';
+import classes from './styles.module.scss';
 
 export default function CustomStickyHeader({
   id, className, style, children,
@@ -10,14 +10,14 @@ export default function CustomStickyHeader({
 
   React.useEffect(() => {
     if (stickyRef.current) {
-      stickyRef.current.classList.add('sticky-header');
+      stickyRef.current.classList.add(classes.sticky_header);
     }
   }, [stickyRef]);
 
   React.useEffect(() => {
     const target = stickyRef.current;
     const observer = new IntersectionObserver(
-      ([e]) => e.target.classList.toggle('isSticky', e.intersectionRatio < 1),
+      ([e]) => e.target.classList.toggle(classes.isSticky, e.intersectionRatio < 1),
       { threshold: [1] },
     );
     if (target) {

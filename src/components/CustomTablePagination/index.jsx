@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TablePagination } from '@mui/base';
+import { TablePagination } from '@mui/base/TablePagination';
 
-import './styles.scss';
+import classes from './styles.module.scss';
 
 export default function CustomTablePagination({
   count, pageNum, onPageNumChange, paging, onPagingChange, pagingOptions,
@@ -20,13 +20,14 @@ export default function CustomTablePagination({
         root: 'div',
       }}
       slotProps={{
-        toolbar: {
-          style: {
-            justifyContent: 'flex-end',
-            flexWrap: 'wrap',
-          },
-        },
+        root: { className: classes.root },
+        spacer: { className: classes.spacer },
+        toolbar: { className: classes.toolbar },
+        selectLable: { className: classes.selectLable },
+        select: { className: classes.select },
+        displayedRows: { className: classes.displayedRows },
         actions: {
+          className: classes.actions,
           showFirstButton: true,
           showLastButton: true,
         },

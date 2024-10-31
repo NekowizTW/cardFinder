@@ -1,7 +1,8 @@
-@import "mixins";
-@import "css_tags";
-@import "css_alert";
-@import "rwd_table";
+@use "sass:color";
+@use "mixins" as mixin;
+@use "css_tags";
+@use "css_alert";
+@use "rwd_table";
 
 body {
     background: #fafafa;
@@ -192,9 +193,9 @@ span.highlight {
   }
 }
 
-$asColor: lighten(rgb(82, 0, 0), 25%);
-$ssColor: lighten(rgb(0, 32, 66), 25%);
-$exasColor: lighten(rgb(82, 0, 0), 25%);
+$asColor: color.adjust(rgb(82, 0, 0), $lightness: 25%, $space: hsl);
+$ssColor: color.adjust(rgb(0, 32, 66), $lightness: 25%, $space: hsl);
+$exasColor: color.adjust(rgb(82, 0, 0), $lightness: 25%, $space: hsl);
 
 .skillData {
   position: relative;
@@ -296,15 +297,15 @@ $exasColor: lighten(rgb(82, 0, 0), 25%);
   }
 }
 .evoBak, .evoBnc, .evoFwd div[class^="pure-u-1-"]{
-  background-color: lighten(rgba(66, 32, 16, 255), 70%);
+  background-color: color.adjust(rgba(66, 32, 16, 255), $lightness: 70%, $space: hsl);
 }
 .evoPath > .evoNode:last-child .evoSpace.down-arrow {
   border-color: transparent;
 }
 
 .selectList {
-  @include transition(height, .5s ease-out);
-  @include transition(opacity, .5s ease-out);
+  @include mixin.transition(height, .5s ease-out);
+  @include mixin.transition(opacity, .5s ease-out);
   height: 288px;
   opacity: 1;
 }
@@ -319,8 +320,8 @@ $exasColor: lighten(rgb(82, 0, 0), 25%);
   max-height: 0px;
   border: 1px #CCC solid;
   background-color: #EEE;
-  @include transition-property(max-height);
-  @include transition-duration(.3s);
+  @include mixin.transition-property(max-height);
+  @include mixin.transition-duration(.3s);
   &.toggle{
     max-height: 400px;
   }
