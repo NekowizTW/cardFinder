@@ -22,14 +22,14 @@ export const initCards = createAsyncThunk(
   'cards/fetch',
   async (_, thunkAPI) => {
     const cardData = { card: [], Senzai: [] };
-    const source = await fetch(CDN_URL + JSON_NAMES['卡片資料'])
+    const source = await fetch(CDN_URL + JSON_NAMES['卡片資料'], { cache: 'no-cache' })
       .then((response) => response.json());
-    const exs = await fetch(CDN_URL + JSON_NAMES['結晶'])
+    const exs = await fetch(CDN_URL + JSON_NAMES['結晶'], { cache: 'no-cache' })
       .then((response) => response.json())
       .then((data) => data.toSorted(
         (lhs, rhs) => Number.parseInt(lhs.id, 10) - Number.parseInt(rhs.id, 10),
       ));
-    const leaderExs = await fetch(CDN_URL + JSON_NAMES['大結晶'])
+    const leaderExs = await fetch(CDN_URL + JSON_NAMES['大結晶'], { cache: 'no-cache' })
       .then((response) => response.json())
       .then((data) => data.toSorted(
         (lhs, rhs) => (lhs.name.localeCompare(rhs.name)),
@@ -45,7 +45,7 @@ export const initCards = createAsyncThunk(
         [...Array(count)].map(
           (__, idx) => {
             const url = `${CDN_URL}${prefix}${idx}.json`;
-            return fetch(url).then((response) => response.json());
+            return fetch(url, { cache: 'no-cache' }).then((response) => response.json());
           },
         ),
       );
