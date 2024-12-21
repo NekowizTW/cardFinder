@@ -93,7 +93,10 @@ export function decode(code) {
         ? clamp(Math.parseInt(szSlot.substring(1), 10), { min: 0, max: 10 })
         : 10;
       team.teamSlot[teamIndex].exas = exas !== undefined;
-      team.teamSlot[teamIndex].ex = ex.map((e) => e.substring(1));
+      team.teamSlot[teamIndex].ex = ex
+        .slice(0, 3)
+        .filter((e) => e)
+        .map((e) => e.substring(1));
       teamIndex += 1;
     }
     return match;

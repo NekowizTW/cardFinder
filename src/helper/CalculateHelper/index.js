@@ -18,7 +18,7 @@ import { logDebug } from './utils';
 export default function CalculateHelper(team) {
   // 1. variable initialize
   const errorSenzai = [];
-  const debug = true;
+  const debug = import.meta.env.MODE === 'development';
   const calculated = Array.from(
     { length: team.length },
     () => ({
