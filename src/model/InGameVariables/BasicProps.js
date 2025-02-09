@@ -2,6 +2,8 @@ export const PROPS = [
   { value: '火', label: '火屬性' },
   { value: '水', label: '水屬性' },
   { value: '雷', label: '雷屬性' },
+  { value: '光', label: '光屬性' },
+  { value: '闇', label: '闇屬性' },
 ];
 export const PROPS2 = [
   { value: '火', label: '火屬性' },
