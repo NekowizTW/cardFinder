@@ -18,7 +18,6 @@ export const LeaderEXFormat = PropTypes.shape({
   small_filename: PropTypes.string,
 });
 
-// eslint-disable-next-line import/prefer-default-export
 export const sourceParser = (source = '') => {
   const sourceArr = source.split(/<br\s*\/?>/i);
   const re = /[{[]{2}(.*)[}\]]{2}/gm;
@@ -36,7 +35,7 @@ export const sourceParser = (source = '') => {
   const split = m[1].indexOf('|');
   return {
     text: [sourceArr[0].replace(m[0], ''), ...sourceArr.slice(1)],
-    link: { text: m[1].slice(split + 1), href: `${WIKI_URL}${m[1].slice(0, split)}` },
+    link: { text: m[1].slice(split + 1), href: `${WIKI_URL}/${m[1].slice(0, split)}` },
   };
 };
 
