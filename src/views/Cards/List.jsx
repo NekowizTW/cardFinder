@@ -16,23 +16,33 @@ import { FETCH_STATUS } from '../../model/variables';
 import CardRow from './CardRow';
 
 const getAttrAsNumber = (card, key) => {
+  let rawValue;
+
   switch (key) {
     case 'id':
     case 'max_atk':
     case 'max_hp':
     case 'cost':
-      return Number.parseInt(card[key], 10);
+      rawValue = card[key];
+      break;
     case 'ss1.cdf':
-      return Number.parseInt(card.ssData.cdf, 10);
+      rawValue = card.ssData?.cdf;
+      break;
     case 'ss1.cds':
-      return Number.parseInt(card.ssData.cds, 10);
+      rawValue = card.ssData?.cds;
+      break;
     case 'ss2.cdf':
-      return Number.parseInt(card.ss2Data.cdf, 10);
+      rawValue = card.ss2Data?.cdf;
+      break;
     case 'ss2.cds':
-      return Number.parseInt(card.ss2Data.cds, 10);
+      rawValue = card.ss2Data?.cds;
+      break;
     default:
-      return Number.parseInt(card.id, 10);
+      rawValue = card.id;
   }
+  
+  const numberValue = Number.parseInt(rawValue, 10);
+  return Number.isNaN(numberValue) ? 0 : numberValue;
 };
 
 const sortOptions = [
@@ -70,8 +80,10 @@ export default function List() {
   const cards = React.useMemo(() => {
     setCount(filteredCards.length);
     return filteredCards.toSorted((lhs, rhs) => {
-      const cmp = (getAttrAsNumber(lhs, sortBy) - getAttrAsNumber(rhs, sortBy)) * orderBy;
-      return cmp !== 0 ? cmp : (getAttrAsNumber(lhs, 'id') - getAttrAsNumber(rhs, 'id')) * orderBy;
+      const primaryCmp = (getAttrAsNumber(lhs, sortBy) - getAttrAsNumber(rhs, sortBy)) * orderBy;
+      if (primaryCmp !== 0) return primaryCmp;
+
+      return getAttrAsNumber(lhs, 'id') - getAttrAsNumber(rhs, 'id');
     });
   }, [filteredCards, orderBy, sortBy]);
   const slicedCards = cards.slice(paging * pageNum, paging * (pageNum + 1));
