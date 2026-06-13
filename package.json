@@ -10,8 +10,8 @@
     "dev": "vite serve",
     "build": "vite build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --ext .js,.jsx ./src",
-    "lint:fix": "eslint --ext .js,.jsx ./src --fix",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
@@ -31,6 +31,7 @@
     "@vitejs/plugin-legacy": "^5.4.3",
     "@vitejs/plugin-react": "^4.3.3",
     "blm-log": "^1.0.0",
+    "clsx": "^2.1.1",
     "enquirer": "^2.4.1",
     "gh-pages": "^6.2.0",
     "html-to-image": "^1.11.11",
@@ -49,16 +50,15 @@
     "vite": "^5.4.21"
   },
   "devDependencies": {
+    "@eslint/compat": "^2.1.0",
+    "@eslint/js": "^9.39.4",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.2.0",
-    "eslint": "^8.57.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-plugin-jsx-a11y": "^6.9.0",
-    "eslint-plugin-react": "^7.34.3",
-    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint": "^9.39.4",
+    "eslint-config-airbnb-extended": "^3.1.0",
     "eslint-plugin-react-refresh": "^0.4.26",
-    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "globals": "^17.6.0",
     "prettier": "^3.3.3",
     "sass": "^1.80.5"
   }
