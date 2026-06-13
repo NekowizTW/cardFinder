@@ -1,4 +1,5 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 
 import classes from './styles.module.scss';
@@ -27,7 +28,7 @@ export default function CustomStickyHeader({
   }, [stickyRef]);
 
   return (
-    <div ref={stickyRef} id={id} className={className} style={style}>
+    <div ref={stickyRef} className={className} id={id} style={style}>
       {children}
     </div>
   );

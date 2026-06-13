@@ -1,42 +1,40 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-function debounce(fn, delay) {
-  let timeoutId;
-  return (...args) => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    timeoutId = setTimeout(() => {
-      fn(...args);
-    }, delay);
-  };
-}
+import PropTypes from 'prop-types';
 
 export default function SearchBar({
   defaultValue, onSearch, placeholder, disabled, style,
 }) {
   const [inputValue, setInputValue] = React.useState(defaultValue);
 
-  const debouncedSearch = React.useMemo(() => debounce(onSearch, 750), [onSearch]);
+  const timeoutRef = React.useRef(null);
+
+  const debouncedSearch = React.useCallback((value) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(() => {
+      onSearch(value);
+    }, 750);
+  }, [onSearch]);
+
+  React.useEffect(() => () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+  }, []);
 
   const handleChange = React.useCallback((e) => {
     setInputValue(e.target.value);
     debouncedSearch(e.target.value);
   }, [debouncedSearch]);
 
-  React.useEffect(() => {
-    setInputValue(defaultValue);
-  }, [defaultValue]);
-
   return (
     <input
-      type="text"
-      value={inputValue}
+      disabled={disabled}
       onChange={handleChange}
       placeholder={placeholder}
-      disabled={disabled}
       style={style}
+      type="text"
+      value={inputValue}
     />
   );
 }

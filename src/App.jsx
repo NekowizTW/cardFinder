@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Provider } from 'react-redux';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 
@@ -36,10 +37,10 @@ const router = createHashRouter([
   },
 ]);
 
-export default function App() {
-  return (
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  );
-}
+const App = () => (
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
+);
+
+export default App;

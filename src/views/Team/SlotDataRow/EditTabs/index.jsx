@@ -1,31 +1,28 @@
-import { Minus } from 'lucide-react';
 import React from 'react';
+
+import { Minus } from 'lucide-react';
 import PropTypes from 'prop-types';
 
 import { CustomTabs, WikiImage } from '../../../../components';
 import useGetCard from '../../../../hooks/useGetCard';
 import EXSlot from '../../DisplayHelper/EXSlot';
 import SlotContext from '../SlotContext';
-
 import EditCard from './EditCard';
 import EditConfig from './EditConfig';
 import EditEX from './EditEX';
-
 import './style.scss';
 
-function ClearIcon({ target, onClick, disabled }) {
-  return (
-    <button
-      type="button"
-      className={`clearBtn ${disabled ? 'disabled' : ''}`}
-      onClick={onClick}
-      disabled={disabled}
-      aria-label={`clear-${target}-button`}
-    >
-      <Minus size={16} />
-    </button>
-  );
-}
+const ClearIcon = ({ target, onClick, disabled }) => (
+  <button
+    aria-label={`clear-${target}-button`}
+    className={`clearBtn ${disabled ? 'disabled' : ''}`}
+    disabled={disabled}
+    onClick={onClick}
+    type="button"
+  >
+    <Minus size={16} />
+  </button>
+);
 
 ClearIcon.propTypes = {
   target: PropTypes.string.isRequired,
@@ -61,9 +58,12 @@ export default function EditTabs() {
   return (
     <div style={{ paddingBottom: 16 }}>
       <div className="pure-g cardItem">
-        <div className="pure-u-1 pure-u-md-1-3 imgFrame center-middle" style={{ flexDirection: 'row' }}>
-          <ClearIcon target="card" onClick={resetCard} disabled={slotData.id === '-1'} />
-          <WikiImage filename={card.small_filename} width={60} height={60} />
+        <div
+          className="pure-u-1 pure-u-md-1-3 imgFrame center-middle"
+          style={{ flexDirection: 'row' }}
+        >
+          <ClearIcon disabled={slotData.id === '-1'} onClick={resetCard} target="card" />
+          <WikiImage filename={card.small_filename} height={60} width={60} />
         </div>
         <div className="pure-u-1 pure-u-md-1-3 center-middle">
           <h3>{card.name || '無'}</h3>
@@ -91,14 +91,14 @@ export default function EditTabs() {
           .map((exi, i) => [exi, `slotData-${slotData.idx}-ex-${i}`, i])
           .map(([exi, key, i]) => (
             <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <ClearIcon target={key} onClick={() => removeEX(i)} />
-              <EXSlot id={exi} isInEditor />
+              <ClearIcon onClick={() => removeEX(i)} target={key} />
+              <EXSlot isInEditor id={exi} />
             </div>
           ))}
       </div>
       <CustomTabs
-        tabs={TABS}
         defaultKey="EditCard"
+        tabs={TABS}
       />
     </div>
   );

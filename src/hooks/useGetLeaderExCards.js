@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 
 import { initCards } from '../actions/cardsActions';
@@ -31,7 +32,7 @@ export default function useGetLeaderExCards() {
         .reduce((acc, leaderEXCard) => {
           const label = getLeaderEXGroupLabel(leaderEXCard);
 
-          if (!Object.prototype.hasOwnProperty.call(acc, label)) {
+          if (!Object.hasOwn(acc, label)) {
             acc[label] = [];
           }
 

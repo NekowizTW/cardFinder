@@ -1,13 +1,15 @@
 import React from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 
 import { setSSPropsFilter } from '../../../actions/filtersActions';
 import {
-  SKILL_SS, SKILL_SS2,
+  SKILL_SS2,
+  SKILL_SS,
 } from '../../../model/variables';
 
-export default function ASProps() {
+export default function SSProps() {
   const dispatch = useDispatch();
   const { uncategorizedOptions } = useSelector((state) => state.cards);
   const { ss, ss2 } = useSelector((state) => state.filters);
@@ -27,25 +29,25 @@ export default function ASProps() {
   }));
 
   return (
-    <>
+    <React.Fragment>
       <Select
+        isMulti
+        className="pure-u-1  pure-u-md-1-2"
         name="form-ss-field"
-        className="pure-u-1  pure-u-md-1-2"
-        options={combinedSSOptions}
-        value={ss}
-        isMulti
         onChange={(newValue) => handleChange('ss', newValue)}
+        options={combinedSSOptions}
         placeholder="請選擇特殊技能"
+        value={ss}
       />
       <Select
-        name="form-ss2-field"
-        className="pure-u-1  pure-u-md-1-2"
-        options={combinedSS2Options}
-        value={ss2}
         isMulti
+        className="pure-u-1  pure-u-md-1-2"
+        name="form-ss2-field"
         onChange={(newValue) => handleChange('ss2', newValue)}
+        options={combinedSS2Options}
         placeholder="請選擇特殊技能2"
+        value={ss2}
       />
-    </>
+    </React.Fragment>
   );
 }

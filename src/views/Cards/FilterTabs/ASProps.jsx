@@ -1,10 +1,12 @@
 import React from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 
 import { setASPropsFilter } from '../../../actions/filtersActions';
 import {
-  SKILL_AS, SKILL_AS2,
+  SKILL_AS2,
+  SKILL_AS,
 } from '../../../model/variables';
 
 export default function ASProps() {
@@ -27,25 +29,25 @@ export default function ASProps() {
   }));
 
   return (
-    <>
+    <React.Fragment>
       <Select
+        isMulti
+        className="pure-u-1 pure-u-md-1-2"
         name="form-as-field"
-        className="pure-u-1 pure-u-md-1-2"
-        value={as}
-        options={combinedASOptions}
-        isMulti
         onChange={(newValue) => handleChange('as', newValue)}
+        options={combinedASOptions}
         placeholder="請選擇答題技能"
+        value={as}
       />
       <Select
-        name="form-as2-field"
-        className="pure-u-1 pure-u-md-1-2"
-        value={as2}
-        options={combinedAS2Options}
         isMulti
+        className="pure-u-1 pure-u-md-1-2"
+        name="form-as2-field"
         onChange={(newValue) => handleChange('as2', newValue)}
+        options={combinedAS2Options}
         placeholder="請選擇答題技能2"
+        value={as2}
       />
-    </>
+    </React.Fragment>
   );
 }

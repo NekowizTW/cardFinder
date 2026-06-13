@@ -1,11 +1,12 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 
 import { WikiImage } from '../../../components';
-import useGetExcard from '../../../hooks/useGetExCard';
+import useGetExCard from '../../../hooks/useGetExCard';
 
 const EXSlot = React.memo(({ id, isInEditor }) => {
-  const { exCard } = useGetExcard(id);
+  const { exCard } = useGetExCard(id);
 
   let exName = exCard.name;
   const lbp = exCard.name.indexOf('【');
@@ -20,8 +21,8 @@ const EXSlot = React.memo(({ id, isInEditor }) => {
     <div className="exSlot">
       <WikiImage
         filename={exCard.small_filename}
-        width={imageSideLength}
         height={imageSideLength}
+        width={imageSideLength}
       />
       <span>{exName}</span>
     </div>

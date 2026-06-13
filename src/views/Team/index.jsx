@@ -1,16 +1,16 @@
 import React from 'react';
+
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-
-import { RestoreTeam } from '../../actions/teamActions';
-import { LoadingOverlay } from '../../components';
-import useGetCard from '../../hooks/useGetCard';
-import { FETCH_STATUS } from '../../model/variables';
 
 import Builder from './Builder';
 import Introduction from './Introduction';
 import Statistics from './Statistics';
 import { decode } from './utils';
+import { RestoreTeam } from '../../actions/teamActions';
+import { LoadingOverlay } from '../../components';
+import useGetCard from '../../hooks/useGetCard';
+import { FETCH_STATUS } from '../../model/variables';
 
 export default function Team() {
   const dispatch = useDispatch();

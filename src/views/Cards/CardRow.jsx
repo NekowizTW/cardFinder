@@ -1,28 +1,26 @@
-import { Minus, Plus } from 'lucide-react';
 import React from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
-import { SenzaiRow, WikiImage } from '../../components';
+import { Minus, Plus } from 'lucide-react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import '../../assets/scss/card-item.scss';
+import { SenzaiRow, WikiImage } from '../../components';
 
-function CardRowSelectIcon({ isSelected, onToggle, isVisible }) {
-  return (
-    <button
-      type="button"
-      className={`selectBtn ${isSelected ? 'selected' : ''}`}
-      onClick={() => onToggle(!isSelected)}
-      style={{ visibility: isVisible ? 'visible' : 'hidden' }}
-    >
-      {isSelected ? (
-        <Minus size={16} />
-      ) : (
-        <Plus size={16} />
-      )}
-    </button>
-  );
-}
+const CardRowSelectIcon = ({ isSelected, onToggle, isVisible }) => (
+  <button
+    className={`selectBtn ${isSelected ? 'selected' : ''}`}
+    onClick={() => onToggle(!isSelected)}
+    style={{ visibility: isVisible ? 'visible' : 'hidden' }}
+    type="button"
+  >
+    {isSelected ? (
+      <Minus size={16} />
+    ) : (
+      <Plus size={16} />
+    )}
+  </button>
+);
 
 CardRowSelectIcon.propTypes = {
   isSelected: PropTypes.bool,
@@ -46,17 +44,17 @@ export default function CardRow({
       <div className="pure-u-1-6 imgFrame">
         <CardRowSelectIcon
           isSelected={isSelected}
-          onToggle={(checked) => handleChange(data.id, checked)}
           isVisible={selectEnabled}
+          onToggle={(checked) => handleChange(data.id, checked)}
         />
         <WikiImage filename={data.small_filename} width="100%" />
       </div>
       <div className="pure-u-2-3 profileFrame">
-        {data.obtainType && (
-        <span className={data.obtainType.type === 'haifu' ? 'circleMark' : ''}>
-          {data.obtainType.type === 'haifu' ? '配' : ''}
-        </span>
-        )}
+        {data.obtainType ? (
+          <span className={data.obtainType.type === 'haifu' ? 'circleMark' : ''}>
+            {data.obtainType.type === 'haifu' ? '配' : ''}
+          </span>
+        ) : null}
         <Link to={`/card/${data.id}`}>
           {`No. ${data.id} ${data.name}`}
         </Link>
@@ -71,21 +69,21 @@ export default function CardRow({
         <br />
         <span>{data.max_atk}</span>
         <br />
-        {data.ssData.turn && (
-        <span>
-          {data.ssData.cdf}
-          /
-          {data.ssData.cds}
-        </span>
-        )}
+        {data.ssData.turn ? (
+          <span>
+            {data.ssData.cdf}
+            /
+            {data.ssData.cds}
+          </span>
+        ) : null}
 &nbsp;
-        {data.ss2Data.turn && (
-        <span>
-          {data.ss2Data.cdf}
-          /
-          {data.ss2Data.cds}
-        </span>
-        )}
+        {data.ss2Data.turn ? (
+          <span>
+            {data.ss2Data.cdf}
+            /
+            {data.ss2Data.cds}
+          </span>
+        ) : null}
       </div>
       <div className="pure-u-1 pure-u-sm-1-6" />
       <div className="pure-u-1 pure-u-sm-5-6">

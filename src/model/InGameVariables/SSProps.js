@@ -1,3 +1,4 @@
+/* eslint-disable @stylistic/max-len */
 export const SKILL_SS = [
   { value: '無', label: '無' },
   { value: '技能複製', label: '技能複製' },

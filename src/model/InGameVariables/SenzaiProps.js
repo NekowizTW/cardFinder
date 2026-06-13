@@ -1,4 +1,5 @@
-// eslint-disable-next-line import/prefer-default-export
+/* eslint-disable @stylistic/max-len */
+/* eslint-disable import-x/prefer-default-export */
 export const SENZAIS = [
   {
     label: '精靈當前HP相關',

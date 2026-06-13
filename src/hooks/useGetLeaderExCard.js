@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 
 import { initCards } from '../actions/cardsActions';
@@ -15,8 +16,12 @@ export default function useGetLeaderExCard(leaderEX) {
     }
   }, [dispatch, status]);
 
+  const foundCard = sourceLeaderEXCards.find(
+    ({ name, rank }) => `${name}${rank}` === leaderEX,
+  );
+
   return {
-    ...(sourceLeaderEXCards.find(({ name, rank }) => `${name}${rank}` === leaderEX) || leaderEXCardNotFoundTemplate),
+    ...(foundCard || leaderEXCardNotFoundTemplate),
     status,
   };
 }

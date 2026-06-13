@@ -1,10 +1,10 @@
 import React from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 
+import FilterTabs from './FilterTabs';
 import { resetFilters, setSearchFilter } from '../../actions/filtersActions';
 import { SearchBar } from '../../components';
-
-import FilterTabs from './FilterTabs';
 
 // NOTE: sticky-header has zIndex, so this component need some configuration
 //       to make the dropdown inside form over the sticky-header.
@@ -29,9 +29,9 @@ export default function FilterForm() {
         />
         <button
           className="button-error pure-button"
-          type="button"
           onClick={handleReset}
           style={{ height: 36.4, flex: 0.2 }}
+          type="button"
         >
           重置
         </button>

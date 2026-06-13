@@ -1,4 +1,5 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 
 import { WikiImage } from '../../components';
@@ -9,17 +10,19 @@ export default function Cover({
   return (
     <div style={{ marginTop: '0.5em' }}>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <WikiImage filename={cardFilename} width={215} height={300} />
+        <WikiImage filename={cardFilename} height={300} width={215} />
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
 
-        <WikiImage filename={smallFilename} width={60} height={60} />
+        <WikiImage filename={smallFilename} height={60} width={60} />
         <h3 style={{
           display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0,
         }}
         >
           <span style={{ fontSize: 'large' }}>{`No. ${id}`}</span>
-          <span style={{ fontSize: 'x-large', whiteSpace: 'pre-wrap' }}>{name.replace(' ', '\n')}</span>
+          <span style={{ fontSize: 'x-large', whiteSpace: 'pre-wrap' }}>
+            {name.replace(' ', '\n')}
+          </span>
         </h3>
       </div>
     </div>

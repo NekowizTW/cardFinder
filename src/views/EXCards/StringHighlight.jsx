@@ -1,4 +1,5 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 
 /**
@@ -10,36 +11,60 @@ import PropTypes from 'prop-types';
 export default function StringHighlight({ input, tokens }) {
   if (!tokens.length) return input;
 
+  let markedArr = [];
+  let groups = [];
+  let hasError = false;
+
   try {
-    const markedArr = tokens
-      .reduce((acc, token) => {
-        const start = input.indexOf(token);
+    markedArr = new Array(input.length).fill(false);
 
-        acc.fill(true, start, start + token.length);
+    tokens.forEach((token) => {
+      const start = input.indexOf(token);
+      if (start !== -1) {
+        markedArr.fill(true, start, start + token.length);
+      }
+    });
+
+    groups = markedArr.reduce((acc, _, idx) => {
+      if (acc.length === 0) {
+        acc.push([idx]);
         return acc;
-      }, new Array(input.length).fill(false));
+      }
 
-    const groups = markedArr
-      .reduce((acc, _, idx) => {
-        const prevGroup = acc[acc.length - 1];
-        const isSameValue = !prevGroup || markedArr[prevGroup[0]] === idx;
-        return isSameValue
-          ? [...acc.slice(0, -1), [...(prevGroup || []), idx]]
-          : [...acc, [idx]];
-      }, []);
+      const prevGroup = acc[acc.length - 1];
+      const isSameValue = markedArr[prevGroup[0]] === markedArr[idx];
 
-    return (
-      <>
-        {groups.map((group) => (
-          <span className={markedArr[group[0]] ? 'highlight' : ''}>
-            {group.map((idx) => input[idx])}
-          </span>
-        ))}
-      </>
-    );
-  } catch (e) {
-    return input;
+      if (isSameValue) {
+        prevGroup.push(idx);
+      } else {
+        acc.push([idx]);
+      }
+      return acc;
+    }, []);
+  } catch {
+    hasError = true;
   }
+
+  if (hasError) return input;
+
+  return (
+    <React.Fragment>
+      {groups.map((group, groupIdx) => {
+        const isHighlighted = markedArr[group[0]];
+        const content = group.map((idx) => input[idx]).join('');
+
+        return (
+          <span
+            // eslint-disable-next-line react/no-array-index-key
+            key={groupIdx}
+            className={isHighlighted ? 'highlight' : ''}
+          >
+            {content}
+          </span>
+        );
+      })}
+    </React.Fragment>
+  );
 }
 
 StringHighlight.propTypes = {

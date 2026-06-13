@@ -1,8 +1,8 @@
 import React from 'react';
+
 import ReactDOM from 'react-dom/client';
 
 import App from './App';
-
 import './assets/scss/main.scss';
 import './assets/scss/side-menu.scss';
 

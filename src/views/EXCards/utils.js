@@ -23,7 +23,9 @@ export const sourceParser = (source = '') => {
   const re = /[{[]{2}(.*)[}\]]{2}/gm;
   const m = re.exec(sourceArr[0]);
 
-  if (m === null) { return { text: sourceArr, link: null }; }
+  if (m === null) {
+    return { text: sourceArr, link: null };
+  }
   if (m[1].indexOf('取得來源') >= 0) {
     return {
       text: sourceArr.slice(1),

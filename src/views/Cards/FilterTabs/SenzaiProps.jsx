@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 
@@ -18,13 +19,13 @@ export default function SenzaiProps() {
 
   return (
     <Select
-      name="form-senzai-field"
-      className="pure-u-1 pure-u-md-1"
-      value={senzai}
-      options={SENZAIS}
       isMulti
+      className="pure-u-1 pure-u-md-1"
+      name="form-senzai-field"
       onChange={(newValue) => handleChange('senzai', newValue)}
+      options={SENZAIS}
       placeholder="請選擇潛能/L發動效果(只提供特殊潛能查詢)"
+      value={senzai}
     />
   );
 }

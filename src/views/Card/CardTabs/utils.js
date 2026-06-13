@@ -7,7 +7,7 @@
  * @param {boolean} [isSelf=false] - 是否將起點 ID 加入列表中
  * @returns {string[]} 包含所有與給定卡片相關的卡片 ID 的列表
  */
-// eslint-disable-next-line import/prefer-default-export
+// eslint-disable-next-line import-x/prefer-default-export
 export function siblingTester(id, cards, isForward, isSelf = false) {
   // console.debug(`[siblingTest] Track id: ${id}, isForward: ${isForward}`);
   const evoList = [];

@@ -8,12 +8,12 @@ import {
   BREEDS,
   EXAS_CONDITIONS,
   EXAS_TYPES,
-  PROPS,
   PROPS2,
-  SKILL_AS,
+  PROPS,
   SKILL_AS2,
-  SKILL_SS,
+  SKILL_AS,
   SKILL_SS2,
+  SKILL_SS,
 } from '../model/variables';
 
 const defaultFilters = {

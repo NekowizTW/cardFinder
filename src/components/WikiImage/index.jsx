@@ -1,4 +1,5 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 
 import { linkGenerator, twFilenameFix } from './utils';
@@ -8,11 +9,11 @@ export default function WikiImage({ filename, width, height }) {
 
   return (
     <img
-      src={url}
       alt={filename}
-      style={{ width, height }}
-      referrerPolicy="no-referrer"
       crossOrigin="anonymous"
+      referrerPolicy="no-referrer"
+      src={url}
+      style={{ width, height }}
     />
   );
 }

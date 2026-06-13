@@ -1,6 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import { TablePagination } from '@mui/base/TablePagination';
+import PropTypes from 'prop-types';
 
 import classes from './styles.module.scss';
 
@@ -10,15 +11,12 @@ export default function CustomTablePagination({
   return (
     <TablePagination
       count={count}
-      page={pageNum}
-      onPageChange={(_, value) => onPageNumChange(value)}
-      rowsPerPage={paging}
-      onRowsPerPageChange={(e) => onPagingChange(Number.parseInt(e.target.value, 10))}
-      rowsPerPageOptions={pagingOptions}
       labelRowsPerPage="每頁顯示"
-      slots={{
-        root: 'div',
-      }}
+      onPageChange={(_, value) => onPageNumChange(value)}
+      onRowsPerPageChange={(e) => onPagingChange(Number.parseInt(e.target.value, 10))}
+      page={pageNum}
+      rowsPerPage={paging}
+      rowsPerPageOptions={pagingOptions}
       slotProps={{
         root: { className: classes.root },
         spacer: { className: classes.spacer },
@@ -31,6 +29,9 @@ export default function CustomTablePagination({
           showFirstButton: true,
           showLastButton: true,
         },
+      }}
+      slots={{
+        root: 'div',
       }}
     />
   );

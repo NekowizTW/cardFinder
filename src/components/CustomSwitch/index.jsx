@@ -1,6 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import { Switch } from '@mui/base';
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
 
 import classes from './styles.module.scss';
 
@@ -13,13 +15,20 @@ export default function CustomSwitch({
     <label className={classes.label} htmlFor={inputId} style={{ whiteSpace: 'pre' }}>
       <Switch
         checked={checked}
+        disabled={disabled}
         slotProps={{
           root: { className: classes.root },
           track: {
-            className: `${classes.track} ${checked && classes.track_checked} ${disabled && classes.track_disabled}`,
+            className: clsx(classes.track, {
+              [classes.track_checked]: checked,
+              [classes.track_disabled]: disabled,
+            }),
           },
           thumb: {
-            className: `${classes.thumb} ${checked && classes.thumb_checked} ${disabled && classes.thumb_disabled}`,
+            className: clsx(classes.thumb, {
+              [classes.thumb_checked]: checked,
+              [classes.thumb_disabled]: disabled,
+            }),
           },
           input: {
             id: inputId,
@@ -28,7 +37,6 @@ export default function CustomSwitch({
             onChange,
           },
         }}
-        disabled={disabled}
       />
       {label}
     </label>

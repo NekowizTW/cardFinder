@@ -1,8 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import {
   Tab, TabPanel, Tabs, TabsList,
 } from '@mui/base';
+import PropTypes from 'prop-types';
 
 export default function CustomTabs({ tabs, defaultKey }) {
   const [tabKey, setTabKey] = React.useState(defaultKey);
@@ -10,7 +11,7 @@ export default function CustomTabs({ tabs, defaultKey }) {
   const handleChange = (_, newTabKey) => setTabKey(newTabKey);
 
   return (
-    <Tabs value={tabKey} onChange={handleChange}>
+    <Tabs onChange={handleChange} value={tabKey}>
       <TabsList
         slotProps={{
           root: { className: 'pure-menu pure-menu-horizontal pure-menu-scrollable' },
@@ -20,8 +21,8 @@ export default function CustomTabs({ tabs, defaultKey }) {
           {tabs.map(({ key, label }) => (
             <Tab
               key={key}
-              value={key}
               slots={{ root: 'li' }}
+              value={key}
               slotProps={{
                 root: (ownerState) => ({
                   className: `pure-menu-item ${
@@ -41,8 +42,8 @@ export default function CustomTabs({ tabs, defaultKey }) {
 
       {tabs.map(({ key, Slot }) => (
         <TabPanel
-          className="pure-g"
           key={key}
+          className="pure-g"
           value={key}
         >
           {Slot}

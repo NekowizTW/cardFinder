@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 
@@ -7,7 +8,7 @@ import {
   EXAS_CONDITIONS, EXAS_TYPES,
 } from '../../../model/variables';
 
-export default function ASProps() {
+export default function EXASProps() {
   const dispatch = useDispatch();
   const { uncategorizedOptions } = useSelector((state) => state.cards);
   const { exasCondition, exasType } = useSelector((state) => state.filters);
@@ -27,25 +28,25 @@ export default function ASProps() {
   }));
 
   return (
-    <>
+    <React.Fragment>
       <Select
+        isMulti
+        className="pure-u-1 pure-u-md-1"
         name="form-exasCondition-field"
-        className="pure-u-1 pure-u-md-1"
-        value={exasCondition}
-        options={combinedEXASConditionOptions}
-        isMulti
         onChange={(newValue) => handleChange('exasCondition', newValue)}
+        options={combinedEXASConditionOptions}
         placeholder="請選擇EXAS觸發條件"
+        value={exasCondition}
       />
       <Select
-        name="form-exasType-field"
-        className="pure-u-1 pure-u-md-1"
-        value={exasType}
-        options={combinedEXASTypeOptions}
         isMulti
+        className="pure-u-1 pure-u-md-1"
+        name="form-exasType-field"
         onChange={(newValue) => handleChange('exasType', newValue)}
+        options={combinedEXASTypeOptions}
         placeholder="請選擇EXAS技能類型"
+        value={exasType}
       />
-    </>
+    </React.Fragment>
   );
 }

@@ -1,14 +1,14 @@
 import {
   BREEDS,
-  EXAS_CONDITIONS_FLATTEN,
-  EXAS_TYPES_FLATTEN,
-  PROPS,
+  EXAS_CONDITIONS,
+  EXAS_TYPES,
   PROPS2,
+  PROPS,
   RANKS,
-  SKILL_AS_FLATTEN,
-  SKILL_AS2_FLATTEN,
-  SKILL_SS_FLATTEN,
-  SKILL_SS2_FLATTEN,
+  SKILL_AS2,
+  SKILL_AS,
+  SKILL_SS2,
+  SKILL_SS,
 } from '../model/variables';
 
 const defaultFilters = {
@@ -17,17 +17,16 @@ const defaultFilters = {
   prop2: PROPS2,
   breed: BREEDS,
   rank: RANKS,
-  as: SKILL_AS_FLATTEN,
-  as2: SKILL_AS2_FLATTEN,
-  ss: SKILL_SS_FLATTEN,
-  ss2: SKILL_SS2_FLATTEN,
-  exasCondition: EXAS_CONDITIONS_FLATTEN,
-  exasType: EXAS_TYPES_FLATTEN,
+  as: SKILL_AS,
+  as2: SKILL_AS2,
+  ss: SKILL_SS,
+  ss2: SKILL_SS2,
+  exasCondition: EXAS_CONDITIONS,
+  exasType: EXAS_TYPES,
   isHaifu: false,
   isMaxEvo: true,
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export function searchParamsToFilters(params) {
   const result = Object.entries(defaultFilters).map(([key, defaultValue]) => {
     if (key === 'search') return ['search', params.get('search') ?? ''];

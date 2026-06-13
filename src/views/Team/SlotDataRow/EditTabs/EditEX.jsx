@@ -3,7 +3,7 @@ import React from 'react';
 import {
   CustomTablePagination, SearchBar, WikiImage,
 } from '../../../../components';
-import useGetExcards from '../../../../hooks/useGetExCards';
+import useGetExCards from '../../../../hooks/useGetExCards';
 import SlotContext from '../SlotContext';
 
 const PAGING_OPTIONS = [
@@ -12,17 +12,23 @@ const PAGING_OPTIONS = [
 
 export default function EditEX() {
   const { slotData, onUpdate } = React.useContext(SlotContext);
-  const [count, setCount] = React.useState(0);
   const [paging, setPaging] = React.useState(6);
   const [pageNum, setPageNum] = React.useState(0);
 
-  const { exCards, triggerFilter } = useGetExcards();
+  const { exCards, triggerFilter } = useGetExCards();
 
+  const totalCount = exCards.length;
   const slicedEXCards = exCards.slice(paging * pageNum, paging * (pageNum + 1));
 
-  const handleSearch = (value) => triggerFilter(value);
+  const handleSearch = (value) => {
+    setPageNum(0);
+    triggerFilter(value);
+  };
 
-  const handleReset = () => triggerFilter('');
+  const handleReset = () => {
+    setPageNum(0);
+    triggerFilter('');
+  };
 
   const handleAdd = (cardId) => {
     if (slotData.exs.length === 3) return;
@@ -32,11 +38,6 @@ export default function EditEX() {
       cardId,
     ], 'exs');
   };
-
-  React.useEffect(() => {
-    setCount(exCards.length);
-    setPageNum(0);
-  }, [exCards.length]);
 
   return (
     <div className="pure-g">
@@ -50,9 +51,9 @@ export default function EditEX() {
             />
             <button
               className="button-error pure-button"
-              type="button"
               onClick={handleReset}
               style={{ height: 36.4, flex: 0.2 }}
+              type="button"
             >
               清除
             </button>
@@ -62,10 +63,10 @@ export default function EditEX() {
             <div className="pure-g">
               {slicedEXCards.map((optionCard) => (
                 <button
-                  type="button"
-                  className="pure-u-1 pure-u-md-1-2"
                   key={`options-${optionCard.id}-img`}
+                  className="pure-u-1 pure-u-md-1-2"
                   onClick={() => handleAdd(optionCard.id)}
+                  type="button"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -75,7 +76,7 @@ export default function EditEX() {
                   }}
                 >
                   <div className="imgFrame">
-                    <WikiImage filename={optionCard.smallFilename} width={60} height={60} />
+                    <WikiImage filename={optionCard.smallFilename} height={60} width={60} />
                   </div>
                   <div style={{ textAlign: 'left' }}>
                     <legend>{`No. ${optionCard.id}`}</legend>
@@ -87,11 +88,11 @@ export default function EditEX() {
           </div>
           <div className="pure-u-1">
             <CustomTablePagination
-              count={count}
-              pageNum={pageNum}
+              count={totalCount}
               onPageNumChange={setPageNum}
-              paging={paging}
               onPagingChange={setPaging}
+              pageNum={pageNum}
+              paging={paging}
               pagingOptions={PAGING_OPTIONS}
             />
           </div>
