@@ -1,7 +1,6 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 
-import { CustomTabs } from '../../../components';
+import { useLocation } from 'react-router-dom';
 
 import AdditionalProps from './AdditionalProps';
 import ASProps from './ASProps';
@@ -9,6 +8,7 @@ import BasicProps from './BasicProps';
 import EXASProps from './EXASProps';
 import SenzaiProps from './SenzaiProps';
 import SSProps from './SSProps';
+import { CustomTabs } from '../../../components';
 
 const TABS = [
   { key: 'basicProps', label: '基本屬性', Slot: <BasicProps /> },
@@ -33,12 +33,12 @@ export default function FilterTabs() {
   }, [replaceHistory]);
 
   return (
-    <>
+    <React.Fragment>
       <CustomTabs
-        tabs={TABS}
         defaultKey={location.state?.tab ?? TABS[0].key}
+        tabs={TABS}
       />
       <AdditionalProps />
-    </>
+    </React.Fragment>
   );
 }

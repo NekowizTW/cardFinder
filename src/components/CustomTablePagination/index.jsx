@@ -1,38 +1,77 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
-import { TablePagination } from '@mui/base/TablePagination';
 
 import classes from './styles.module.scss';
 
 export default function CustomTablePagination({
-  count, pageNum, onPageNumChange, paging, onPagingChange, pagingOptions,
+  count,
+  pageNum,
+  onPageNumChange,
+  paging,
+  onPagingChange,
+  pagingOptions,
 }) {
+  const totalPages = Math.ceil(count / paging);
+
+  const from = count === 0 ? 0 : pageNum * paging + 1;
+  const to = Math.min(count, (pageNum + 1) * paging);
+  const displayedRowsText = `${from}–${to} / ${count}`;
+
   return (
-    <TablePagination
-      count={count}
-      page={pageNum}
-      onPageChange={(_, value) => onPageNumChange(value)}
-      rowsPerPage={paging}
-      onRowsPerPageChange={(e) => onPagingChange(Number.parseInt(e.target.value, 10))}
-      rowsPerPageOptions={pagingOptions}
-      labelRowsPerPage="每頁顯示"
-      slots={{
-        root: 'div',
-      }}
-      slotProps={{
-        root: { className: classes.root },
-        spacer: { className: classes.spacer },
-        toolbar: { className: classes.toolbar },
-        selectLable: { className: classes.selectLable },
-        select: { className: classes.select },
-        displayedRows: { className: classes.displayedRows },
-        actions: {
-          className: classes.actions,
-          showFirstButton: true,
-          showLastButton: true,
-        },
-      }}
-    />
+    <div className={classes.root}>
+      <div className={classes.toolbar}>
+        <p className={classes.selectLabel}>每頁顯示</p>
+        <select
+          className={classes.select}
+          onChange={(e) => onPagingChange(Number.parseInt(e.target.value, 10))}
+          value={paging}
+        >
+          {pagingOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+
+        <p className={classes.displayedRows}>{displayedRowsText}</p>
+
+        <div className={classes.actions}>
+          <button
+            disabled={pageNum === 0}
+            onClick={() => onPageNumChange(0)}
+            title="第一頁"
+            type="button"
+          >
+            «
+          </button>
+          <button
+            disabled={pageNum === 0}
+            onClick={() => onPageNumChange(pageNum - 1)}
+            title="上一頁"
+            type="button"
+          >
+            ‹
+          </button>
+          <button
+            disabled={pageNum >= totalPages - 1 || totalPages === 0}
+            onClick={() => onPageNumChange(pageNum + 1)}
+            title="下一頁"
+            type="button"
+          >
+            ›
+          </button>
+          <button
+            disabled={pageNum >= totalPages - 1 || totalPages === 0}
+            onClick={() => onPageNumChange(Math.max(0, totalPages - 1))}
+            title="最後一頁"
+            type="button"
+          >
+            »
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 

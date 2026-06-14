@@ -1,9 +1,9 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 
 import useGetSenzai from '../../hooks/useGetSenzai';
 import WikiImage from '../WikiImage';
-
 import './styles.scss';
 
 const SenzaiNode = React.memo(({ name, variant }) => {
@@ -51,7 +51,7 @@ export default function SenzaiRow({
     ));
 
   return (
-    <>
+    <React.Fragment>
       {variant === 'inline' && (
         <div className="senzaiList">
           {senzaiNodes}
@@ -63,7 +63,7 @@ export default function SenzaiRow({
         </div>
       )}
       {variant === 'table' && (
-        <>
+        <React.Fragment>
           <div className="senzaiList" />
           <table style={{ border: 'none' }}>
             <tbody>
@@ -77,9 +77,9 @@ export default function SenzaiRow({
               {senzaiLNodes}
             </tbody>
           </table>
-        </>
+        </React.Fragment>
       )}
-    </>
+    </React.Fragment>
   );
 }
 

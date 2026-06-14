@@ -1,9 +1,10 @@
 import React from 'react';
+
 import { Link } from 'react-router-dom';
 
 export default function Introduction() {
   return (
-    <>
+    <React.Fragment>
       <h2 className="content-subhead">使用說明</h2>
       <h3>隊伍編輯</h3>
       <ul>
@@ -36,15 +37,15 @@ export default function Introduction() {
         <li>若在隊伍中使用天邪鬼結晶，計算結果會與運作機制一致。</li>
       </ul>
       <div className="pure-group">
-        <Link to="/" className="pure-button button-primary">←返回搜尋頁面</Link>
+        <Link className="pure-button button-primary" to="/">←返回搜尋頁面</Link>
         <button
-          type="button"
           className="pure-button button-success"
+          type="button"
           // onClick={() => builderRef.current.scrollIntoView()}
         >
           回到隊伍
         </button>
       </div>
-    </>
+    </React.Fragment>
   );
 }

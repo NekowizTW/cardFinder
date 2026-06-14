@@ -1,8 +1,10 @@
 import React from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import Select from 'react-select';
 
+import CardRow from './CardRow';
 import {
   setOrderBy, setPageNum, setPaging, setSortBy,
 } from '../../actions/sortsActions';
@@ -12,8 +14,6 @@ import {
 } from '../../components';
 import useGetFilteredCards from '../../hooks/useGetFilteredCards';
 import { FETCH_STATUS } from '../../model/variables';
-
-import CardRow from './CardRow';
 
 const getAttrAsNumber = (card, key) => {
   let rawValue;
@@ -40,7 +40,7 @@ const getAttrAsNumber = (card, key) => {
     default:
       rawValue = card.id;
   }
-  
+
   const numberValue = Number.parseInt(rawValue, 10);
   return Number.isNaN(numberValue) ? 0 : numberValue;
 };
@@ -75,17 +75,15 @@ export default function List() {
     sortBy, orderBy, paging, pageNum,
   } = useSelector((state) => state.sorts);
   const [enabledSelect, setEnabledSelect] = React.useState(false);
-  const [count, setCount] = React.useState(0);
 
-  const cards = React.useMemo(() => {
-    setCount(filteredCards.length);
-    return filteredCards.toSorted((lhs, rhs) => {
-      const primaryCmp = (getAttrAsNumber(lhs, sortBy) - getAttrAsNumber(rhs, sortBy)) * orderBy;
-      if (primaryCmp !== 0) return primaryCmp;
+  const totalCount = filteredCards.length;
 
-      return getAttrAsNumber(lhs, 'id') - getAttrAsNumber(rhs, 'id');
-    });
-  }, [filteredCards, orderBy, sortBy]);
+  const cards = React.useMemo(() => filteredCards.toSorted((lhs, rhs) => {
+    const primaryCmp = (getAttrAsNumber(lhs, sortBy) - getAttrAsNumber(rhs, sortBy)) * orderBy;
+    if (primaryCmp !== 0) return primaryCmp;
+
+    return getAttrAsNumber(lhs, 'id') - getAttrAsNumber(rhs, 'id');
+  }), [filteredCards, orderBy, sortBy]);
   const slicedCards = cards.slice(paging * pageNum, paging * (pageNum + 1));
   const selectedCardSet = new Set(selected);
   const isPageSelected = slicedCards.every(({ id }) => selectedCardSet.has(id));
@@ -108,11 +106,14 @@ export default function List() {
 
   React.useEffect(() => {
     const cardId = location.hash.replace('#', '');
-    document.getElementById(cardId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById(cardId)?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
   }, [cards, paging, location.hash, dispatch]);
 
   return (
-    <>
+    <React.Fragment>
       <hr />
       <div
         className="pure-g"
@@ -124,27 +125,27 @@ export default function List() {
       >
         <div className="pure-u-1 pure-u-md-1-2">
           <CustomSwitch
-            label="啟用卡片選擇"
             checked={enabledSelect}
-            onChange={(e) => setEnabledSelect(e.target.checked)}
+            label="啟用卡片選擇"
+            onChange={(checked) => setEnabledSelect(checked)}
           />
         </div>
         <div className="pure-u-1-2 pure-u-md-1-4">
           <Select
-            value={sortOptions.find((option) => option.value === sortBy)}
-            options={sortOptions}
             isOptionSelected={(option, selectedValue) => option.value === selectedValue}
             label="排序"
             onChange={(newValue) => handleSetSortBy(newValue.value)}
+            options={sortOptions}
+            value={sortOptions.find((option) => option.value === sortBy)}
           />
         </div>
         <div className="pure-u-1-2 pure-u-md-1-4">
           <Select
-            value={orderOptions.find((option) => option.value === orderBy)}
-            options={orderOptions}
             isOptionSelected={(option, selectedValue) => option.value === selectedValue}
             label="排列方式"
             onChange={(newValue) => handleSetOrderBy(newValue.value)}
+            options={orderOptions}
+            value={orderOptions.find((option) => option.value === orderBy)}
           />
         </div>
       </div>
@@ -152,29 +153,29 @@ export default function List() {
         display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap',
       }}
       >
-        {enabledSelect && (
+        {enabledSelect ? (
           <div style={{
             margin: '1em 0 0', display: 'flex', alignItems: 'center', gap: 4,
           }}
           >
             <p style={{ lineHeight: '1em' }}>{`已選擇${selected.length}張卡片`}</p>
             <button
-              type="button"
               className={`pure-button button-xsmall ${isPageSelected ? 'button-error' : ''}`}
               onClick={handleSelectAll}
+              type="button"
             >
               {isPageSelected ? '取消全選' : '全選'}
             </button>
             <button
-              type="button"
               className="pure-button button-xsmall button-warning"
-              onClick={handleClearAll}
               disabled={selected.length === 0}
+              onClick={handleClearAll}
+              type="button"
             >
               清除所有選擇
             </button>
           </div>
-        )}
+        ) : null}
       </div>
       <div style={{ paddingTop: '0.5em' }}>
         {status !== FETCH_STATUS.SUCCESS && (
@@ -184,20 +185,20 @@ export default function List() {
           <CardRow
             key={card.id}
             data={card}
-            selectEnabled={enabledSelect}
             isSelected={selectedCardSet.has(card.id)}
             onSelect={handleSelect}
+            selectEnabled={enabledSelect}
           />
         ))}
       </div>
       <CustomTablePagination
-        count={count}
-        pageNum={pageNum}
+        count={totalCount}
         onPageNumChange={handleSetPageNum}
-        paging={paging}
         onPagingChange={handleSetPaging}
+        pageNum={pageNum}
+        paging={paging}
         pagingOptions={PAGING_OPTIONS}
       />
-    </>
+    </React.Fragment>
   );
 }

@@ -1,9 +1,10 @@
-import { BREEDS } from '../../model/variables';
-
 import {
-  infoRegexChecker, initEffect, logDebug,
+  infoRegexChecker,
+  initEffect,
+  logDebug,
   strToInt,
 } from './utils';
+import { BREEDS } from '../../model/variables';
 
 const atkUpList = [
   {

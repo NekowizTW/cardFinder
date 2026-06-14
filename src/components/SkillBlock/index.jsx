@@ -1,4 +1,5 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 
 export default function SkillBox({
@@ -7,7 +8,11 @@ export default function SkillBox({
   return (
     <div className={`skillData ${type}`}>
       <h4 style={{
-        margin: 0, width: '100%', display: 'inline-flex', justifyContent: 'space-between', flexWrap: 'wrap',
+        margin: 0,
+        width: '100%',
+        display: 'inline-flex',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
       }}
       >
         <span>{title}</span>

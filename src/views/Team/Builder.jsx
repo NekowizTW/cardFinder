@@ -1,14 +1,14 @@
-import { Copy, ScreenShare } from 'lucide-react';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { toPng } from 'html-to-image';
 
-import { SetLeaderEXData, SetTeamSlotData, UpdateCalculation } from '../../actions/teamActions';
-import useOnScreenShotMode from '../../hooks/useOnScreenShotMode';
+import { toPng } from 'html-to-image';
+import { Copy, ScreenShare } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import LeaderEXRow from './LeaderEXRow';
-import TeamSlotRow from './SlotDataRow';
+import SlotDataRow from './SlotDataRow';
 import { encode } from './utils';
+import { SetLeaderEXData, SetTeamSlotData, UpdateCalculation } from '../../actions/teamActions';
+import useOnScreenShotMode from '../../hooks/useOnScreenShotMode';
 
 const getPagePrefix = () => {
   const lstSlash = window.location.href.lastIndexOf('team') + 4;
@@ -22,14 +22,20 @@ export default function Builder() {
   const {
     leaderEX, teamSlot, helperSlot, isCalculated, calculated, errorSenzai,
   } = useSelector((state) => state.team);
-  const [teamUrl, setTeamUrl] = React.useState(encode({ leaderEX, teamSlot, helperSlot }));
   const [copyStatus, setCopyStatus] = React.useState(false);
   const { isEnabled, toggle } = useOnScreenShotMode();
 
-  const teamFullUrl = React.useMemo(() => `${getPagePrefix()}/${teamUrl}`, [teamUrl]);
-  const reportLink = 'https://docs.google.com/forms/d/e/1FAIpQLSee_Qv-mXFiYq5T3eFhjRR4zU21ut9FUKGLU4ud53RJv0aSgw/viewform?usp=pp_url'
-    + `&entry.1990257246=使用隊伍搜尋器計算潛能時發生問題，潛能列表如下：%0A${errorSenzai.join('%0A')}`
-    + `&entry.1921144916=${encodeURIComponent(teamFullUrl)}`;
+  const teamFullUrl = React.useMemo(() => {
+    const encodedUrl = encode({ leaderEX, teamSlot, helperSlot });
+    return `${getPagePrefix()}/${encodedUrl}`;
+  }, [leaderEX, teamSlot, helperSlot]);
+
+  const reportLink = [
+    'https://docs.google.com/forms/d/e/',
+    '1FAIpQLSee_Qv-mXFiYq5T3eFhjRR4zU21ut9FUKGLU4ud53RJv0aSgw/viewform?usp=pp_url',
+    `&entry.1990257246=使用隊伍搜尋器計算潛能時發生問題，潛能列表如下：%0A${errorSenzai.join('%0A')}`,
+    `&entry.1921144916=${encodeURIComponent(teamFullUrl)}`,
+  ].join('');
 
   const handleScreenShot = () => {
     toggle();
@@ -53,50 +59,51 @@ export default function Builder() {
     setTimeout(() => setCopyStatus(false), 500);
   };
 
-  const handleChangeLeaderEX = (newValue) => dispatch(SetLeaderEXData({ leaderEX: newValue }));
+  const handleChangeLeaderEX = (newValue) => {
+    setDismiss(false);
+    dispatch(SetLeaderEXData({ leaderEX: newValue }));
+  };
 
-  const handleChangeSlotData = (newValue) => dispatch(SetTeamSlotData({
-    index: newValue.idx, slotData: newValue,
-  }));
-
-  React.useEffect(() => {
-    setTeamUrl(encode({ leaderEX, teamSlot, helperSlot }));
-  }, [helperSlot, leaderEX, teamSlot]);
+  const handleChangeSlotData = (newValue) => {
+    setDismiss(false);
+    dispatch(SetTeamSlotData({ index: newValue.idx, slotData: newValue }));
+  };
 
   React.useEffect(() => {
     if (!isCalculated) {
-      setDismiss(false);
       dispatch(UpdateCalculation({ team: [...teamSlot, helperSlot] }));
     }
   }, [dispatch, helperSlot, isCalculated, teamSlot]);
 
+  const allSlots = [...teamSlot, helperSlot].map((slot, idx) => ({ ...slot, idx }));
+
   return (
-    <>
+    <React.Fragment>
       <div className="pure-form">
         <h4>分享組隊成果</h4>
         <input
-          type="text"
-          value={teamFullUrl}
           readOnly
           style={{ width: '100%' }}
+          type="text"
+          value={teamFullUrl}
         />
         <div className="button-group">
           <button
-            type="button"
             className={`pure-button ${copyStatus ? 'button-success' : ''}`}
-            onClick={handleCopyUrl}
             disabled={copyStatus}
+            onClick={handleCopyUrl}
             style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}
+            type="button"
           >
             <Copy size={16} />
             {copyStatus ? '已複製' : '複製網址'}
           </button>
           <button
-            type="button"
             className="pure-button"
-            onClick={handleScreenShot}
             disabled={isEnabled}
+            onClick={handleScreenShot}
             style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}
+            type="button"
           >
             <ScreenShare size={16} />
             {isEnabled ? '生成中' : '下載截圖'}
@@ -106,17 +113,18 @@ export default function Builder() {
       {errorSenzai.length !== 0 && !dismiss && (
       <div className="alert">
         <button
-          type="button"
           className="closebtn"
           onClick={() => setDismiss(true)}
           style={{ background: 'none', border: 'none' }}
+          type="button"
         >
           &times;
         </button>
+        {' '}
         以下潛能在計算期間出現問題，隊伍部份數值可能不正確。
-        <a href={reportLink} target="_blank" rel="noreferrer">點此回報</a>
+        <a href={reportLink} rel="noreferrer" target="_blank">點此回報</a>
         <ol>
-          {errorSenzai.map((name) => <li>{name}</li>)}
+          {errorSenzai.map((name) => <li key={name}>{name}</li>)}
         </ol>
       </div>
       )}
@@ -130,14 +138,14 @@ export default function Builder() {
         <div>
           <h4>隊伍內容</h4>
           <div className="">
-            {[...teamSlot, helperSlot]
+            {allSlots
               .map((slot, idx) => ({ ...slot, idx }))
               .map((slotData) => (
-                <TeamSlotRow
+                <SlotDataRow
                   key={`team-${slotData.idx}`}
-                  slotData={slotData}
                   onChange={handleChangeSlotData}
                   senzaiSummand={calculated[slotData.idx]}
+                  slotData={slotData}
                 />
               ))}
           </div>
@@ -149,6 +157,6 @@ export default function Builder() {
           </div>
         </div>
       </div>
-    </>
+    </React.Fragment>
   );
 }

@@ -1,7 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import CalculateHelper from '../helper/CalculateHelper';
-import { cardNotFoundTemplate, exCardNotFoundTemplate, senzaiNotFoundTemplate } from '../model/NotFoundTemplates';
+import {
+  cardNotFoundTemplate,
+  exCardNotFoundTemplate,
+  senzaiNotFoundTemplate,
+} from '../model/NotFoundTemplates';
 
 export const RestoreTeam = createAsyncThunk(
   'team/restore',

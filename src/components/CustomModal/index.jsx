@@ -1,5 +1,6 @@
-import { X } from 'lucide-react';
 import React from 'react';
+
+import { X } from 'lucide-react';
 import PropTypes from 'prop-types';
 
 import {
@@ -31,18 +32,27 @@ export default function CustomModal({
       <div className={modalContainer}>
         <div className={modalTitle}>
           <h2>{title}</h2>
-          <button type="button" onClick={onClose} aria-label="close the modal" className={modalCloseButton}>
+          <button
+            aria-label="close the modal"
+            className={modalCloseButton}
+            onClick={onClose}
+            type="button"
+          >
             <X />
           </button>
         </div>
         <div className={modalContent}>{children}</div>
         <div className={modalFooter}>
-          {enableConfirm && (
-            <button type="button" className="pure-button" onClick={onClose}>
+          {enableConfirm ? (
+            <button className="pure-button" onClick={onClose} type="button">
               取消
             </button>
-          )}
-          <button type="button" className="pure-button pure-button-primary" onClick={enableConfirm ? onConfirm : onClose}>
+          ) : null}
+          <button
+            className="pure-button pure-button-primary"
+            onClick={enableConfirm ? onConfirm : onClose}
+            type="button"
+          >
             確認
           </button>
         </div>

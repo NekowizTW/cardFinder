@@ -1,9 +1,9 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 
-import { WikiImage } from '../../../components';
-
 import './styles.scss';
+import { WikiImage } from '../../../components';
 
 const noteObj = {
   deathEscape: { fmt: '九死一生', image: 'Senzai_Konki.png' },
@@ -84,8 +84,8 @@ export default function CertainSenzai({ certainFlags }) {
                       <div key={`deathEscape-${tar}-${i}`}>
                         <WikiImage
                           filename={noteObj.deathEscape.image}
-                          width={24}
                           height={24}
+                          width={24}
                         />
                         <p
                           style={{
@@ -122,8 +122,8 @@ export default function CertainSenzai({ certainFlags }) {
                             <div key={`breedDefense-${tar}-${i}-${idx}`}>
                               <WikiImage
                                 filename={noteObj.breedDefense.image}
-                                width={24}
                                 height={24}
+                                width={24}
                               />
                               <p
                                 style={{
@@ -157,11 +157,11 @@ export default function CertainSenzai({ certainFlags }) {
                     {Object.entries(effects).map(([i, effect]) => (
                       <div key={`propDefense-${tar}-${i}`}>
                         <WikiImage
+                          height={24}
+                          width={24}
                           filename={
                             noteObj.propDefense[effect.propDefense.elmts].image
                           }
-                          width={24}
-                          height={24}
                         />
                         <p
                           style={{
@@ -198,8 +198,8 @@ export default function CertainSenzai({ certainFlags }) {
                             <div key={`skillDefense-${tar}-${i}-${idx}`}>
                               <WikiImage
                                 filename={noteObj.skillDefense.image}
-                                width={24}
                                 height={24}
+                                width={24}
                               />
                               <p
                                 style={{
@@ -234,8 +234,8 @@ export default function CertainSenzai({ certainFlags }) {
                       <div key={`recoverAtEnd-${tar}-${i}`}>
                         <WikiImage
                           filename={noteObj.recoverAtEnd.image}
-                          width={24}
                           height={24}
+                          width={24}
                         />
                         <p
                           style={{
@@ -267,8 +267,8 @@ export default function CertainSenzai({ certainFlags }) {
                       <div key={`memberChange-${tar}-${i}`}>
                         <WikiImage
                           filename={noteObj.memberChange.image}
-                          width={24}
                           height={24}
+                          width={24}
                         />
                       </div>
                     ))}
@@ -291,9 +291,9 @@ export default function CertainSenzai({ certainFlags }) {
                     {Object.entries(effects).map(([i]) => (
                       <p key={`HPATKSwap-${tar}-${i}`}>
                         <WikiImage
+                          height={24}
                           src={noteObj.HPATKSwap.image}
                           width={24}
-                          height={24}
                         />
                       </p>
                     ))}

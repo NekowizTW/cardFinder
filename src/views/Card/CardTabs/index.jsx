@@ -1,12 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import { CustomTabs } from '../../../components';
+import PropTypes from 'prop-types';
 
 import EvoGraph from './EvoGraph';
 import LegendMode from './LegendMode';
 import NormalMode from './NormalMode';
 import SenzaiList from './SenzaiList';
+import { CustomTabs } from '../../../components';
 
 export default function CardTabs({ card }) {
   const TABS = [
@@ -16,8 +16,8 @@ export default function CardTabs({ card }) {
       Slot: (
         <NormalMode
           asData={card?.asData}
-          ssData={card?.ssData}
           EXASData={card?.EXASData}
+          ssData={card?.ssData}
         />
       ),
     },
@@ -27,8 +27,8 @@ export default function CardTabs({ card }) {
       Slot: (
         <LegendMode
           as2Data={card?.as2Data}
-          ss2Data={card?.ss2Data}
           EXASData={card?.EXASData}
+          ss2Data={card?.ss2Data}
         />
       ),
     },
@@ -54,8 +54,8 @@ export default function CardTabs({ card }) {
 
   return (
     <CustomTabs
-      tabs={TABS}
       defaultKey={TABS[0].key}
+      tabs={TABS}
     />
   );
 }

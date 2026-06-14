@@ -1,14 +1,13 @@
+import { constructRegExp } from './cardsFilter';
+import flattenOptions from './flattenOptions';
 import {
   EXAS_CONDITIONS,
   EXAS_TYPES,
-  SKILL_AS,
   SKILL_AS2,
-  SKILL_SS,
+  SKILL_AS,
   SKILL_SS2,
+  SKILL_SS,
 } from '../model/variables';
-
-import { constructRegExp } from './cardsFilter';
-import flattenOptions from './flattenOptions';
 
 const EXAS_CONDITIONS_FLATTEN = flattenOptions(EXAS_CONDITIONS);
 const EXAS_TYPES_FLATTEN = flattenOptions(EXAS_TYPES);

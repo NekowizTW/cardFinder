@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { useSelector } from 'react-redux';
 
 import CertainSenzai from './DisplayHelper/CertainSenzai';
@@ -10,12 +11,12 @@ export default function Statistics() {
   } = useSelector((state) => state.team);
 
   return (
-    <>
+    <React.Fragment>
       <h2 className="content-subhead">潛能統計</h2>
       <h3>全域潛能統計</h3>
       <GlobalSenzai globalFlags={globalFlags} />
       <h3>隊員潛能統計</h3>
       <CertainSenzai certainFlags={certainFlags} />
-    </>
+    </React.Fragment>
   );
 }

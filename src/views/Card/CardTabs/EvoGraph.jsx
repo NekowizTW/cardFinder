@@ -1,13 +1,13 @@
 import React from 'react';
+
+import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
+import { siblingTester } from './utils';
 import { WikiImage } from '../../../components';
 import useGetCard from '../../../hooks/useGetCard';
 import { WIKI_URL } from '../../../model/variables';
-
-import { siblingTester } from './utils';
 
 const EvoAsset = React.memo(({ itemId }) => {
   const { card } = useGetCard(itemId);
@@ -16,15 +16,20 @@ const EvoAsset = React.memo(({ itemId }) => {
   return (
     <div className="pure-u-1-4 small_img">
       {!card && (
-      <a href={`${WIKI_URL}/卡片資料/${itemId}`} target="_blank" aria-label={`wiki link to card ${itemId}`} rel="noreferrer">
-        <WikiImage filename={smallFilename} width={60} height={60} />
+      <a
+        aria-label={`wiki link to card ${itemId}`}
+        href={`${WIKI_URL}/卡片資料/${itemId}`}
+        rel="noreferrer"
+        target="_blank"
+      >
+        <WikiImage filename={smallFilename} height={60} width={60} />
       </a>
       )}
-      {card && (
-      <Link to={`/card/${itemId}`}>
-        <WikiImage filename={smallFilename} width={60} height={60} />
-      </Link>
-      )}
+      {card ? (
+        <Link to={`/card/${itemId}`}>
+          <WikiImage filename={smallFilename} height={60} width={60} />
+        </Link>
+      ) : null}
     </div>
   );
 });
@@ -49,11 +54,11 @@ const EvoHeader = React.memo(({ cardId, isSelf }) => {
       <div className="pure-g">
         <div className={`pure-u-1 small_img ${(isSelf ? 'self_card' : '')}`}>
           <Link to={`/card/${id}`}>
-            <WikiImage filename={smallFilename} width={60} height={60} />
+            <WikiImage filename={smallFilename} height={60} width={60} />
           </Link>
         </div>
         <div className={`evoSpace${hasNext ? ' down-arrow' : ''}`} />
-        {isSelf && hasNext && evoArr && (
+        {isSelf && hasNext && evoArr ? (
           <div className="pure-u-1">
             <div className="pure-g">
               <h4 className="pure-u-1">進化合成需要素材</h4>
@@ -70,7 +75,7 @@ const EvoHeader = React.memo(({ cardId, isSelf }) => {
               <div className="down-arrow" />
             </div>
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );

@@ -1,7 +1,12 @@
 import React from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 
-import { resetFilters, setAdditionalPropsFilter, setSearchFilter } from '../../../../actions/filtersActions';
+import {
+  resetFilters,
+  setAdditionalPropsFilter,
+  setSearchFilter,
+} from '../../../../actions/filtersActions';
 import {
   CustomSwitch, CustomTablePagination, SearchBar, WikiImage,
 } from '../../../../components';
@@ -15,7 +20,6 @@ const PAGING_OPTIONS = [
 export default function EditCard() {
   const dispatch = useDispatch();
   const { onUpdate } = React.useContext(SlotContext);
-  const [count, setCount] = React.useState(0);
   const [paging, setPaging] = React.useState(6);
   const [pageNum, setPageNum] = React.useState(0);
 
@@ -23,26 +27,30 @@ export default function EditCard() {
   const filters = useSelector((state) => state.filters);
   const { isHaifu, isMaxEvo, isSelectedOnly } = filters;
 
+  const totalCount = filteredCards.length;
   const cards = React.useMemo(
-    () => {
-      setCount(filteredCards.length);
-      setPageNum(0);
-      return filteredCards.toSorted((lhs, rhs) => rhs.id - lhs.id);
-    },
+    () => filteredCards.toSorted((lhs, rhs) => rhs.id - lhs.id),
     [filteredCards],
   );
   const slicedCards = cards.slice(paging * pageNum, paging * (pageNum + 1));
 
-  const handleSearch = (search) => dispatch(setSearchFilter({ search }));
+  const handleSearch = (search) => {
+    setPageNum(0);
+    dispatch(setSearchFilter({ search }));
+  };
 
-  const handleChange = (key, newValue) => dispatch(setAdditionalPropsFilter({
-    isMaxEvo,
-    isHaifu,
-    isSelectedOnly,
-    [key]: newValue,
-  }));
+  const handleChange = (key, newValue) => {
+    setPageNum(0);
+    dispatch(setAdditionalPropsFilter({
+      isMaxEvo,
+      isHaifu,
+      isSelectedOnly,
+      [key]: newValue,
+    }));
+  };
 
   const handleReset = () => {
+    setPageNum(0);
     dispatch(resetFilters());
   };
 
@@ -59,28 +67,28 @@ export default function EditCard() {
             />
             <button
               className="button-error pure-button"
-              type="button"
               onClick={handleReset}
               style={{ height: 36.4, flex: 0.2 }}
+              type="button"
             >
               重置
             </button>
           </div>
           <div className="pure-u-1" style={{ margin: '4px 0 4px', display: 'flex', gap: 12 }}>
             <CustomSwitch
-              label="只顯示最終進化"
               checked={isMaxEvo}
-              onChange={(event) => handleChange('isMaxEvo', event.target.checked)}
+              label="只顯示最終進化"
+              onChange={(checked) => handleChange('isMaxEvo', checked)}
             />
             <CustomSwitch
-              label="只顯示配佈卡"
               checked={isHaifu}
-              onChange={(event) => handleChange('isHaifu', event.target.checked)}
+              label="只顯示配佈卡"
+              onChange={(checked) => handleChange('isHaifu', checked)}
             />
             <CustomSwitch
-              label="只顯示已選擇的卡片"
               checked={isSelectedOnly}
-              onChange={(event) => handleChange('isSelectedOnly', event.target.checked)}
+              label="只顯示已選擇的卡片"
+              onChange={(checked) => handleChange('isSelectedOnly', checked)}
             />
           </div>
           <h4 className="pure-u-1" style={{ textAlign: 'left' }}>搜尋結果</h4>
@@ -88,10 +96,10 @@ export default function EditCard() {
             <div className="pure-g">
               {slicedCards.map((optionCard) => (
                 <button
-                  type="button"
-                  className="pure-u-1 pure-u-md-1-2"
                   key={`options-${optionCard.id}-img`}
+                  className="pure-u-1 pure-u-md-1-2"
                   onClick={() => onUpdate(optionCard.id, 'id')}
+                  type="button"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -101,7 +109,7 @@ export default function EditCard() {
                   }}
                 >
                   <div className="imgFrame">
-                    <WikiImage filename={optionCard.small_filename} width={60} height={60} />
+                    <WikiImage filename={optionCard.small_filename} height={60} width={60} />
                   </div>
                   <div style={{ textAlign: 'left' }}>
                     <legend>{`No. ${optionCard.id}`}</legend>
@@ -113,11 +121,11 @@ export default function EditCard() {
           </div>
           <div className="pure-u-1">
             <CustomTablePagination
-              count={count}
-              pageNum={pageNum}
+              count={totalCount}
               onPageNumChange={setPageNum}
-              paging={paging}
               onPagingChange={setPaging}
+              pageNum={pageNum}
+              paging={paging}
               pagingOptions={PAGING_OPTIONS}
             />
           </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 
 import { SkillBox } from '../../../components';
@@ -7,23 +8,23 @@ export default function NormalMode({ asData, ssData, EXASData }) {
   return (
     <div className="pure-u-1">
       <SkillBox
-        type="as"
-        title={asData.name}
-        subTitle={asData.type}
         info={asData.info}
+        subTitle={asData.type}
+        title={asData.name}
+        type="as"
       />
       <SkillBox
-        type="ss"
-        title={ssData.name}
+        info={ssData.info}
         right={`${ssData.cdf}/${ssData.cds} Turns`}
         subTitle={ssData.type}
-        info={ssData.info}
+        title={ssData.name}
+        type="ss"
       />
       {!!EXASData.condition && (
       <SkillBox
-        type="exas"
-        title="【傳奇型態條件】"
         info={EXASData.condition}
+        title="【傳奇型態條件】"
+        type="exas"
       />
       )}
     </div>

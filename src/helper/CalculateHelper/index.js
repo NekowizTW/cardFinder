@@ -148,7 +148,6 @@ export default function CalculateHelper(team) {
 
       try {
         if (debug) {
-          // eslint-disable-next-line no-console
           logDebug('index/pending', szData, debug);
         }
         handleSenzai(updatedSzData, tar);

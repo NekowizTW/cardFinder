@@ -1,11 +1,11 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 
+import EditModal from './EditModal';
 import { WikiImage } from '../../../components';
 import useGetLeaderExCard from '../../../hooks/useGetLeaderExCard';
 import useOnScreenShotMode from '../../../hooks/useOnScreenShotMode';
-
-import EditModal from './EditModal';
 
 export default function LeaderEXRow({
   leaderEX, onChange,
@@ -23,12 +23,12 @@ export default function LeaderEXRow({
   const handleClose = () => setOpen(false);
 
   return (
-    <>
+    <React.Fragment>
       <h4 className="pure-u-1" style={{ textAlign: 'center' }}>
         {`${name} ${rank.replace(/\d+/, '')}`}
       </h4>
       <div className={`${rwd} pure-u${md}-1-4 imgFrame`}>
-        <WikiImage filename={smallFilename} width={60} height={60} />
+        <WikiImage filename={smallFilename} height={60} width={60} />
       </div>
       <div className={`${rwd} pure-u${md}-5-8 leaderEX`}>
         <p>{condition}</p>
@@ -36,22 +36,22 @@ export default function LeaderEXRow({
       </div>
       <div className={`${rwd} pure-u${md}-1-8`}>
         <button
-          type="button"
           className={`pure-button button-warning ${isEnabled ? 'hide' : ''}`}
           onClick={handleOpen}
+          type="button"
         >
           編輯
         </button>
-        {open && (
+        {open ? (
           <EditModal
-            leaderEX={leaderEX}
             open
-            onSave={handleSave}
+            leaderEX={leaderEX}
             onClose={handleClose}
+            onSave={handleSave}
           />
-        )}
+        ) : null}
       </div>
-    </>
+    </React.Fragment>
   );
 }
 

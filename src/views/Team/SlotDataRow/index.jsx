@@ -1,14 +1,14 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 
+import EditModal from './EditModal';
 import { SenzaiRow, WikiImage } from '../../../components';
 import useGetCard from '../../../hooks/useGetCard';
 import useOnScreenShotMode from '../../../hooks/useOnScreenShotMode';
 import EXSlot from '../DisplayHelper/EXSlot';
 import SkillStringIcon from '../DisplayHelper/SkillStringIcon';
 import { SenzaiSummandFormat, SlotDataFormat } from '../utils';
-
-import EditModal from './EditModal';
 
 const getCalculatedData = (card, senzaiSummand) => {
   const calcData = {};
@@ -74,7 +74,7 @@ export default function SlotDataRow({
   const handleClose = () => setOpen(false);
 
   return (
-    <>
+    <React.Fragment>
       <div className="cardItem teamItem pure-g">
         <div className={`${rwd} pure-u${md}-3-8`}>
           <div className="pure-g basicProfile">
@@ -82,8 +82,8 @@ export default function SlotDataRow({
               <div className="imgFrame" style={{ justifyContent: 'center' }}>
                 {idx === 0 && <span className="teamCardBadge">隊長</span>}
                 {idx === 5 && <span className="teamCardBadge">援助</span>}
-                {exas && <div className="exasBadge" />}
-                <WikiImage filename={card?.small_filename} width={60} height={60} />
+                {exas ? <div className="exasBadge" /> : null}
+                <WikiImage filename={card?.small_filename} height={60} width={60} />
               </div>
               <h4>{id !== -1 ? `No. ${card?.id}` : '-'}</h4>
             </div>
@@ -103,21 +103,43 @@ export default function SlotDataRow({
         <div className={`${rwd} pure-u${md}-1-2`}>
           <div className={`pure-g ${isEnabled ? 'hide' : ''}`}>
             <div className={`${rwd} pure-u${md}-1-2 teamAS`}>
-              {card?.asData && <SkillStringIcon idx={idx} type="as" skillTypes={[card.asData.type, card.as2Data.type]} />}
+              {card?.asData ? (
+                <SkillStringIcon
+                  idx={idx}
+                  skillTypes={[card.asData.type, card.as2Data.type]}
+                  type="as"
+                />
+              ) : null}
             </div>
             {(!exas || idx === 5) && (
             <div className={`${rwd} pure-u${md}-1-2 teamSS`}>
-              {card?.ssData && <SkillStringIcon idx={idx} type="ss" skillTypes={[card.ssData.type, card.ss2Data.type]} />}
+              {card?.ssData ? (
+                <SkillStringIcon
+                  idx={idx}
+                  skillTypes={[card.ssData.type, card.ss2Data.type]}
+                  type="ss"
+                />
+              ) : null}
             </div>
             )}
-            {(exas && idx !== 5) && (
-            <div className={`pure-u-1 pure-u${md}-1-2 teamEXAS`}>
-              {card?.EXASData && <SkillStringIcon idx={idx} type="exas" skillTypes={[card.EXASData.type]} />}
-            </div>
-            )}
+            {(exas && idx !== 5) ? (
+              <div className={`pure-u-1 pure-u${md}-1-2 teamEXAS`}>
+                {card?.EXASData ? (
+                  <SkillStringIcon
+                    idx={idx}
+                    skillTypes={[card.EXASData.type]}
+                    type="exas"
+                  />
+                ) : null}
+              </div>
+            ) : null}
           </div>
           <div className="pure-g">
-            <SenzaiRow belongsTo={`${id}`} senzaiArr={card?.senzaiArr} senzaiLArr={card?.senzaiLArr} />
+            <SenzaiRow
+              belongsTo={`${id}`}
+              senzaiArr={card?.senzaiArr}
+              senzaiLArr={card?.senzaiLArr}
+            />
           </div>
           <div style={{ display: 'flex', gap: 10 }}>
             {exs
@@ -129,9 +151,9 @@ export default function SlotDataRow({
         </div>
         <div className={`${rwd} pure-u${md}-1-8`}>
           <button
-            type="button"
             className={`pure-button button-warning ${isEnabled ? 'hide' : ''}`}
             onClick={handleOpen}
+            type="button"
           >
             編輯
           </button>
@@ -149,15 +171,15 @@ export default function SlotDataRow({
           </p>
         </div>
       </div>
-      {open && (
-      <EditModal
-        slotData={slotData}
-        open
-        onSave={handleSave}
-        onClose={handleClose}
-      />
-      )}
-    </>
+      {open ? (
+        <EditModal
+          open
+          onClose={handleClose}
+          onSave={handleSave}
+          slotData={slotData}
+        />
+      ) : null}
+    </React.Fragment>
   );
 }
 

@@ -25,9 +25,9 @@ export default function EditConfig() {
     setTempMana(value.toString());
   };
 
-  const handleChangeEXAS = (e) => {
+  const handleChangeEXAS = (checked) => {
     if (slotData.idx === 5) return;
-    onUpdate(e.target.checked, 'exas');
+    onUpdate(checked, 'exas');
   };
 
   return (
@@ -36,11 +36,11 @@ export default function EditConfig() {
         <label htmlFor="szSlotInput">潛能</label>
         <input
           id="szSlotInput"
-          type="number"
-          min={0}
           max={10}
-          value={tempSzSlot}
+          min={0}
           onChange={handleChangeSzSlot}
+          type="number"
+          value={tempSzSlot}
         />
         <span className="pure-form-message-inline">
           可調整卡片的潛能開啟數量
@@ -50,11 +50,11 @@ export default function EditConfig() {
         <label htmlFor="manaInput">瑪娜</label>
         <input
           id="manaInput"
-          type="number"
-          min={0}
           max={400}
-          value={tempMana}
+          min={0}
           onChange={handleChangeMana}
+          type="number"
+          value={tempMana}
         />
         <span className="pure-form-message-inline">
           可調整卡片的瑪娜值，或是使用下方的快捷按鈕迅速調整
@@ -62,17 +62,35 @@ export default function EditConfig() {
       </div>
       <div className="pure-controls">
         <div className="pure-button-group" role="group">
-          <button type="button" className="pure-button button-small" onClick={() => handleChangeManaFixed(0)}>0</button>
-          <button type="button" className="pure-button button-small" onClick={() => handleChangeManaFixed(200)}>+200</button>
-          <button type="button" className="pure-button button-small" onClick={() => handleChangeManaFixed(400)}>+400</button>
+          <button
+            className="pure-button button-small"
+            onClick={() => handleChangeManaFixed(0)}
+            type="button"
+          >
+            0
+          </button>
+          <button
+            className="pure-button button-small"
+            onClick={() => handleChangeManaFixed(200)}
+            type="button"
+          >
+            +200
+          </button>
+          <button
+            className="pure-button button-small"
+            onClick={() => handleChangeManaFixed(400)}
+            type="button"
+          >
+            +400
+          </button>
         </div>
       </div>
       <div className="pure-controls">
         <CustomSwitch
-          label="啟用EXAS"
           checked={slotData.exas}
-          onChange={handleChangeEXAS}
           disabled={slotData.idx === 5}
+          label="啟用EXAS"
+          onChange={handleChangeEXAS}
         />
       </div>
     </div>

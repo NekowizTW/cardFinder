@@ -28,7 +28,9 @@ export function initFlag(len, type) {
  */
 export function fetchValFromInfo(info, regex) {
   const m = regex.exec(info);
-  if (m !== null) { return m[1]; }
+  if (m !== null) {
+    return m[1];
+  }
   return 0;
 }
 
@@ -61,7 +63,6 @@ export function fullWidthNumber2Integer(str) {
  */
 export function removeUndefinedProp(obj) {
   return Object.fromEntries(
-    // eslint-disable-next-line no-unused-vars
     Object.entries(obj).filter(([_, value]) => !!value),
   );
 }
@@ -110,9 +111,7 @@ export function logDebug(name, obj, debug = false) {
     fontColor: '#fff', // 字體顏色
   });
 
-  // eslint-disable-next-line no-console
   // console.debug(`module name: ${name}`);
-  // eslint-disable-next-line no-console
   // console.log(obj);
   buttonLog.log(obj);
 }

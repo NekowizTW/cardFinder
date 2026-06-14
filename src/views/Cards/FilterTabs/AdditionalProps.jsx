@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setAdditionalPropsFilter } from '../../../actions/filtersActions';
@@ -21,19 +22,19 @@ export default function AdditionalProps() {
     }}
     >
       <CustomSwitch
-        label="只顯示最終進化"
         checked={isMaxEvo}
-        onChange={(event) => handleChange('isMaxEvo', event.target.checked)}
+        label="只顯示最終進化"
+        onChange={(checked) => handleChange('isMaxEvo', checked)}
       />
       <CustomSwitch
-        label="只顯示配佈卡"
         checked={isHaifu}
-        onChange={(event) => handleChange('isHaifu', event.target.checked)}
+        label="只顯示配佈卡"
+        onChange={(checked) => handleChange('isHaifu', checked)}
       />
       <CustomSwitch
-        label="只顯示已選擇的卡片"
         checked={isSelectedOnly}
-        onChange={(event) => handleChange('isSelectedOnly', event.target.checked)}
+        label="只顯示已選擇的卡片"
+        onChange={(checked) => handleChange('isSelectedOnly', checked)}
       />
     </div>
   );

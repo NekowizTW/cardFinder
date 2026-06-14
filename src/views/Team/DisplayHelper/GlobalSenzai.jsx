@@ -1,9 +1,9 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 
-import { WikiImage } from '../../../components';
-
 import './styles.scss';
+import { WikiImage } from '../../../components';
 
 const noteObj = {
   answerRatio: { fmt: '得知盤面答對率', image: 'Senzai_心眼.png' },
@@ -56,59 +56,59 @@ export default function GlobalSenzai({ globalFlags }) {
       <div className="pure-u-1 pure-u-md-1-2">
         <h4>心眼/答題相關</h4>
         <ul>
-          {globalFlags.answerRatio && (
-          <li key="answerRatio">
-            <WikiImage filename={noteObj.answerRatio.image} width={24} height={24} />
-            {noteObj.answerRatio.fmt}
-          </li>
-          )}
-          {globalFlags.answerReset && (
-          <li key="answerReset">
-            <WikiImage filename={noteObj.answerReset.image} width={24} height={24} />
-            {noteObj.answerReset.fmt}
-          </li>
-          )}
-          {globalFlags.answerTime && (
-          <li key="answerTime">
-            <WikiImage filename={noteObj.answerTime.image} width={24} height={24} />
-            {noteObj.answerTime.fmt}
-            ：
-            {globalFlags.answerTime}
-            秒
-          </li>
-          )}
-          {globalFlags.enermyAngerCondition && (
-          <li key="enermyAngerCondition">
-            <WikiImage filename={noteObj.enermyAngerCondition.image} width={24} height={24} />
-            {noteObj.enermyAngerCondition.fmt}
-            ：
-            {globalFlags.enermyAngerCondition}
-          </li>
-          )}
-          {globalFlags.enermyDeath && (
-          <li key="enermyDeath">
-            <WikiImage filename={noteObj.enermyDeath.image} width={24} height={24} />
-            {noteObj.enermyDeath.fmt}
-          </li>
-          )}
-          {globalFlags.enermyHP && (
-          <li key="enermyHP">
-            <WikiImage filename={noteObj.enermyHP.image} width={24} height={24} />
-            {noteObj.enermyHP.fmt}
-          </li>
-          )}
-          {globalFlags.enermyNext && (
-          <li key="enermyNext">
-            <WikiImage filename={noteObj.enermyNext.image} width={24} height={24} />
-            {noteObj.enermyNext.fmt}
-          </li>
-          )}
-          {globalFlags.enermyReflection && (
-          <li key="enermyReflection">
-            <WikiImage filename={noteObj.enermyReflection.image} width={24} height={24} />
-            {noteObj.enermyReflection.fmt}
-          </li>
-          )}
+          {globalFlags.answerRatio ? (
+            <li key="answerRatio">
+              <WikiImage filename={noteObj.answerRatio.image} height={24} width={24} />
+              {noteObj.answerRatio.fmt}
+            </li>
+          ) : null}
+          {globalFlags.answerReset ? (
+            <li key="answerReset">
+              <WikiImage filename={noteObj.answerReset.image} height={24} width={24} />
+              {noteObj.answerReset.fmt}
+            </li>
+          ) : null}
+          {globalFlags.answerTime ? (
+            <li key="answerTime">
+              <WikiImage filename={noteObj.answerTime.image} height={24} width={24} />
+              {noteObj.answerTime.fmt}
+              ：
+              {globalFlags.answerTime}
+              秒
+            </li>
+          ) : null}
+          {globalFlags.enermyAngerCondition ? (
+            <li key="enermyAngerCondition">
+              <WikiImage filename={noteObj.enermyAngerCondition.image} height={24} width={24} />
+              {noteObj.enermyAngerCondition.fmt}
+              ：
+              {globalFlags.enermyAngerCondition}
+            </li>
+          ) : null}
+          {globalFlags.enermyDeath ? (
+            <li key="enermyDeath">
+              <WikiImage filename={noteObj.enermyDeath.image} height={24} width={24} />
+              {noteObj.enermyDeath.fmt}
+            </li>
+          ) : null}
+          {globalFlags.enermyHP ? (
+            <li key="enermyHP">
+              <WikiImage filename={noteObj.enermyHP.image} height={24} width={24} />
+              {noteObj.enermyHP.fmt}
+            </li>
+          ) : null}
+          {globalFlags.enermyNext ? (
+            <li key="enermyNext">
+              <WikiImage filename={noteObj.enermyNext.image} height={24} width={24} />
+              {noteObj.enermyNext.fmt}
+            </li>
+          ) : null}
+          {globalFlags.enermyReflection ? (
+            <li key="enermyReflection">
+              <WikiImage filename={noteObj.enermyReflection.image} height={24} width={24} />
+              {noteObj.enermyReflection.fmt}
+            </li>
+          ) : null}
         </ul>
       </div>
       <div className="pure-u-1 pure-u-md-1-2">
@@ -116,7 +116,7 @@ export default function GlobalSenzai({ globalFlags }) {
         <ul>
           {!!globalFlags.chainBoost && (
           <li key="chainBoost">
-            <WikiImage filename={noteObj.chainBoost.image} width={24} height={24} />
+            <WikiImage filename={noteObj.chainBoost.image} height={24} width={24} />
             {noteObj.chainBoost.fmt}
             ：
             {globalFlags.chainBoost}
@@ -124,7 +124,7 @@ export default function GlobalSenzai({ globalFlags }) {
           )}
           {!!globalFlags.chainSecure && (
           <li key="chainSecure">
-            <WikiImage filename={noteObj.chainSecure.image} width={24} height={24} />
+            <WikiImage filename={noteObj.chainSecure.image} height={24} width={24} />
             {noteObj.chainSecure.fmt}
             ：
             {globalFlags.chainSecure}
@@ -133,7 +133,7 @@ export default function GlobalSenzai({ globalFlags }) {
           )}
           {!!globalFlags.recoverAtEnd && (
           <li key="recoverAtEnd">
-            <WikiImage filename={noteObj.recoverAtEnd.image} width={24} height={24} />
+            <WikiImage filename={noteObj.recoverAtEnd.image} height={24} width={24} />
             {noteObj.recoverAtEnd.fmt}
             ：
             {globalFlags.recoverAtEnd}
@@ -145,19 +145,19 @@ export default function GlobalSenzai({ globalFlags }) {
       <div className="pure-u-1 pure-u-md-1-2">
         <h4>盤面屬性/問題類型</h4>
         <ul>
-          {globalFlags.questionCategoryUp && globalFlags.questionCategoryUp.map((category) => (
+          {globalFlags.questionCategoryUp ? globalFlags.questionCategoryUp.map((category) => (
             <li key={`questionCategoryUp_${category}`}>
               <WikiImage
                 filename={noteObj.questionCategoryUp[category].image}
-                width={60}
                 height={60}
+                width={60}
               />
               {noteObj.questionCategoryUp[category].fmt}
             </li>
-          ))}
+          )) : null}
           {globalFlags.questionPropUp !== undefined && globalFlags.questionPropUp['火'] !== 0 && (
           <li key="questionPropUp_火">
-            <WikiImage filename={noteObj.questionPropUp['火'].image} width={24} height={24} />
+            <WikiImage filename={noteObj.questionPropUp['火'].image} height={24} width={24} />
             {noteObj.questionPropUp['火'].fmt}
             ：
             {globalFlags.questionPropUp['火']}
@@ -165,7 +165,7 @@ export default function GlobalSenzai({ globalFlags }) {
           )}
           {globalFlags.questionPropUp !== undefined && globalFlags.questionPropUp['水'] !== 0 && (
           <li key="questionPropUp_水">
-            <WikiImage filename={noteObj.questionPropUp['水'].image} width={24} height={24} />
+            <WikiImage filename={noteObj.questionPropUp['水'].image} height={24} width={24} />
             {noteObj.questionPropUp['水'].fmt}
             ：
             {globalFlags.questionPropUp['水']}
@@ -173,7 +173,7 @@ export default function GlobalSenzai({ globalFlags }) {
           )}
           {globalFlags.questionPropUp !== undefined && globalFlags.questionPropUp['雷'] !== 0 && (
           <li key="questionPropUp_雷">
-            <WikiImage filename={noteObj.questionPropUp['雷'].image} width={24} height={24} />
+            <WikiImage filename={noteObj.questionPropUp['雷'].image} height={24} width={24} />
             {noteObj.questionPropUp['雷'].fmt}
             ：
             {globalFlags.questionPropUp['雷']}
@@ -181,7 +181,7 @@ export default function GlobalSenzai({ globalFlags }) {
           )}
           {globalFlags.difficultyDrop !== undefined && (
           <li key="difficultyDrop">
-            <WikiImage filename={noteObj.difficultyDrop.image} width={24} height={24} />
+            <WikiImage filename={noteObj.difficultyDrop.image} height={24} width={24} />
             {noteObj.difficultyDrop.fmt}
             ：
             {globalFlags.difficultyDrop + 1}
@@ -192,45 +192,45 @@ export default function GlobalSenzai({ globalFlags }) {
       <div className="pure-u-1 pure-u-md-1-2">
         <h4>結算部份</h4>
         <ul>
-          {globalFlags.coin && (
-          <li key="coin">
-            <WikiImage filename={noteObj.coin.image} width={24} height={24} />
-            {noteObj.coin.fmt}
-            ：+
-            {globalFlags.coin}
-            %
-          </li>
-          )}
-          {globalFlags.exp && (
-          <li key="exp">
-            <WikiImage filename={noteObj.exp.image} width={24} height={24} />
-            {noteObj.exp.fmt}
-            ：+
-            {globalFlags.exp}
-            %
-          </li>
-          )}
-          {globalFlags.cardExp && (
-          <li key="cardExp">
-            <WikiImage filename={noteObj.cardExp.image} width={24} height={24} />
-            {noteObj.cardExp.fmt}
-            ：+
-            {globalFlags.cardExp}
-            %
-          </li>
-          )}
-          {globalFlags.boxOccurance && (
-          <li key="boxOccurance">
-            <WikiImage filename={noteObj.boxOccurance.image} width={24} height={24} />
-            {noteObj.boxOccurance.fmt}
-          </li>
-          )}
-          {globalFlags.boxDropChance && (
-          <li key="boxDropChance">
-            <WikiImage filename={noteObj.boxDropChance.image} width={24} height={24} />
-            {noteObj.boxDropChance.fmt}
-          </li>
-          )}
+          {globalFlags.coin ? (
+            <li key="coin">
+              <WikiImage filename={noteObj.coin.image} height={24} width={24} />
+              {noteObj.coin.fmt}
+              ：+
+              {globalFlags.coin}
+              %
+            </li>
+          ) : null}
+          {globalFlags.exp ? (
+            <li key="exp">
+              <WikiImage filename={noteObj.exp.image} height={24} width={24} />
+              {noteObj.exp.fmt}
+              ：+
+              {globalFlags.exp}
+              %
+            </li>
+          ) : null}
+          {globalFlags.cardExp ? (
+            <li key="cardExp">
+              <WikiImage filename={noteObj.cardExp.image} height={24} width={24} />
+              {noteObj.cardExp.fmt}
+              ：+
+              {globalFlags.cardExp}
+              %
+            </li>
+          ) : null}
+          {globalFlags.boxOccurance ? (
+            <li key="boxOccurance">
+              <WikiImage filename={noteObj.boxOccurance.image} height={24} width={24} />
+              {noteObj.boxOccurance.fmt}
+            </li>
+          ) : null}
+          {globalFlags.boxDropChance ? (
+            <li key="boxDropChance">
+              <WikiImage filename={noteObj.boxDropChance.image} height={24} width={24} />
+              {noteObj.boxDropChance.fmt}
+            </li>
+          ) : null}
         </ul>
       </div>
     </div>

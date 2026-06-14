@@ -1,35 +1,32 @@
 import React from 'react';
+
+import { Root, Thumb } from '@radix-ui/react-switch';
 import PropTypes from 'prop-types';
-import { Switch } from '@mui/base';
 
 import classes from './styles.module.scss';
 
+/**
+ * CustomSwitch - Built on top of Radix UI Switch Primitive
+ * @component
+ * @param {Object} props
+ * @param {string} props.label
+ * @param {boolean} props.checked
+ * @param {import('@radix-ui/react-switch').SwitchProps['onCheckedChange']} props.onChange
+ * @param {boolean} [props.disabled=false]
+ */
 export default function CustomSwitch({
   label, checked, onChange, disabled,
 }) {
-  const inputId = React.useId();
-
   return (
-    <label className={classes.label} htmlFor={inputId} style={{ whiteSpace: 'pre' }}>
-      <Switch
+    <label className={classes.label} style={{ whiteSpace: 'pre' }}>
+      <Root
         checked={checked}
-        slotProps={{
-          root: { className: classes.root },
-          track: {
-            className: `${classes.track} ${checked && classes.track_checked} ${disabled && classes.track_disabled}`,
-          },
-          thumb: {
-            className: `${classes.thumb} ${checked && classes.thumb_checked} ${disabled && classes.thumb_disabled}`,
-          },
-          input: {
-            id: inputId,
-            className: classes.input,
-            'aria-label': label,
-            onChange,
-          },
-        }}
+        className={classes.root}
         disabled={disabled}
-      />
+        onCheckedChange={onChange}
+      >
+        <Thumb className={classes.thumb} />
+      </Root>
       {label}
     </label>
   );

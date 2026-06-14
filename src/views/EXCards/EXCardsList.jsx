@@ -1,14 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import {
-  CustomTablePagination, SearchBar, WikiImage,
-} from '../../components';
-import useGetExcards from '../../hooks/useGetExCards';
-import { FETCH_STATUS } from '../../model/variables';
+import PropTypes from 'prop-types';
 
 import StringHighlight from './StringHighlight';
 import { EXFormat, sourceParser } from './utils';
+import {
+  CustomTablePagination, SearchBar, WikiImage,
+} from '../../components';
+import useGetExCards from '../../hooks/useGetExCards';
+import { FETCH_STATUS } from '../../model/variables';
 
 const EXCard = React.memo(({ ex, tokens }) => {
   const {
@@ -19,7 +19,7 @@ const EXCard = React.memo(({ ex, tokens }) => {
   return (
     <div className="pure-u-1 pure-u-md-1-2 excard-container">
       <div className="excard">
-        <WikiImage filename={smallFilename} width={60} height={60} />
+        <WikiImage filename={smallFilename} height={60} width={60} />
         <div className="info">
           <h3>{StringHighlight({ input: name, tokens })}</h3>
           <p className="detail">
@@ -27,10 +27,9 @@ const EXCard = React.memo(({ ex, tokens }) => {
           </p>
           <p className="source">
             取得來源：
+            {' '}
             <span>
-              {link && (
-                <a href={link.href}>{link.text}</a>
-              )}
+              {link ? <a href={link.href}>{link.text}</a> : null}
               {text}
             </span>
           </p>
@@ -55,37 +54,39 @@ export default function EXCardsList() {
     status,
     tokens,
     triggerFilter,
-  } = useGetExcards();
-  const [count, setCount] = React.useState(0);
+  } = useGetExCards();
+
   const [paging, setPaging] = React.useState(PAGING_OPTIONS[0]);
   const [pageNum, setPageNum] = React.useState(0);
 
+  const totalCount = exCards.length;
   const slicedEXCards = exCards.slice(paging * pageNum, paging * (pageNum + 1));
 
-  const handleSearch = (value) => triggerFilter(value);
-
-  const handleReset = () => triggerFilter('');
-
-  React.useEffect(() => {
-    setCount(exCards.length);
+  const handleSearch = (value) => {
     setPageNum(0);
-  }, [exCards.length]);
+    triggerFilter(value);
+  };
+
+  const handleReset = () => {
+    setPageNum(0);
+    triggerFilter('');
+  };
 
   return (
     <div className="pure-u-1">
       <div className="pure-form" style={{ display: 'flex', width: '100%' }}>
         <SearchBar
+          disabled={status !== FETCH_STATUS.SUCCESS}
           onSearch={handleSearch}
           placeholder="請輸入結晶名稱或效果關鍵詞"
-          disabled={status !== FETCH_STATUS.SUCCESS}
           style={{ flexGrow: 1 }}
         />
         <button
           className="button-error pure-button"
-          type="button"
           disabled={status !== FETCH_STATUS.SUCCESS}
           onClick={handleReset}
           style={{ height: 36.4, flex: 0.2 }}
+          type="button"
         >
           清除
         </button>
@@ -96,11 +97,11 @@ export default function EXCardsList() {
         ))}
       </div>
       <CustomTablePagination
-        count={count}
-        pageNum={pageNum}
+        count={totalCount}
         onPageNumChange={setPageNum}
-        paging={paging}
         onPagingChange={setPaging}
+        pageNum={pageNum}
+        paging={paging}
         pagingOptions={PAGING_OPTIONS}
       />
     </div>
