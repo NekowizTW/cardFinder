@@ -127,7 +127,7 @@ export default function List() {
           <CustomSwitch
             checked={enabledSelect}
             label="啟用卡片選擇"
-            onChange={(e) => setEnabledSelect(e.target.checked)}
+            onChange={(checked) => setEnabledSelect(checked)}
           />
         </div>
         <div className="pure-u-1-2 pure-u-md-1-4">

@@ -1,55 +1,53 @@
 import React from 'react';
 
 import {
-  Tab, TabPanel, Tabs, TabsList,
-} from '@mui/base';
+  Content,
+  List,
+  Root,
+  Trigger,
+} from '@radix-ui/react-tabs';
 import PropTypes from 'prop-types';
 
+/**
+ * CustomTabs - Built on top of Radix UI Tabs Primitive, fully styled with Pure CSS classes.
+ * @component
+ * @param {Object} props
+ * @param {Array} props.tabs
+ * @param {string} [props.defaultKey='']
+ */
 export default function CustomTabs({ tabs, defaultKey }) {
   const [tabKey, setTabKey] = React.useState(defaultKey);
 
-  const handleChange = (_, newTabKey) => setTabKey(newTabKey);
-
   return (
-    <Tabs onChange={handleChange} value={tabKey}>
-      <TabsList
-        slotProps={{
-          root: { className: 'pure-menu pure-menu-horizontal pure-menu-scrollable' },
-        }}
-      >
+    <Root onValueChange={setTabKey} value={tabKey}>
+      <List className="pure-menu pure-menu-horizontal pure-menu-scrollable">
         <ul className="pure-menu-list">
-          {tabs.map(({ key, label }) => (
-            <Tab
-              key={key}
-              slots={{ root: 'li' }}
-              value={key}
-              slotProps={{
-                root: (ownerState) => ({
-                  className: `pure-menu-item ${
-                    ownerState.selected ? 'pure-menu-selected' : ''
-                  }`,
-                  style: {
-                    backgroundColor: ownerState.selected ? '#eee' : 'inherit',
-                  },
-                }),
-              }}
-            >
-              <span className="pure-menu-link">{label}</span>
-            </Tab>
-          ))}
+          {tabs.map(({ key, label }) => {
+            const isSelected = tabKey === key;
+
+            return (
+              <Trigger key={key} asChild value={key}>
+                <li
+                  className={`pure-menu-item ${isSelected ? 'pure-menu-selected' : ''}`}
+                  style={{
+                    backgroundColor: isSelected ? '#eee' : 'inherit',
+                    cursor: 'pointer', // 確保使用者知道可以點擊
+                  }}
+                >
+                  <span className="pure-menu-link">{label}</span>
+                </li>
+              </Trigger>
+            );
+          })}
         </ul>
-      </TabsList>
+      </List>
 
       {tabs.map(({ key, Slot }) => (
-        <TabPanel
-          key={key}
-          className="pure-g"
-          value={key}
-        >
+        <Content key={key} className="pure-g" value={key}>
           {Slot}
-        </TabPanel>
+        </Content>
       ))}
-    </Tabs>
+    </Root>
   );
 }
 

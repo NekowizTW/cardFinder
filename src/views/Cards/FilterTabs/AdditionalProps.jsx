@@ -24,17 +24,17 @@ export default function AdditionalProps() {
       <CustomSwitch
         checked={isMaxEvo}
         label="只顯示最終進化"
-        onChange={(event) => handleChange('isMaxEvo', event.target.checked)}
+        onChange={(checked) => handleChange('isMaxEvo', checked)}
       />
       <CustomSwitch
         checked={isHaifu}
         label="只顯示配佈卡"
-        onChange={(event) => handleChange('isHaifu', event.target.checked)}
+        onChange={(checked) => handleChange('isHaifu', checked)}
       />
       <CustomSwitch
         checked={isSelectedOnly}
         label="只顯示已選擇的卡片"
-        onChange={(event) => handleChange('isSelectedOnly', event.target.checked)}
+        onChange={(checked) => handleChange('isSelectedOnly', checked)}
       />
     </div>
   );

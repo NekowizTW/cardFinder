@@ -25,9 +25,9 @@ export default function EditConfig() {
     setTempMana(value.toString());
   };
 
-  const handleChangeEXAS = (e) => {
+  const handleChangeEXAS = (checked) => {
     if (slotData.idx === 5) return;
-    onUpdate(e.target.checked, 'exas');
+    onUpdate(checked, 'exas');
   };
 
   return (
