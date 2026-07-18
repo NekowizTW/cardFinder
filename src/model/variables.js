@@ -1,6 +1,27 @@
 export const BASE_URL = 'https://nekowiztw.github.io/wikidata-sync/cards/';
 
-export const CDN_URL = 'https://cdn.jsdelivr.net/gh/nekowiztw/wikidata-sync@gh-pages/cards/';
+export const JSON_ROUTE_SOURCES = [
+  {
+    name: 'jsDelivr CDN',
+    description: 'Main jsDelivr path using Cloudflare.',
+    baseUrl: 'https://cdn.jsdelivr.net/gh/nekowiztw/wikidata-sync@gh-pages/cards/',
+  },
+  {
+    name: 'jsDelivr Fastly',
+    description: 'Primary Fastly-backed jsDelivr path with APAC-friendly routing.',
+    baseUrl: 'https://fastly.jsdelivr.net/gh/nekowiztw/wikidata-sync@gh-pages/cards/',
+  },
+  {
+    name: 'jsDelivr GCore',
+    description: 'Alternative jsDelivr path using GCore, optimized for Asia.',
+    baseUrl: 'https://gcore.jsdelivr.net/gh/nekowiztw/wikidata-sync@gh-pages/cards/',
+  },
+  {
+    name: 'GitHub Pages',
+    description: 'Direct GitHub Pages fallback if CDN routes are unavailable.',
+    baseUrl: 'https://nekowiztw.github.io/wikidata-sync/cards/',
+  },
+];
 
 export const WIKI_URL = 'https://nekowiz.fandom.com/zh/wiki';
 
