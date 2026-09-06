@@ -90,7 +90,7 @@ export default function getOptionsFromSource(sourceCards) {
         ))
         .map(generateUncategoriedOption);
 
-      acc.as.push(...exasTypesUnCagorized);
+      acc.exasType.push(...exasTypesUnCagorized);
     }
 
     return acc;

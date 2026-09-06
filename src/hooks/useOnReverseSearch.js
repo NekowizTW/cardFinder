@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { setAllPropsFilter } from '../actions/filtersActions';
@@ -43,6 +43,7 @@ const SKILL_SS2_FLATTEN = flattenOptions(SKILL_SS2);
 export default function useOnReverseSearch(card) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const uncategorizedOptions = useSelector((state) => state.cards.uncategorizedOptions);
 
   const handleSearchMainProp = () => {
     if (!card.prop) return;
@@ -83,7 +84,8 @@ export default function useOnReverseSearch(card) {
     if (!card.asData.type) return;
 
     const asTypes = card.asData.type.split(/[・‧]+/);
-    const selectedAS = SKILL_AS_FLATTEN.filter((option) => {
+    const asOptions = [...SKILL_AS_FLATTEN, ...uncategorizedOptions.as];
+    const selectedAS = asOptions.filter((option) => {
       const re = constructRegExp(option.value);
       return asTypes.some((asType) => re.test(asType));
     });
@@ -98,7 +100,8 @@ export default function useOnReverseSearch(card) {
     if (!card.as2Data.type) return;
 
     const as2Types = card.as2Data.type.split(/[・‧]+/);
-    const selectedAS2 = SKILL_AS2_FLATTEN.filter((option) => {
+    const as2Options = [...SKILL_AS2_FLATTEN, ...uncategorizedOptions.as2];
+    const selectedAS2 = as2Options.filter((option) => {
       const re = constructRegExp(option.value);
       return as2Types.some((as2Type) => re.test(as2Type));
     });
@@ -113,7 +116,8 @@ export default function useOnReverseSearch(card) {
     if (!card.ssData.type) return;
 
     const ssType = card.ssData.type;
-    const selectedSS = SKILL_SS_FLATTEN.filter((option) => (
+    const ssOptions = [...SKILL_SS_FLATTEN, ...uncategorizedOptions.ss];
+    const selectedSS = ssOptions.filter((option) => (
       option.value.includes(ssType)
     ));
     dispatch(setAllPropsFilter({
@@ -127,7 +131,8 @@ export default function useOnReverseSearch(card) {
     if (!card.ss2Data.type) return;
 
     const ss2Type = card.ss2Data.type;
-    const selectedSS2 = SKILL_SS2_FLATTEN.filter((option) => (
+    const ss2Options = [...SKILL_SS2_FLATTEN, ...uncategorizedOptions.ss2];
+    const selectedSS2 = ss2Options.filter((option) => (
       option.value.includes(ss2Type)
     ));
     dispatch(setAllPropsFilter({
@@ -141,7 +146,8 @@ export default function useOnReverseSearch(card) {
     if (!card.EXASData) return;
 
     const exasCondition = card.EXASData.condition;
-    const selectedEXASCondition = EXAS_CONDITIONS_FLATTEN.filter((option) => {
+    const exasConditionsOptions = [...EXAS_CONDITIONS_FLATTEN, ...uncategorizedOptions.exasCondition];
+    const selectedEXASCondition = exasConditionsOptions.filter((option) => {
       const re = constructRegExp(option.value);
       return re.test(exasCondition);
     });
@@ -156,7 +162,8 @@ export default function useOnReverseSearch(card) {
     if (!card.EXASData) return;
 
     const exasTypes = card.EXASData.type.split(/[・‧]+/);
-    const selectedEXASType = EXAS_TYPES_FLATTEN.filter((option) => {
+    const exasTypesOptions = [...EXAS_TYPES_FLATTEN, ...uncategorizedOptions.exasType];
+    const selectedEXASType = exasTypesOptions.filter((option) => {
       const re = constructRegExp(option.value);
       return exasTypes.some((exasType) => re.test(exasType));
     });
